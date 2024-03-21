@@ -1,0 +1,25 @@
+.logo {
+    text-align: center;
+    padding: 20px 0px;
+    font-family: "Noto Sans", sans-serif;
+}
+
+.logo_top {
+    font-size: 70px;
+    color: #C8B997;
+    font-weight: 900;
+    margin: -24px 0;
+
+    text-shadow: 
+    -2px -2px 0 #645533,  
+    2px -2px 0 #645533,
+    -2px 2px 0 #645533,
+    2px 2px 0 #645533;
+}
+
+.logo_bottom {
+    font-family: 'Noto Serif Display', serif;
+    font-size: 25px;
+    color: #000;
+    font-weight: 300;
+}

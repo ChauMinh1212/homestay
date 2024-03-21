@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper-button-next:after,
+.swiper-button-prev:after {
+    font-size: 13px !important;
+    color: #ffffffb7;
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    width: 30px !important;
+    height: 30px !important;
+    background-color: transparent;
+    border: 2px solid #ffffffb7;
+    border-radius: 100%;
+    transition: all 0.2s ease;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background-color: #C8B997;
+        border: 2px solid #C8B997;
+}
+
+.swiper-button-next:hover .swiper-button-next:after {
+    color: #fff
+}
+
+.swiper-button-prev:hover .swiper-button-prev:after {
+    color: #fff
+}
