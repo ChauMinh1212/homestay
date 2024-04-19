@@ -1,7 +1,9 @@
+import NotFound from "~/components/NotFound/NotFound"
+
 const ContactPage = () => {
     return (
         <>
-            ContactPage
+            <NotFound></NotFound>
         </>
     )
 }

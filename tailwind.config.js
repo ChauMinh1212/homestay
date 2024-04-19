@@ -58,7 +58,10 @@ export default {
         {
           'text-line': (value) => ({
             '-webkit-text-stroke': value,
-          })
+          }),
+          // 'box-border': (value) => ({
+          //   ''
+          // })
         }
       )
     })

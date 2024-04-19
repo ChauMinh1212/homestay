@@ -19,7 +19,7 @@ const About = () => {
 
     return (
 
-        <div className="bg-slate-100 py-[20px]">
+        <div className="bg-slate-100 pb-[20px] pt-[30px]">
             <div className="px-[25px]">
                 <Swiper
                     loop={true}

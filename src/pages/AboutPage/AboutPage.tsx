@@ -3,7 +3,7 @@ import './AboutPage.css'
 
 const AboutPage = () => {
     return (
-        <div className="text-[18px] font-second font-[300]">
+        <div className="text-[18px] font-second font-[300] pt-[30px]">
             <Logo></Logo>
             <video className="w-full" src="/images/video.mp4" autoPlay muted loop></video>
             <div className="px-[20px] pt-[30px] max-w-7xl mx-auto">

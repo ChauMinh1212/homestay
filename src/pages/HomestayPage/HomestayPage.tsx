@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import { Navigation } from 'swiper/modules'
+import { Mousewheel, Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import Logo from '~/components/Logo/Logo'
 import CalendarC from '../../components/Calendar/Calendar'
 import 'swiper/css'
 import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import './HomestayPage.css'
 
 const HomestayPage = () => {
     const [value, setValue] = useState(2)
@@ -115,7 +117,7 @@ const HomestayPage = () => {
 
     }
     return (
-        <>
+        <div className="pt-[30px]">
             <Logo></Logo>
             <div className="flex gap-[10px]">
                 <div className="bg-[#E5E1E1] p-[20px]">
@@ -159,7 +161,7 @@ const HomestayPage = () => {
 
                 </div>
             </div>
-            <div className="flex flex-col gap-[20px] max-w-7xl mx-auto my-[40px]">
+            {/* <div className="flex flex-col gap-[20px] max-w-7xl mx-auto my-[40px]">
                 {room.map(item => (
                     <div className="rounded-[30px] flex items-center p-[10px] gap-[20px]" style={{backgroundColor: `${item.background}`}}>
                         <div className="w-[30%] rounded-[30px] overflow-hidden relative">
@@ -174,8 +176,44 @@ const HomestayPage = () => {
                         </div>
                     </div>
                 ))}
+            </div> */}
+            <div className="m-[30px]">
+                <div className="text-center mb-[30px]">
+                    <div className="p-[5px_20px] bg-primary inline-block rounded-[80px] text-[30px] font-semibold">HOMESTAY</div>
+                </div>
+                <div>
+                    <Swiper
+                        loop={true}
+                        navigation={true}
+                        modules={[Navigation]}
+                        slidesPerView={3}
+                        spaceBetween={100}
+                        className="p-[0px_100px]"
+                    >
+                        {data.map(item => (
+                            <SwiperSlide className="">
+                                {/* <div className="h-[500px] rounded-[20px] bg-cover bg-center mb-[20px] border-[7px] border-primary flex justify-center items-center text-[70px] text-white text-line-[1px_#000] font-semibold" style={{ backgroundImage: `url(${item.img})` }}>{item.name}</div> */}
+                                <Swiper
+                                    loop={true}
+                                    pagination={{
+                                        clickable: true,
+                                    }}
+                                    modules={[Pagination]}
+                                    className="h-[500px] rounded-[20px]  border-[7px] border-primary"
+                                >
+                                    <SwiperSlide>
+                                        <div className="h-full bg-cover bg-center mb-[20px] flex justify-center items-center text-[70px] text-white text-line-[1px_#000] font-semibold" style={{ backgroundImage: `url(${item.img})` }}>{item.name}</div>
+                                    </SwiperSlide>
+                                    <SwiperSlide>
+                                        <div className="h-full bg-cover bg-center mb-[20px] flex justify-center items-center text-[70px] text-white text-line-[1px_#000] font-semibold" style={{ backgroundImage: `url(${item.img})` }}>{item.name}</div>
+                                    </SwiperSlide>
+                                </Swiper>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                </div>
             </div>
-        </>
+        </div>
     )
 }
 

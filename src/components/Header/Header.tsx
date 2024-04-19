@@ -1,11 +1,29 @@
-import { IoIosMail } from "react-icons/io";
-import { FaPhoneAlt } from "react-icons/fa";
+import { Backdrop, Box, Button, Fade, Modal } from "@mui/material";
+import { useState } from "react";
 import { useTranslation } from 'react-i18next';
+import { FaPhoneAlt } from "react-icons/fa";
+import { IoIosMail } from "react-icons/io";
 import { NavLink } from "react-router-dom";
-import './Header.css'
+import LanguageSelect from "../LanguageSelect/LanguageSelect";
+import AuthForm from "../LoginForm/LoginForm";
+import './Header.css';
 
 const Header = () => {
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const style = {
+        position: 'absolute' as 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        boxShadow: 24,
+        p: 4,
+        borderRadius: '10px'
+    };
 
     return (
         <div className="fixed top-0 left-0 right-0 z-10 bg-white">
@@ -15,11 +33,29 @@ const Header = () => {
                     <div className="flex items-center">
                         <FaPhoneAlt className="mr-[4px]" /> Hotline: 0941 252 218
                     </div>
-                    <div className="flex ml-[10px] gap-[5px]">
-                        <img className="cursor-pointer" src="/images/l-vn.png" alt="" onClick={() => i18n.changeLanguage('vi')} />
-                        <img className="cursor-pointer" src="/images/l-en.png" alt="" onClick={() => i18n.changeLanguage('en')} />
-                        <img className="cursor-pointer" src="/images/l-kr.png" alt="" onClick={() => i18n.changeLanguage('en')} />
+                    <div>
+                        <LanguageSelect></LanguageSelect>
                     </div>
+                    <Button onClick={handleOpen}>Đăng nhập</Button>
+                    <Modal
+                        aria-labelledby="transition-modal-title"
+                        aria-describedby="transition-modal-description"
+                        open={open}
+                        onClose={handleClose}
+                        closeAfterTransition
+                        slots={{ backdrop: Backdrop }}
+                        slotProps={{
+                            backdrop: {
+                                timeout: 500,
+                            },
+                        }}
+                    >
+                        <Fade in={open}>
+                            <Box sx={style}>
+                                <AuthForm></AuthForm>
+                            </Box>
+                        </Fade>
+                    </Modal>
                 </div>
             </div>
             <div className="header_bottom bg-primary relative z-[2] font-bold shadow-[0_20px_10px_-13px_rgba(0,0,0,0.3)]">

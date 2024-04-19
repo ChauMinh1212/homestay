@@ -1,7 +1,10 @@
+import NotFound from "~/components/NotFound/NotFound"
+
+
 const ServicePage = () => {
     return (
         <>
-            ServicePage
+        <NotFound></NotFound>
         </>
     )
 }
