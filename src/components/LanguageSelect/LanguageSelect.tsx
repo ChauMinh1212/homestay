@@ -31,7 +31,7 @@ const LanguageSelect = () => {
                         onClick={handleClick}
                         size="small"
                         sx={{ ml: 2 }}
-                        aria-controls={open ? 'account-menu' : undefined}
+                        aria-controls={open ? 'language-menu' : undefined}
                         aria-haspopup="true"
                         aria-expanded={open ? 'true' : undefined}
                     >
@@ -42,7 +42,7 @@ const LanguageSelect = () => {
                 </Tooltip>
                 <Menu
                     anchorEl={anchorEl}
-                    id="account-menu"
+                    id="language-menu"
                     open={open}
                     onClose={handleClose}
                     onClick={handleClose}

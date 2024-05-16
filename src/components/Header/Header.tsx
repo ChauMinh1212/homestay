@@ -1,9 +1,11 @@
-import { Backdrop, Box, Button, Fade, Modal } from "@mui/material";
-import { useState } from "react";
+import { Avatar, Backdrop, Box, Button, Fade, Modal, Typography } from "@mui/material";
+import { useContext, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { FaPhoneAlt } from "react-icons/fa";
 import { IoIosMail } from "react-icons/io";
 import { NavLink } from "react-router-dom";
+import UserContext from "~/contexts/UserContext";
+import Account from "../Account/Account";
 import LanguageSelect from "../LanguageSelect/LanguageSelect";
 import AuthForm from "../LoginForm/LoginForm";
 import './Header.css';
@@ -11,8 +13,10 @@ import './Header.css';
 const Header = () => {
     const { t } = useTranslation();
     const [open, setOpen] = useState(false);
+    
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    
     const style = {
         position: 'absolute' as 'absolute',
         top: '50%',
@@ -24,6 +28,7 @@ const Header = () => {
         p: 4,
         borderRadius: '10px'
     };
+    const { user } = useContext(UserContext);
 
     return (
         <div className="fixed top-0 left-0 right-0 z-10 bg-white">
@@ -33,10 +38,14 @@ const Header = () => {
                     <div className="flex items-center">
                         <FaPhoneAlt className="mr-[4px]" /> Hotline: 0941 252 218
                     </div>
-                    <div>
+                    <div className="md:hidden">
                         <LanguageSelect></LanguageSelect>
                     </div>
-                    <Button onClick={handleOpen}>Đăng nhập</Button>
+                    {!user ?
+                        <Button onClick={handleOpen}>Đăng nhập</Button>
+                        :
+                        <Account user={user}></Account>
+                    }
                     <Modal
                         aria-labelledby="transition-modal-title"
                         aria-describedby="transition-modal-description"
@@ -52,7 +61,7 @@ const Header = () => {
                     >
                         <Fade in={open}>
                             <Box sx={style}>
-                                <AuthForm></AuthForm>
+                                <AuthForm onClose={handleClose}></AuthForm>
                             </Box>
                         </Fade>
                     </Modal>

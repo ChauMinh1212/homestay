@@ -1,7 +1,11 @@
+import { useEffect } from "react"
 import Logo from "~/components/Logo/Logo"
 import './AboutPage.css'
 
 const AboutPage = () => {
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, []);
     return (
         <div className="text-[18px] font-second font-[300] pt-[30px]">
             <Logo></Logo>
