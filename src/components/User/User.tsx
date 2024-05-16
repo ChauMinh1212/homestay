@@ -1,5 +1,5 @@
 import { Email, Phone, Redeem } from "@mui/icons-material";
-import { Avatar, Box, ListItemIcon, Modal, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from "@mui/material";
+import { Avatar, Box, Modal, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from "@mui/material";
 import { useContext, useState } from "react";
 import axiosInstance from "~/axios/axiosConfig";
 import UserContext from "~/contexts/UserContext";
@@ -49,7 +49,7 @@ const User = ({ open, onClose }) => {
     const { user } = useContext(UserContext)
     const [booking, setBooking] = useState([])
 
-    const handleChange = (event: React.SyntheticEvent, newValue: number) => {
+    const handleChange = (_event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
 

@@ -11,7 +11,7 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 const CalendarC = ({ onCalenderChange }) => {
   const [value, setValue] = useState<Value>([new Date(), new Date(new Date().getTime() + 86400000)]);
   
-  const handleOnChange = (value, event) => {
+  const handleOnChange = (value, _event) => {
     setValue(value)
     onCalenderChange(value.map(item => moment(item).format('YYYY/MM/DD')))
   }

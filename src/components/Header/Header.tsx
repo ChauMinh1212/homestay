@@ -1,4 +1,4 @@
-import { Avatar, Backdrop, Box, Button, Fade, Modal, Typography } from "@mui/material";
+import { Backdrop, Box, Button, Fade, Modal } from "@mui/material";
 import { useContext, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { FaPhoneAlt } from "react-icons/fa";

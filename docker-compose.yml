@@ -1,0 +1,10 @@
+version: '3'
+services:
+  sirena:
+    image: chauminh1212/sirena:0.0.3
+    ports:
+      - '3000:80'
+    environment:
+      - CONFIG_VITE_REACT_APP_URL_API=http://localhost:3002/api/v1
+      - CONFIG_VITE_REACT_APP_URL_RESOURCE=http://localhost:9000
+  

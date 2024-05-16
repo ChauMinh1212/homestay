@@ -1,7 +1,7 @@
 # build stage
 FROM node:16-slim as build-stage
 WORKDIR /app
-COPY ./ .
+COPY . .
 RUN npm install
 RUN npm run build
 

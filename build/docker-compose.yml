@@ -1,7 +1,0 @@
-version: '3'
-services:
-  sirena:
-    image: chauminh1212/sirena:0.0.1
-    ports:
-      - '3000:3002'
-  
