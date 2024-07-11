@@ -1,0 +1,41 @@
+.triangle-button-prev {
+    cursor: pointer;
+    --r: 5px;
+    height: 50px;
+    aspect-ratio: cos(30deg);
+    --_g: calc(tan(60deg)*var(--r)) right var(--r), #000 98%, #0000 101%;
+    -webkit-mask:
+        conic-gradient(from 240deg at calc(200% - 3*var(--r)/2), #000 60deg, #0000 0) 100% 0/calc(100% - 3*var(--r)/2) 100% no-repeat,
+        radial-gradient(var(--r) at calc(2*var(--r)) 50%, #000 98%, #0000 101%),
+        radial-gradient(var(--r) at top var(--_g)),
+        radial-gradient(var(--r) at bottom var(--_g));
+    clip-path: polygon(0 50%, 100% 100%, 100% 0);
+    background: #C8B997;
+}
+
+.triangle-button-next {
+    cursor: pointer;
+    --r: 5px;
+    height: 50px;
+    aspect-ratio: cos(30deg);
+    --_g: calc(tan(60deg)*var(--r)) left var(--r), #000 98%, #0000 101%;
+    -webkit-mask:
+        conic-gradient(from 60deg at calc(3*var(--r)/2 - 100%), #000 60deg, #0000 0) 0 0/calc(100% - 3*var(--r)/2) 100% no-repeat,
+        radial-gradient(var(--r) at calc(100% - 2*var(--r)) 50%, #000 98%, #0000 101%),
+        radial-gradient(var(--r) at top var(--_g)),
+        radial-gradient(var(--r) at bottom var(--_g));
+    clip-path: polygon(100% 50%, 0 100%, 0 0);
+    background: #C8B997;
+}
+
+.swiper-pagination-bullet {
+    background-color: white!important;
+    opacity: 1!important;
+    width: 10px!important;
+    height: 10px!important;
+}
+
+.swiper-pagination-bullet-active {
+    background-color: #C8B997!important;
+}
+

@@ -8,7 +8,7 @@ img {
   object-fit: cover;
 }
 
-.swiper-button-next:after,
+/* .swiper-button-next:after,
 .swiper-button-prev:after {
     font-size: 13px !important;
     color: #ffffffb7;
@@ -36,4 +36,4 @@ img {
 
 .swiper-button-prev:hover .swiper-button-prev:after {
     color: #fff
-}
+} */

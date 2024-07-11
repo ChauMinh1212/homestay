@@ -41,7 +41,7 @@ function App() {
       <SnackBarContext.Provider value={{ snackBar, setSnackBar }}>
         <SnackBarCustom />
         <Header />
-        <div className="mt-[106px]"></div>
+        <div className="mt-[137px]"></div>
         <Routes>
           {routes.map((item, index) => (
             <Route key={index} path={item.path} element={<item.element />} />
