@@ -43,7 +43,7 @@ const Footer = () => {
         //     </div>
         // </div>
         <div className="bg-slate-100 py-[20px] text-center">
-            <p>THÔNG TIN LIÊN HỆ</p>
+            <p className="">THÔNG TIN LIÊN HỆ</p>
         </div>
     )
 }
