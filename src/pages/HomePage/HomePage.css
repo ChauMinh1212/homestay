@@ -39,3 +39,14 @@
     background-color: #C8B997!important;
 }
 
+.custom-dashed-line {
+    border-bottom: 2px dashed #d3c7a0; /* Màu vàng của đường kẻ */
+    height: 0;
+    border-image: initial;
+    border-width: 2px;
+    border-style: dashed;
+    border-color: #d3c7a0;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(to right, #d3c7a0 33%, rgba(255, 255, 255, 0) 0%);
+    border-image-width: 3px;
+  }

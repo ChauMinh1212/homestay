@@ -68,7 +68,49 @@ const HomePage = () => {
                 </Swiper>
                 <div className="custom-nav-button-next triangle-button-next"></div>
             </div>
-
+            <div className="">
+                <div className="flex items-center py-[20px]">
+                    <div className="flex-1 border-t-[3px] border-dashed h-0 border-primary"></div>
+                    <div className="w-[450px] text-shadow-line text-primary text-[40px] text-center font-primary">HOMESTAY SELECTION</div>
+                    <div className="flex-1 border-t-[3px] border-dashed h-0 border-primary"></div>
+                </div>
+                <div>
+                    <div className="flex gap-[40px] justify-center">
+                        <div className="basis-[310px]">
+                            <div className="h-[400px] border-[7px] border-[#000] rounded-[80px] overflow-hidden">
+                                <img src="images/home_6.png" alt="" className="h-[100%]"/>
+                            </div>
+                            <p className="font-bold text-center mt-[10px]">HOMESTAY SÀI GÒN</p>
+                        </div>
+                        <div className="basis-[310px]">
+                            <div className="h-[400px] border-[7px] border-[#000] rounded-[80px] overflow-hidden">
+                                <img src="images/home_7.png" alt="" className="h-[100%]"/>
+                            </div>
+                            <p className="font-bold text-center mt-[10px]">HABOUR HOMESTAY</p>
+                        </div>
+                        <div className="basis-[310px]">
+                            <div className="h-[400px] border-[7px] border-[#000] rounded-[80px] overflow-hidden">
+                                <img src="images/home_8.png" alt="" className="h-[100%]"/>
+                            </div>
+                            <p className="font-bold text-center mt-[10px]">GARDEN HOMESTAY</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="mb-[20px]">
+                <div className="flex items-center py-[20px]">
+                    <div className="flex-1 border-t-[3px] border-dashed h-0 border-primary"></div>
+                    <div className="w-[180px] text-shadow-line text-primary text-[40px] text-center font-primary">EVENT</div>
+                    <div className="flex-1 border-t-[3px] border-dashed h-0 border-primary"></div>
+                </div>
+                <div>
+                    <div className="flex justify-center gap-[50px]">
+                        <div className="bg-gradient-to-r from-[#fff7ad] to-[#ffa9f9] h-[260px] basis-[220px]"></div>
+                        <div className="bg-gradient-to-r from-[#0cc0df] to-[#ffde59] h-[260px] basis-[450px]"></div>
+                        <div className="bg-gradient-to-r from-[#fff7ad] to-[#ffa9f9] h-[260px] basis-[220px]"></div>
+                    </div>
+                </div>
+            </div>
         </>
     )
 }
