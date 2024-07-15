@@ -1,13 +1,13 @@
-const Contact = (props: { name: string, info: string, add?: string }) => {
-    const { name, info, add } = props
-    return (
-        <div className="flex items-center">
-            <span className="font-bold mr-[5px]">{name}:</span>
-            {info}
-            <span className="italic font-bold ">{add ? ' ' + add : ''}</span>
-        </div>
-    )
-}
+// const Contact = (props: { name: string, info: string, add?: string }) => {
+//     const { name, info, add } = props
+//     return (
+//         <div className="flex items-center">
+//             <span className="font-bold mr-[5px]">{name}:</span>
+//             {info}
+//             <span className="italic font-bold ">{add ? ' ' + add : ''}</span>
+//         </div>
+//     )
+// }
 
 const Footer = () => {
     return (
