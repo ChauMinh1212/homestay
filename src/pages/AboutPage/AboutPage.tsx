@@ -7,7 +7,7 @@ const AboutPage = () => {
         window.scrollTo(0, 0);
     }, []);
     return (
-        <div className="text-[18px] font-second font-[300] pt-[30px]">
+        <div className="text-[18px] font-second font-[300]">
             <Logo></Logo>
             <video className="w-full" src="/images/video.mp4" autoPlay muted loop></video>
             <div className="px-[20px] pt-[30px] max-w-7xl mx-auto">

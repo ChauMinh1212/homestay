@@ -35,3 +35,14 @@
     background-size: contain;
     background-repeat: no-repeat;
 }
+
+.coconut-mobile::after {
+    content: '';
+    background-image: url('/images/coconut.gif');
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    top: -5px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}

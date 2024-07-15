@@ -95,7 +95,7 @@ const HomestayPage = () => {
     
 
     return (
-        <div className="pt-[30px]">
+        <div className="">
             <Booking onClose={handleCloseBooking} open={openModalBooking} infoBooking={infoBooking} afterBooking={handleAfterBooking} ></Booking>
             
             <Logo></Logo>

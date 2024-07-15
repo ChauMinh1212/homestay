@@ -3,8 +3,8 @@ const languages = {
   en: {
     translation: {
       home: 'HOME',
-      introduce: 'ABOUT US',
-      room: 'HOMESTAY / RESORT',
+      about: 'ABOUT US',
+      homestay: 'HOMESTAY / RESORT',
       service: 'SERVICES',
       event: 'EVENT',
       shop: 'SHOP',
@@ -14,8 +14,8 @@ const languages = {
   vi: {
     translation: {
       home: 'TRANG CHỦ',
-      introduce: 'GIỚI THIỆU',
-      room: 'HOMESTAY / RESORT',
+      about: 'GIỚI THIỆU',
+      homestay: 'HOMESTAY / RESORT',
       service: 'DỊCH VỤ',
       event: 'SỰ KIỆN',
       shop: 'CỬA HÀNG',

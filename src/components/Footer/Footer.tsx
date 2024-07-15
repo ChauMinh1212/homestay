@@ -42,8 +42,34 @@ const Footer = () => {
         //         </div>
         //     </div>
         // </div>
-        <div className="bg-slate-100 py-[20px] text-center">
-            <p className="">THÔNG TIN LIÊN HỆ</p>
+        <div className="bg-slate-100 py-[20px] text-center text-[20px] md:text-[15px]">
+            <p className="font-bold ">THÔNG TIN LIÊN HỆ</p>
+            <div className="">
+                <span className="font-bold">Hotline: </span>
+                <span>0941 252 218 </span>
+                <span className="font-bold italic">(Sirena Homestay)</span>
+            </div>
+            <div className="">
+                <span className="font-bold">Zalo: </span>
+                <span>0941 252 218 </span>
+                <span className="font-bold italic">(Sirena Homestay)</span>
+            </div>
+            <div className="">
+                <span className="font-bold">Instagram: </span>
+                <span>sirenahomestay</span>
+            </div>
+            <div className="">
+                <span className="font-bold">Facebook: </span>
+                <span>Sirena Modern Decór HomeStay</span>
+            </div>
+            <div className="">
+                <span className="font-bold">Tiktok: </span>
+                <span>sirenahomestay</span>
+            </div>
+            <div className="">
+                <span className="font-bold">Gmail: </span>
+                <span>forwork.sirenahomestay@gmail.com</span>
+            </div>
         </div>
     )
 }
