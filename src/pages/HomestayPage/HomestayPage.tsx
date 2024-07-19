@@ -12,6 +12,7 @@ import Logo from '~/components/Logo/Logo'
 import ListRoom from '~/components/Room/ListRoom'
 import CalendarC from '../../components/Calendar/Calendar'
 import './HomestayPage.css'
+import DateTimeBooking from '~/components/DateTimeBooking/DateTimeBooking'
 
 interface IBooking {
     id: number
@@ -98,7 +99,7 @@ const HomestayPage = () => {
         <div className="">
             <Booking onClose={handleCloseBooking} open={openModalBooking} infoBooking={infoBooking} afterBooking={handleAfterBooking} ></Booking>
             
-            <Logo></Logo>
+            {/* <Logo></Logo>
             <div className="flex gap-[10px]">
                 <div className="bg-[#E5E1E1] p-[20px]">
                     <CalendarC onCalenderChange={handleCalenderChange}></CalendarC>
@@ -160,7 +161,9 @@ const HomestayPage = () => {
             <div className="text-center my-[30px]">
                 <div className="p-[5px_20px] bg-primary inline-block rounded-[80px] text-[30px] font-semibold">HOMESTAY</div>
                 <ListRoom></ListRoom>
-            </div>
+            </div> */}
+
+            <DateTimeBooking/>
             
 
             {/* <div className="m-[30px]">
