@@ -48,57 +48,18 @@ const HomestayPage = () => {
         window.scrollTo(0, 0);
     }, []);
 
-    useEffect(() => {
-        (async () => {
-            setLoading(true)
-            const room = await axiosInstance.get(`room/valid?from=${date[0]}&to=${date[1]}&capacity=${value}`);
-            setRoomValid(room.data)
-            setLoading(false)
-
-        })();
-    }, [date, value, afterBooking])
-
-    const handleOnChange = (e) => {
-        const input = e.target.value
-        if (input > 10) {
-            setValue(10)
-        } else if (input < 0 || !input) {
-            setValue(0)
-        }
-        else {
-            setValue(input)
-        }
-    }
-
-    const handleCalenderChange = (date: string[]) => {
-        setDate(date);
-    }
-
     const handleCloseBooking = () => {
         setOpenModalBooking(false)
-    }
-
-    const handleClickSlide = (info: IBooking) => {
-        setInfoBooking({
-            id: info.id,
-            code: info.code,
-            from: date[0],
-            to: date[1],
-            quantity: value
-        })
-        setOpenModalBooking(true)
     }
 
     const handleAfterBooking = () => {
         setAfterBooking(!afterBooking)
     }
 
-    
-
     return (
         <div className="">
-            <Booking onClose={handleCloseBooking} open={openModalBooking} infoBooking={infoBooking} afterBooking={handleAfterBooking} ></Booking>
-            
+            {/* <Booking onClose={handleCloseBooking} open={openModalBooking} infoBooking={infoBooking} afterBooking={handleAfterBooking} ></Booking> */}
+
             {/* <Logo></Logo>
             <div className="flex gap-[10px]">
                 <div className="bg-[#E5E1E1] p-[20px]">
@@ -163,8 +124,41 @@ const HomestayPage = () => {
                 <ListRoom></ListRoom>
             </div> */}
 
-            <DateTimeBooking/>
-            
+            <DateTimeBooking setRoomValid={setRoomValid} />
+
+            <div className='mt-[20px]'>
+                <div className="text-shadow-line text-primary text-[43px] text-center font-primary mb-[10px]">HOMESTAY SÀI GÒN</div>
+
+                <div className="flex gap-[40px] justify-center flex-wrap">
+                    {roomValid.map(item => (
+                        <div className="basis-[310px]">
+                        <div className="h-[400px] border-[7px] border-[#000] rounded-[80px] overflow-hidden">
+                            <img src={`${import.meta.env.VITE_REACT_APP_URL_RESOURCE}${item.img[0]}`} alt="" className="h-[100%]" />
+                        </div>
+                        <p className="font-bold text-center mt-[10px]">{item.code} ({item.district.name})</p>
+                    </div>
+                    ))}
+                    {/* <div className="basis-[310px]">
+                        <div className="h-[400px] border-[7px] border-[#000] rounded-[80px] overflow-hidden">
+                            <img src="images/home_6.png" alt="" className="h-[100%]" />
+                        </div>
+                        <p className="font-bold text-center mt-[10px]">HOMESTAY SÀI GÒN</p>
+                    </div>
+                    <div className="basis-[310px]">
+                        <div className="h-[400px] border-[7px] border-[#000] rounded-[80px] overflow-hidden">
+                            <img src="images/home_7.png" alt="" className="h-[100%]" />
+                        </div>
+                        <p className="font-bold text-center mt-[10px]">HABOUR HOMESTAY</p>
+                    </div>
+                    <div className="basis-[310px]">
+                        <div className="h-[400px] border-[7px] border-[#000] rounded-[80px] overflow-hidden">
+                            <img src="images/home_8.png" alt="" className="h-[100%]" />
+                        </div>
+                        <p className="font-bold text-center mt-[10px]">GARDEN HOMESTAY</p>
+                    </div> */}
+                </div>
+            </div>
+
 
             {/* <div className="m-[30px]">
                 <div className="text-center mb-[30px]">

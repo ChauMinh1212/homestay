@@ -11,8 +11,6 @@ const HomePage = () => {
     }, []);
     return (
         <>
-            {/* <About></About> */}
-            {/* <Service></Service> */}
             <div className="px-[20px] pt-[20px] mb-[30px]">
                 <div className="flex border-b-[2px] border-b-primary flex-wrap">
                     <div className="flex-1 flex items-center flex-col border-r-[2px] border-r-primary md:flex-[33%]">
@@ -50,7 +48,7 @@ const HomePage = () => {
                     pagination={{
                         clickable: true
                     }}
-                    
+
                     modules={[Navigation, Autoplay, Pagination]}
                     className="mx-h-[100%] w-[700px] h-[400px] md:h-[300px]"
                     autoplay={{
@@ -78,19 +76,19 @@ const HomePage = () => {
                     <div className="flex gap-[40px] justify-center flex-wrap">
                         <div className="basis-[310px]">
                             <div className="h-[400px] border-[7px] border-[#000] rounded-[80px] overflow-hidden">
-                                <img src="images/home_6.png" alt="" className="h-[100%]"/>
+                                <img src="images/home_6.png" alt="" className="h-[100%]" />
                             </div>
                             <p className="font-bold text-center mt-[10px]">HOMESTAY SÀI GÒN</p>
                         </div>
                         <div className="basis-[310px]">
                             <div className="h-[400px] border-[7px] border-[#000] rounded-[80px] overflow-hidden">
-                                <img src="images/home_7.png" alt="" className="h-[100%]"/>
+                                <img src="images/home_7.png" alt="" className="h-[100%]" />
                             </div>
                             <p className="font-bold text-center mt-[10px]">HABOUR HOMESTAY</p>
                         </div>
                         <div className="basis-[310px]">
                             <div className="h-[400px] border-[7px] border-[#000] rounded-[80px] overflow-hidden">
-                                <img src="images/home_8.png" alt="" className="h-[100%]"/>
+                                <img src="images/home_8.png" alt="" className="h-[100%]" />
                             </div>
                             <p className="font-bold text-center mt-[10px]">GARDEN HOMESTAY</p>
                         </div>
