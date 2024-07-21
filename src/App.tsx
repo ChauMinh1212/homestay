@@ -1,17 +1,19 @@
 import { SnackbarProps } from '@mui/material';
 import i18n from 'i18next';
+import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { initReactI18next } from 'react-i18next';
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
+import NotFound from './components/NotFound/NotFound';
 import SnackBarCustom from './components/SnackBarCustom/SnackBarCustom';
+import MenuLoginContext from './contexts/MenuLoginContext';
 import SnackBarContext from './contexts/SnackBarContext';
 import UserContext from './contexts/UserContext';
 import languages from './languages';
 import routes from './routes';
-import Cookies from 'js-cookie'
 
 function App() {
   i18n.use(initReactI18next).init({
@@ -35,20 +37,24 @@ function App() {
     },
     status: 'success'
   })
-
+  const [openMenuLogin, setOpenMenuLogin] = useState(false)
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <SnackBarContext.Provider value={{ snackBar, setSnackBar }}>
-        <SnackBarCustom />
-        <Header />
-        <div className="mt-[137px]"></div>
-        <Routes>
-          {routes.map((item, index) => (
-            <Route key={index} path={item.path} element={<item.element />} />
-          )
-          )}
-        </Routes>
-        <Footer />
+        <MenuLoginContext.Provider value={{ openMenuLogin, setOpenMenuLogin }}>
+          <SnackBarCustom />
+          <Header />
+          <div className="mt-[137px]"></div>
+          <Routes>
+            {routes.map((item, index) => (
+              <Route key={index} path={item.path} element={<item.element />} />
+            )
+            )}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Footer />
+        </MenuLoginContext.Provider>
+
       </SnackBarContext.Provider>
     </UserContext.Provider>
   )

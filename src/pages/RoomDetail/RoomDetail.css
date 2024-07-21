@@ -1,0 +1,26 @@
+ul {
+    list-style: disc !important;
+}
+
+.price {
+    caret-color: rgb(143, 122, 90);
+    -webkit-text-stroke: 1px rgb(143, 122, 90);
+    -webkit-text-fill-color: transparent;
+    text-shadow: rgb(199, 184, 162) 2px 2px 0px;
+}
+
+.rectangle-up {
+    width: 0;
+    height: 0;
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-bottom: 30px solid #C8B997;
+}
+
+.rectangle-down {
+    width: 0;
+    height: 0;
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-top: 30px solid #C8B997;
+}

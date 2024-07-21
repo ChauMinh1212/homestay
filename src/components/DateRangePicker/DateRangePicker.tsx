@@ -116,6 +116,7 @@ const ButtonDateRangePicker = React.forwardRef(
                 onOpen={() => setOpen(true)}
                 onChange={handleChangeDate}
                 dayOfWeekFormatter={(date) => week[dayjs(date).day()]}
+                disablePast
             />
         );
     },

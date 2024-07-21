@@ -7,6 +7,7 @@ import * as yup from 'yup';
 import axiosInstance from "~/axios/axiosConfig";
 import SnackBarContext from "~/contexts/SnackBarContext";
 import { IRoomData } from "~/pages/HomestayPage/HomestayPage";
+import TextEditor from "../Editor/Editor";
 import { VisuallyHiddenInput } from "./AddRoom";
 
 const style = {
@@ -19,7 +20,8 @@ const style = {
     boxShadow: 24,
     p: 4,
     borderRadius: '10px',
-    overflow: 'hidden'
+    overflow: 'auto',
+    height: '90%'
 };
 
 const validationSchema = yup.object({
@@ -50,6 +52,7 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
     const [loading, setLoading] = useState(false)
     const { snackBar, setSnackBar } = useContext(SnackBarContext)
     const [image, setImage] = useState([])
+    const [description, setDescription] = useState(room?.description || '')
 
     const formik = useFormik<IRoomData>({
         initialValues: {
@@ -93,7 +96,7 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
             data.append('id', values.id);
             data.append('code', values.code);
             data.append('name', values.name);
-            data.append('description', values.description);
+            data.append('description', description);
             data.append('address', values.address);
             data.append('price', values.price);
             data.append('quantity', values.quantity);
@@ -111,6 +114,7 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
             onClose()
             handleUpdateRoom({
                 ...values,
+                description,
                 img: res.data.img
             })
             setSnackBar({
@@ -188,7 +192,7 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
                         error={formik.touched.address && Boolean(formik.errors.address)}
                         helperText={formik.touched.address ? (formik.errors.address || '') : ''}
                     />
-                    <TextField
+                    {/* <TextField
                         fullWidth
                         id="description"
                         name="description"
@@ -199,13 +203,14 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
                         onBlur={formik.handleBlur}
                         error={formik.touched.description && Boolean(formik.errors.description)}
                         helperText={formik.touched.description ? (formik.errors.description || '') : ''}
-                    />
+                    /> */}
+                    <TextEditor defaultValue={room?.description || ''} setDescription={setDescription}></TextEditor>
                     <TextField
                         fullWidth
                         id="capacity"
                         name="capacity"
                         label="Sức chứa"
-                        className="!mb-[20px]"
+                        className="!mb-[20px] !mt-[20px]"
                         value={formik.values.capacity}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}

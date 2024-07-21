@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { FaPhoneAlt } from "react-icons/fa";
 import { IoIosMail } from "react-icons/io";
 import { NavLink, useLocation } from "react-router-dom";
+import MenuLoginContext from "~/contexts/MenuLoginContext";
 import UserContext from "~/contexts/UserContext";
 import Account from "../Account/Account";
 import LanguageSelect from "../LanguageSelect/LanguageSelect";
@@ -26,7 +27,7 @@ const styleMenu = {
 
 const Header = () => {
     const { t } = useTranslation();
-    const [open, setOpen] = useState(false);
+    const {openMenuLogin: open, setOpenMenuLogin: setOpen} = useContext(MenuLoginContext);
     const [openMenu, setOpenMenu] = useState(false);
     const location = useLocation()
 

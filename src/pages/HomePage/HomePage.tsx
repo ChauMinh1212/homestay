@@ -1,35 +1,39 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { SwiperSlide, Swiper } from "swiper/react";
+import MenuLoginContext from "~/contexts/MenuLoginContext";
 import './HomePage.css'
 
 const HomePage = () => {
+    const {setOpenMenuLogin} = useContext(MenuLoginContext)
+
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+
     return (
         <>
             <div className="px-[20px] pt-[20px] mb-[30px]">
                 <div className="flex border-b-[2px] border-b-primary flex-wrap">
-                    <div className="flex-1 flex items-center flex-col border-r-[2px] border-r-primary md:flex-[33%]">
+                    <div onClick={() => setOpenMenuLogin(true)} className="cursor-pointer flex-1 flex items-center flex-col border-r-[2px] border-r-primary md:flex-[33%]">
                         <img className="w-[60px] h-[60px] md:w-[30px] md:h-[30px] mb-[10px]" src="/images/home_1.png" alt="" />
                         <p className="font-semibold text-[15px] mb-[7px] text-center px-[10px] md:text-[13px]">THÀNH VIÊN</p>
                     </div>
-                    <div className="flex-1 flex items-center flex-col border-r-[2px] border-r-primary md:flex-[33%]">
+                    <div className="cursor-pointer flex-1 flex items-center flex-col border-r-[2px] border-r-primary md:flex-[33%]">
                         <img className="w-[60px] h-[60px] md:w-[30px] md:h-[30px] mb-[10px]" src="/images/home_2.png" alt="" />
                         <p className="font-semibold text-[15px] mb-[7px] text-center px-[10px] md:text-[13px]">HOMESTAY SÀI GÒN</p>
                     </div>
-                    <div className="flex-1 flex items-center flex-col border-r-[2px] border-r-primary md:flex-[33%] md:border-none">
+                    <div className="cursor-pointer flex-1 flex items-center flex-col border-r-[2px] border-r-primary md:flex-[33%] md:border-none">
                         <img className="w-[60px] h-[60px] md:w-[30px] md:h-[30px] mb-[10px]" src="/images/home_3.png" alt="" />
                         <p className="font-semibold text-[15px] mb-[7px] text-center px-[10px] md:text-[13px]">HABOUR HOMESTAY </p>
                     </div>
-                    <div className="flex-1 flex items-center flex-col border-r-[2px] border-r-primary">
+                    <div className="cursor-pointer flex-1 flex items-center flex-col border-r-[2px] border-r-primary">
                         <img className="w-[60px] h-[60px] md:w-[30px] md:h-[30px] mb-[10px]" src="/images/home_4.png" alt="" />
                         <p className="font-semibold text-[15px] mb-[7px] text-center px-[10px] md:text-[13px]">TIN MỚI VÀ ƯU ĐÃI</p>
                     </div>
-                    <div className="flex-1 flex items-center flex-col">
+                    <div className="cursor-pointer flex-1 flex items-center flex-col">
                         <img className="w-[60px] h-[60px] md:w-[30px] md:h-[30px] mb-[10px]" src="/images/home_5.png" alt="" />
                         <p className="font-semibold text-[15px] mb-[7px] text-center px-[10px] md:text-[13px]">ĐẶT NGAY</p>
                     </div>
