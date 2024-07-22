@@ -4,9 +4,10 @@ import Cookies from 'js-cookie';
 import { useContext, useState } from "react";
 import UserContext from "~/contexts/UserContext";
 import User from "../User/User";
+import ProfileOpenContext from "~/contexts/ProfileOpenContext";
 
 const Account = ({ user }) => {
-    const [openModalInfoUser, setOpenModalInfoUser] = useState(false)
+    const {openProfile :openModalInfoUser, setOpenProfile: setOpenModalInfoUser} = useContext(ProfileOpenContext)
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const { setUser } = useContext(UserContext)
     const open = Boolean(anchorEl);

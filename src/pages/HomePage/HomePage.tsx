@@ -5,9 +5,13 @@ import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { SwiperSlide, Swiper } from "swiper/react";
 import MenuLoginContext from "~/contexts/MenuLoginContext";
 import './HomePage.css'
+import ProfileOpenContext from "~/contexts/ProfileOpenContext";
+import UserContext from "~/contexts/UserContext";
 
 const HomePage = () => {
     const {setOpenMenuLogin} = useContext(MenuLoginContext)
+    const {setOpenProfile} = useContext(ProfileOpenContext)
+    const {user} = useContext(UserContext) 
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -17,7 +21,7 @@ const HomePage = () => {
         <>
             <div className="px-[20px] pt-[20px] mb-[30px]">
                 <div className="flex border-b-[2px] border-b-primary flex-wrap">
-                    <div onClick={() => setOpenMenuLogin(true)} className="cursor-pointer flex-1 flex items-center flex-col border-r-[2px] border-r-primary md:flex-[33%]">
+                    <div onClick={() => user ? setOpenProfile(true) : setOpenMenuLogin(true)} className="cursor-pointer flex-1 flex items-center flex-col border-r-[2px] border-r-primary md:flex-[33%]">
                         <img className="w-[60px] h-[60px] md:w-[30px] md:h-[30px] mb-[10px]" src="/images/home_1.png" alt="" />
                         <p className="font-semibold text-[15px] mb-[7px] text-center px-[10px] md:text-[13px]">THÀNH VIÊN</p>
                     </div>

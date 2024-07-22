@@ -14,6 +14,7 @@ import SnackBarContext from './contexts/SnackBarContext';
 import UserContext from './contexts/UserContext';
 import languages from './languages';
 import routes from './routes';
+import ProfileOpenContext from './contexts/ProfileOpenContext';
 
 function App() {
   i18n.use(initReactI18next).init({
@@ -38,21 +39,24 @@ function App() {
     status: 'success'
   })
   const [openMenuLogin, setOpenMenuLogin] = useState(false)
+  const [openProfile, setOpenProfile] = useState(false)
   return (
     <UserContext.Provider value={{ user, setUser }}>
       <SnackBarContext.Provider value={{ snackBar, setSnackBar }}>
         <MenuLoginContext.Provider value={{ openMenuLogin, setOpenMenuLogin }}>
-          <SnackBarCustom />
-          <Header />
-          <div className="mt-[137px]"></div>
-          <Routes>
-            {routes.map((item, index) => (
-              <Route key={index} path={item.path} element={<item.element />} />
-            )
-            )}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <Footer />
+          <ProfileOpenContext.Provider value={{ openProfile, setOpenProfile }}>
+            <SnackBarCustom />
+            <Header />
+            <div className="mt-[137px]"></div>
+            <Routes>
+              {routes.map((item, index) => (
+                <Route key={index} path={item.path} element={<item.element />} />
+              )
+              )}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+            <Footer />
+          </ProfileOpenContext.Provider>
         </MenuLoginContext.Provider>
 
       </SnackBarContext.Provider>
