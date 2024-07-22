@@ -28,7 +28,7 @@ const TextEditor = ({defaultValue, setDescription}) => {
         ],
     };
 
-    const handleChange = (content, delta, source, editor) => {
+    const handleChange = (content, _, __, editor) => {
         setValue(content);
         setDescription(editor.getHTML()); // Sử dụng phương thức getHTML để lấy HTML content
     };

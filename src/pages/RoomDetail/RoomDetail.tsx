@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"
+import { useParams } from "react-router-dom";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import axiosInstance from "~/axios/axiosConfig";
-import TextEditor from "~/components/Editor/Editor";
-import './RoomDetail.css'
+import './RoomDetail.css';
 
 const RoomDetail = () => {
     const { roomId } = useParams()

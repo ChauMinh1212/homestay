@@ -51,7 +51,6 @@ const DateRangeButtonField = React.forwardRef(
             setOpen,
             id,
             InputProps: { ref: containerRef } = {},
-            inputProps: { 'aria-label': ariaLabel } = {},
             dateDisplay,
             selectItem
         } = props;
