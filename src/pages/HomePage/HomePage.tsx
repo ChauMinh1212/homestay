@@ -7,11 +7,13 @@ import MenuLoginContext from "~/contexts/MenuLoginContext";
 import './HomePage.css'
 import ProfileOpenContext from "~/contexts/ProfileOpenContext";
 import UserContext from "~/contexts/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
     const {setOpenMenuLogin} = useContext(MenuLoginContext)
     const {setOpenProfile} = useContext(ProfileOpenContext)
     const {user} = useContext(UserContext) 
+    const navigate = useNavigate()
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -25,11 +27,11 @@ const HomePage = () => {
                         <img className="w-[60px] h-[60px] md:w-[30px] md:h-[30px] mb-[10px]" src="/images/home_1.png" alt="" />
                         <p className="font-semibold text-[15px] mb-[7px] text-center px-[10px] md:text-[13px]">THÀNH VIÊN</p>
                     </div>
-                    <div className="cursor-pointer flex-1 flex items-center flex-col border-r-[2px] border-r-primary md:flex-[33%]">
+                    <div onClick={() => navigate('/homestay')} className="cursor-pointer flex-1 flex items-center flex-col border-r-[2px] border-r-primary md:flex-[33%]">
                         <img className="w-[60px] h-[60px] md:w-[30px] md:h-[30px] mb-[10px]" src="/images/home_2.png" alt="" />
                         <p className="font-semibold text-[15px] mb-[7px] text-center px-[10px] md:text-[13px]">HOMESTAY SÀI GÒN</p>
                     </div>
-                    <div className="cursor-pointer flex-1 flex items-center flex-col border-r-[2px] border-r-primary md:flex-[33%] md:border-none">
+                    <div onClick={() => navigate('/room/HABOUR%20HOMESTAY/30')} className="cursor-pointer flex-1 flex items-center flex-col border-r-[2px] border-r-primary md:flex-[33%] md:border-none">
                         <img className="w-[60px] h-[60px] md:w-[30px] md:h-[30px] mb-[10px]" src="/images/home_3.png" alt="" />
                         <p className="font-semibold text-[15px] mb-[7px] text-center px-[10px] md:text-[13px]">HABOUR HOMESTAY </p>
                     </div>
@@ -82,19 +84,19 @@ const HomePage = () => {
                 </div>
                 <div>
                     <div className="flex gap-[40px] justify-center flex-wrap">
-                        <div className="basis-[310px]">
+                        <div onClick={() => navigate('/homestay')} className="basis-[310px] cursor-pointer">
                             <div className="h-[400px] border-[7px] border-[#000] rounded-[80px] overflow-hidden">
                                 <img src="images/home_6.png" alt="" className="h-[100%]" />
                             </div>
                             <p className="font-bold text-center mt-[10px]">HOMESTAY SÀI GÒN</p>
                         </div>
-                        <div className="basis-[310px]">
+                        <div onClick={() => navigate('/room/HABOUR%20HOMESTAY/30')} className="basis-[310px] cursor-pointer">
                             <div className="h-[400px] border-[7px] border-[#000] rounded-[80px] overflow-hidden">
                                 <img src="images/home_7.png" alt="" className="h-[100%]" />
                             </div>
                             <p className="font-bold text-center mt-[10px]">HABOUR HOMESTAY</p>
                         </div>
-                        <div className="basis-[310px]">
+                        <div onClick={() => navigate('/room/GARDEN%20HOMESTAY/31')} className="basis-[310px] cursor-pointer">
                             <div className="h-[400px] border-[7px] border-[#000] rounded-[80px] overflow-hidden">
                                 <img src="images/home_8.png" alt="" className="h-[100%]" />
                             </div>

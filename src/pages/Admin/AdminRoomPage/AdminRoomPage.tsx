@@ -29,8 +29,13 @@ const AdminRoomPage = () => {
     }, [])
 
     const handleUpdateRoom = (value) => {
-        console.log(value);
-    }   
+        setRoom(prev => {
+            const newRoom = [...prev]
+            const index = prev.findIndex(item => item.id == value.id)
+            newRoom[index] = value
+            return newRoom
+        })
+    }
 
     const handleOnClickEdit = (value) => {
         setRoomDetail(value)
@@ -39,7 +44,7 @@ const AdminRoomPage = () => {
 
     return (
         <>
-            <EditRoomModal open={openEdit} onClose={() => setOpenEdit(false)} room={roomDetail} handleUpdateRoom={handleUpdateRoom}/>
+            <EditRoomModal open={openEdit} onClose={() => setOpenEdit(false)} room={roomDetail} handleUpdateRoom={handleUpdateRoom} />
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>

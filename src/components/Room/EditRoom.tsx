@@ -1,8 +1,8 @@
 import { Clear, CloudUpload } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { Box, Button, IconButton, Modal, TextField } from "@mui/material";
+import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Modal, Select, TextField } from "@mui/material";
 import { useFormik } from "formik";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as yup from 'yup';
 import axiosInstance from "~/axios/axiosConfig";
 import SnackBarContext from "~/contexts/SnackBarContext";
@@ -49,10 +49,19 @@ const validationSchema = yup.object({
 });
 
 const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
+
     const [loading, setLoading] = useState(false)
     const { snackBar, setSnackBar } = useContext(SnackBarContext)
     const [image, setImage] = useState([])
     const [description, setDescription] = useState(room?.description || '')
+    const [district, setDistrict] = useState([])
+    const [selectDistrict, setSelectDistrict] = useState(0)
+
+    useEffect(() => {
+        setSelectDistrict(room?.district.id || 0)
+        setDescription(room?.description || '');
+    }, [room]);
+
 
     const formik = useFormik<IRoomData>({
         initialValues: {
@@ -79,6 +88,22 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
         setImage(newListImg)
     }
 
+    const getDistrictValid = async () => {
+        try {
+            const res = await axiosInstance.get(`district`)
+            return res.data
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        (async () => {
+            const district = await getDistrictValid()
+            setDistrict(district)
+        })();
+    }, [])
+
     const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files
         const listImg = []
@@ -90,7 +115,6 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
 
     const handleSubmit = async (values) => {
         try {
-            
             setLoading(true)
             const data = new FormData();
             data.append('id', values.id);
@@ -102,7 +126,8 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
             data.append('quantity', values.quantity);
             data.append('capacity', values.capacity);
             data.append('color', values.color);
-            image.map((item, index) => {
+            selectDistrict && data.append('district_id', selectDistrict.toString());
+            image.length != 0 && image.map((item, index) => {
                 data.append(`img[${index}]`, item)
             })
             const res = await axiosInstance.post('room/update', data, {
@@ -132,6 +157,10 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
                 status: 'error'
             })
         }
+    }
+
+    const handleChangeSelect = (e) => {
+        setSelectDistrict(e.target.value)
     }
 
     return (
@@ -168,6 +197,23 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
                         error={formik.touched.name && Boolean(formik.errors.name)}
                         helperText={formik.touched.name ? (formik.errors.name || '') : ''}
                     />
+                    <FormControl fullWidth className="!mb-[20px]">
+                        <InputLabel id="demo-simple-select-label">Quận</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selectDistrict}
+                            label="Quận"
+                            onChange={handleChangeSelect}
+                        >
+                            {
+                                district.map(item => (
+                                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                ))
+                            }
+                            <MenuItem key={981203} value={0}>None</MenuItem>
+                        </Select>
+                    </FormControl>
                     <TextField
                         fullWidth
                         id="price"
@@ -204,7 +250,7 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
                         error={formik.touched.description && Boolean(formik.errors.description)}
                         helperText={formik.touched.description ? (formik.errors.description || '') : ''}
                     /> */}
-                    <TextEditor defaultValue={room?.description || ''} setDescription={setDescription}></TextEditor>
+                    <TextEditor defaultValue={description} setDescription={setDescription}></TextEditor>
                     <TextField
                         fullWidth
                         id="capacity"
@@ -229,7 +275,7 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
                         error={formik.touched.quantity && Boolean(formik.errors.quantity)}
                         helperText={formik.touched.quantity ? (formik.errors.quantity || '') : ''}
                     />
-                    <TextField
+                    {/* <TextField
                         fullWidth
                         id="color"
                         name="color"
@@ -240,7 +286,7 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
                         onBlur={formik.handleBlur}
                         error={formik.touched.color && Boolean(formik.errors.color)}
                         helperText={formik.touched.color ? (formik.errors.color || '') : ''}
-                    />
+                    /> */}
                     {image.length != 0 && (
                         <div className="flex gap-[5px] flex-nowrap overflow-x-auto mb-[20px]">
                             {image.map((item, index) => (
@@ -263,7 +309,7 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
                         startIcon={<CloudUpload />}
                     >
                         Thêm hình
-                        <VisuallyHiddenInput type="file" multiple onChange={handleUploadImage}/>
+                        <VisuallyHiddenInput type="file" multiple onChange={handleUploadImage} />
                     </Button>
                     <LoadingButton color="primary" variant="contained" fullWidth type="submit" className="!mt-[20px]" loading={loading}>
                         Cập nhật

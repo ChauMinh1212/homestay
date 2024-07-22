@@ -1,9 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import stylesheet của Quill
 
 const TextEditor = ({defaultValue, setDescription}) => {
     const [value, setValue] = useState(defaultValue);
+
+    useEffect(() => {
+            setValue(defaultValue);
+    }, [defaultValue]);
+
     const formats = [
         'header', 'font', 'size',
         'bold', 'italic', 'underline', 'strike', 'blockquote',
@@ -32,12 +37,6 @@ const TextEditor = ({defaultValue, setDescription}) => {
         <div>
             <ReactQuill value={value} onChange={handleChange} formats={formats} modules={modules}/>
         </div>
-    );
-};
-
-const HtmlDisplay = ({ htmlContent }) => {
-    return (
-        <div className="html-output" dangerouslySetInnerHTML={{ __html: htmlContent }} />
     );
 };
 
