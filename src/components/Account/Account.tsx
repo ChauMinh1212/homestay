@@ -1,16 +1,18 @@
-import { Logout, Settings } from "@mui/icons-material";
+import { Group, Logout, MeetingRoom, Settings } from "@mui/icons-material";
 import { Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from "@mui/material";
 import Cookies from 'js-cookie';
 import { useContext, useState } from "react";
 import UserContext from "~/contexts/UserContext";
 import User from "../User/User";
 import ProfileOpenContext from "~/contexts/ProfileOpenContext";
+import { useNavigate } from "react-router-dom";
 
 const Account = ({ user }) => {
-    const {openProfile :openModalInfoUser, setOpenProfile: setOpenModalInfoUser} = useContext(ProfileOpenContext)
+    const { openProfile: openModalInfoUser, setOpenProfile: setOpenModalInfoUser } = useContext(ProfileOpenContext)
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const { setUser } = useContext(UserContext)
     const open = Boolean(anchorEl);
+    const navigate = useNavigate()
 
     const handleOpenModalInfoUser = () => setOpenModalInfoUser(true);
     const handleCloseModalInfoUser = () => setOpenModalInfoUser(false);
@@ -29,7 +31,7 @@ const Account = ({ user }) => {
     }
     return (
         <>
-            <User open={openModalInfoUser} onClose={handleCloseModalInfoUser}/>
+            <User open={openModalInfoUser} onClose={handleCloseModalInfoUser} />
             <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
                 <Tooltip title="Account settings">
                     <IconButton
@@ -68,6 +70,25 @@ const Account = ({ user }) => {
                     <MenuItem onClick={() => { handleClose(); handleOpenModalInfoUser() }}>
                         <Avatar />  {user.username}
                     </MenuItem>
+                    {
+                        user.role == 1 && (
+                            <>
+                                <MenuItem onClick={() => {handleClose(); navigate('/admin/room')}}>
+                                    <ListItemIcon>
+                                        <MeetingRoom fontSize="medium" />
+                                    </ListItemIcon>
+                                    Quản lý phòng
+                                </MenuItem>
+                                <MenuItem onClick={() => {handleClose(); navigate('/admin/user')}}>
+                                    <ListItemIcon>
+                                        <Group fontSize="medium" />
+                                    </ListItemIcon>
+                                    Quản lý user
+                                </MenuItem>
+                            </>
+
+                        )
+                    }
                     <MenuItem onClick={handleClose}>
                         <ListItemIcon>
                             <Settings fontSize="medium" />

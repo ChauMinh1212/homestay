@@ -14,6 +14,7 @@ import SnackBarContext from './contexts/SnackBarContext';
 import UserContext from './contexts/UserContext';
 import languages from './languages';
 import routes from './routes';
+import NotFound from './components/NotFound/NotFound';
 
 function App() {
   i18n.use(initReactI18next).init({
@@ -52,12 +53,11 @@ function App() {
                 <Route key={index} path={item.path} element={<item.element />} />
               )
               )}
-              {/* <Route path="*" element={<NotFound />} /> */}
+              <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
           </ProfileOpenContext.Provider>
         </MenuLoginContext.Provider>
-
       </SnackBarContext.Provider>
     </UserContext.Provider>
   )

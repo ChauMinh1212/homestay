@@ -1,12 +1,13 @@
 import { Clear, CloudUpload } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { Box, Button, IconButton, Modal, styled, TextField } from "@mui/material";
+import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Modal, Select, styled, TextField } from "@mui/material";
 import { useFormik } from "formik";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as yup from 'yup';
 import axiosInstance from "~/axios/axiosConfig";
 import SnackBarContext from "~/contexts/SnackBarContext";
 import { IRoomData } from "~/pages/HomestayPage/HomestayPage";
+import TextEditor from "../Editor/Editor";
 
 export const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -31,7 +32,8 @@ const style = {
     p: 4,
     borderRadius: '10px',
     overflow: 'auto',
-    maxHeight: '700px',
+    height: '90%'
+    // maxHeight: '700px',
 };
 
 const validationSchema = yup.object({
@@ -59,6 +61,26 @@ const AddRoomModal = ({ open, onClose, handleAddRoom }) => {
     const [loading, setLoading] = useState(false)
     const { snackBar, setSnackBar } = useContext(SnackBarContext)
     const [image, setImage] = useState([])
+
+    const [description, setDescription] = useState('')
+    const [district, setDistrict] = useState([])
+    const [selectDistrict, setSelectDistrict] = useState(0)
+
+    const getDistrictValid = async () => {
+        try {
+            const res = await axiosInstance.get(`district`)
+            return res.data
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        (async () => {
+            const district = await getDistrictValid()
+            setDistrict(district)
+        })();
+    }, [])
 
     const formik = useFormik<IRoomData>({
         initialValues: {
@@ -97,12 +119,13 @@ const AddRoomModal = ({ open, onClose, handleAddRoom }) => {
             const data = new FormData();
             data.append('code', values.code);
             data.append('name', values.name);
-            data.append('description', values.description);
+            data.append('description', description);
             data.append('address', values.address);
             data.append('price', values.price);
             data.append('quantity', values.quantity);
             data.append('capacity', values.capacity);
             data.append('color', values.color);
+            selectDistrict && data.append('district_id', selectDistrict.toString());
             image.map((item, index) => {
                 data.append(`img[${index}]`, item)
             })
@@ -134,6 +157,10 @@ const AddRoomModal = ({ open, onClose, handleAddRoom }) => {
                 status: 'error'
             })
         }
+    }
+
+    const handleChangeSelect = (e) => {
+        setSelectDistrict(e.target.value)
     }
 
     return (
@@ -170,6 +197,23 @@ const AddRoomModal = ({ open, onClose, handleAddRoom }) => {
                         error={formik.touched.name && Boolean(formik.errors.name)}
                         helperText={formik.touched.name ? (formik.errors.name || '') : ''}
                     />
+                    <FormControl fullWidth className="!mb-[20px]">
+                        <InputLabel id="demo-simple-select-label">Quận</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            value={selectDistrict}
+                            label="Quận"
+                            onChange={handleChangeSelect}
+                        >
+                            {
+                                district.map(item => (
+                                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                ))
+                            }
+                            <MenuItem key={981203} value={0}>None</MenuItem>
+                        </Select>
+                    </FormControl>
                     <TextField
                         fullWidth
                         id="price"
@@ -194,24 +238,13 @@ const AddRoomModal = ({ open, onClose, handleAddRoom }) => {
                         error={formik.touched.address && Boolean(formik.errors.address)}
                         helperText={formik.touched.address ? (formik.errors.address || '') : ''}
                     />
-                    <TextField
-                        fullWidth
-                        id="description"
-                        name="description"
-                        label="Mô tả"
-                        className="!mb-[20px]"
-                        value={formik.values.description}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.description && Boolean(formik.errors.description)}
-                        helperText={formik.touched.description ? (formik.errors.description || '') : ''}
-                    />
+                    <TextEditor defaultValue={description} setDescription={setDescription}></TextEditor>
                     <TextField
                         fullWidth
                         id="capacity"
                         name="capacity"
                         label="Sức chứa"
-                        className="!mb-[20px]"
+                        className="!mb-[20px] !mt-[20px]"
                         value={formik.values.capacity}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
@@ -230,7 +263,7 @@ const AddRoomModal = ({ open, onClose, handleAddRoom }) => {
                         error={formik.touched.quantity && Boolean(formik.errors.quantity)}
                         helperText={formik.touched.quantity ? (formik.errors.quantity || '') : ''}
                     />
-                    <TextField
+                    {/* <TextField
                         fullWidth
                         id="color"
                         name="color"
@@ -241,7 +274,7 @@ const AddRoomModal = ({ open, onClose, handleAddRoom }) => {
                         onBlur={formik.handleBlur}
                         error={formik.touched.color && Boolean(formik.errors.color)}
                         helperText={formik.touched.color ? (formik.errors.color || '') : ''}
-                    />
+                    /> */}
 
                     {image.length != 0 && (
                         <div className="flex gap-[5px] flex-nowrap overflow-x-auto mb-[20px]">

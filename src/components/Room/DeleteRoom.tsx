@@ -17,13 +17,13 @@ const style = {
     overflow: 'hidden'
 };
 
-const DeleteRoomModal = ({ open, onClose, roomId, handleDeleteRoom }) => {
+const DeleteRoomModal = ({ open, onClose, room, handleDeleteRoom }) => {
     const [loading, setLoading] = useState(false)
     const { snackBar, setSnackBar } = useContext(SnackBarContext)
     const handleClickDeleteRoom = async () => {
         try {
             setLoading(true)
-            await axiosInstance.post('room/delete', { id: roomId })
+            await axiosInstance.post('room/delete', { id: room.id })
             setLoading(false)
             handleDeleteRoom()
             onClose()
@@ -54,7 +54,7 @@ const DeleteRoomModal = ({ open, onClose, roomId, handleDeleteRoom }) => {
         >
             <Box sx={style}>
                 <div className="text-center">
-                    <p>Bạn có chắc chắn muốn xoá phòng?</p>
+                    <p>Bạn có chắc chắn muốn xoá phòng <span className="font-bold">{room?.code || ''}</span>?</p>
                     <div className="flex mt-[35px]">
                         <Button onClick={onClose} className="flex-1">Huỷ</Button>
                         <LoadingButton onClick={handleClickDeleteRoom} className="flex-1" color="error" loading={loading}>Xoá</LoadingButton>

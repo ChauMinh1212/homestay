@@ -1,6 +1,7 @@
 import NotFound from "./components/NotFound/NotFound";
 import AboutPage from "./pages/AboutPage/AboutPage";
-import AdminRoomPage from "./pages/Admin/AdminRoomPage/AdminRoomPage";
+import AdminRoomPage from "./pages/Admin/AdminRoomPage";
+import AdminSetting from "./pages/Admin/AdminSetting";
 import HomePage from "./pages/HomePage/HomePage";
 import HomestayPage from "./pages/HomestayPage/HomestayPage";
 import RoomDetail from "./pages/RoomDetail/RoomDetail";
@@ -17,9 +18,11 @@ const routes = [
 
   //Admin   
   { path: "/admin/room", element: AdminRoomPage },
+  { path: "/admin/user", element: AdminRoomPage },
+  { path: "/admin/setting", element: AdminSetting },
 
   //Room detail
-  {path: "/room/:roomCode/:roomId", element: RoomDetail}
+  { path: "/room/:roomCode/:roomId", element: RoomDetail }
 ];
 
 export default routes;

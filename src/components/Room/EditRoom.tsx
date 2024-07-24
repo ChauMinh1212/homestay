@@ -62,7 +62,6 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
         setDescription(room?.description || '');
     }, [room]);
 
-
     const formik = useFormik<IRoomData>({
         initialValues: {
             id: room?.id || 0,
