@@ -83,7 +83,7 @@ const HomePage = () => {
                     }}
                 >
                     {
-                        banner && banner.map((item, index) => (
+                        banner && banner.map((item) => (
                             <SwiperSlide>
                                 <img src={`${import.meta.env.VITE_REACT_APP_URL_RESOURCE}${item}`} alt="" />
                             </SwiperSlide>
