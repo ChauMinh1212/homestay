@@ -35,12 +35,10 @@ const AdminUserPage = () => {
                     <TableHead>
                         <TableRow>
                             <TableCell className="!font-bold">#</TableCell>
-                            <TableCell className="!font-bold">Code</TableCell>
-                            <TableCell className="!font-bold">Tên phòng</TableCell>
-                            <TableCell className="!font-bold">Loại</TableCell>
-                            <TableCell className="!font-bold">Số khách (tối đa)</TableCell>
-                            <TableCell className="!font-bold">Địa chỉ</TableCell>
-                            <TableCell className="!font-bold">Mô tả</TableCell>
+                            <TableCell className="!font-bold">Tên</TableCell>
+                            <TableCell className="!font-bold">SĐT</TableCell>
+                            <TableCell className="!font-bold">Email</TableCell>
+                            <TableCell className="!font-bold">Điểm</TableCell>
                             <TableCell className="!font-bold">Action</TableCell>
                         </TableRow>
                     </TableHead>
@@ -53,14 +51,10 @@ const AdminUserPage = () => {
                                 <TableCell component="th" scope="row">
                                     {index + 1}
                                 </TableCell>
-                                <TableCell>{row.code}</TableCell>
-                                <TableCell>{row.name}</TableCell>
-                                {/* <TableCell>{homestay[row.type]}</TableCell> */}
-                                <TableCell>{row.capacity}</TableCell>
-                                <TableCell>{row.address}</TableCell>
-                                <TableCell>
-                                    <div className="html-output ml-[30px]" dangerouslySetInnerHTML={{ __html: row.description }} />
-                                </TableCell>
+                                <TableCell>{row.username}</TableCell>
+                                <TableCell>{row.phone}</TableCell>
+                                <TableCell>{row.email}</TableCell>
+                                <TableCell>{row.point}</TableCell>
                                 <TableCell>
                                     <div className="flex">
                                         <IconButton color="primary" aria-label="Edit">

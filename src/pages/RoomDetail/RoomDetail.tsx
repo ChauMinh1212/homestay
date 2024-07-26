@@ -59,13 +59,19 @@ const RoomDetail = () => {
                                     disableOnInteraction: false,
                                 }}
                             >
-                                <SwiperSlide>
+                                {
+                                    room && room.img.length != 0 && room.img.map(item => (
+                                        <SwiperSlide><img src={`${import.meta.env.VITE_REACT_APP_URL_RESOURCE}${item}`} alt="" className="object-cover" /></SwiperSlide>
+
+                                    ))
+                                }
+                                {/* <SwiperSlide>
                                     <img src="/images/slide_1.jpeg" alt="" />
                                 </SwiperSlide>
                                 <SwiperSlide><img src="/images/slide_2.jpeg" alt="" className="object-cover" /></SwiperSlide>
                                 <SwiperSlide><img src="/images/slide_3.jpeg" alt="" className="object-cover" /></SwiperSlide>
                                 <SwiperSlide><img src="/images/slide_4.jpeg" alt="" className="object-cover" /></SwiperSlide>
-                                <SwiperSlide><img src="/images/slide_5.jpeg" alt="" className="object-cover" /></SwiperSlide>
+                                <SwiperSlide><img src="/images/slide_5.jpeg" alt="" className="object-cover" /></SwiperSlide> */}
                             </Swiper>
                         </div>
                         <div className="flex gap-[5%]">

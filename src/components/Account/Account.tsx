@@ -72,29 +72,30 @@ const Account = ({ user }) => {
                     </MenuItem>
                     {
                         user.role == 1 && (
-                            <>
-                                <MenuItem onClick={() => {handleClose(); navigate('/admin/room')}}>
+                            <div>
+                                <MenuItem onClick={() => { handleClose(); navigate('/admin/room') }}>
                                     <ListItemIcon>
                                         <MeetingRoom fontSize="medium" />
                                     </ListItemIcon>
                                     Quản lý phòng
                                 </MenuItem>
-                                <MenuItem onClick={() => {handleClose(); navigate('/admin/user')}}>
+                                <MenuItem onClick={() => { handleClose(); navigate('/admin/user') }}>
                                     <ListItemIcon>
                                         <Group fontSize="medium" />
                                     </ListItemIcon>
                                     Quản lý user
                                 </MenuItem>
-                            </>
+                                <MenuItem onClick={() => {handleClose(); navigate('/admin/setting')}}>
+                                    <ListItemIcon>
+                                        <Settings fontSize="medium" />
+                                    </ListItemIcon>
+                                    Cài đặt
+                                </MenuItem>
+                            </div>
 
                         )
                     }
-                    <MenuItem onClick={handleClose}>
-                        <ListItemIcon>
-                            <Settings fontSize="medium" />
-                        </ListItemIcon>
-                        Cài đặt
-                    </MenuItem>
+
                     <MenuItem onClick={() => { handleClose(); handleLogout() }}>
                         <ListItemIcon>
                             <Logout fontSize="medium" />

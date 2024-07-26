@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
@@ -8,15 +8,31 @@ import './HomePage.css'
 import ProfileOpenContext from "~/contexts/ProfileOpenContext";
 import UserContext from "~/contexts/UserContext";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "~/axios/axiosConfig";
 
 const HomePage = () => {
-    const {setOpenMenuLogin} = useContext(MenuLoginContext)
-    const {setOpenProfile} = useContext(ProfileOpenContext)
-    const {user} = useContext(UserContext) 
+    const { setOpenMenuLogin } = useContext(MenuLoginContext)
+    const { setOpenProfile } = useContext(ProfileOpenContext)
+    const { user } = useContext(UserContext)
     const navigate = useNavigate()
+    const [banner, setBanner] = useState([])
+
+    const getBanner = async () => {
+        try {
+            const res = await axiosInstance.get('banner')
+            return res.data || []
+        } catch (e) {
+            console.log(e);
+        }
+    }
 
     useEffect(() => {
         window.scrollTo(0, 0);
+
+        (async () => {
+            const banner = await getBanner()
+            setBanner(banner)
+        })();
     }, []);
 
     return (
@@ -66,13 +82,20 @@ const HomePage = () => {
                         disableOnInteraction: false,
                     }}
                 >
-                    <SwiperSlide>
-                        <img src="/images/slide_1.jpeg" alt="" />
+                    {
+                        banner && banner.map((item, index) => (
+                            <SwiperSlide>
+                                <img src={`${import.meta.env.VITE_REACT_APP_URL_RESOURCE}${item}`} alt="" />
+                            </SwiperSlide>
+                        ))
+                    }
+                    {/* <SwiperSlide>
+                        <img src="/images/combo_meal.png" alt="" />
                     </SwiperSlide>
                     <SwiperSlide><img src="/images/slide_2.jpeg" alt="" className="object-cover" /></SwiperSlide>
                     <SwiperSlide><img src="/images/slide_3.jpeg" alt="" className="object-cover" /></SwiperSlide>
                     <SwiperSlide><img src="/images/slide_4.jpeg" alt="" className="object-cover" /></SwiperSlide>
-                    <SwiperSlide><img src="/images/slide_5.jpeg" alt="" className="object-cover" /></SwiperSlide>
+                    <SwiperSlide><img src="/images/slide_5.jpeg" alt="" className="object-cover" /></SwiperSlide> */}
                 </Swiper>
                 <div className="custom-nav-button-next triangle-button-next md:h-[35px] md:ml-[5px]"></div>
             </div>

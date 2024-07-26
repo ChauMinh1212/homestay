@@ -49,10 +49,10 @@ const validationSchema = yup.object({
 });
 
 const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
-
     const [loading, setLoading] = useState(false)
     const { snackBar, setSnackBar } = useContext(SnackBarContext)
     const [image, setImage] = useState([])
+    const [newImage, setNewImage] = useState([])
     const [description, setDescription] = useState(room?.description || '')
     const [district, setDistrict] = useState([])
     const [selectDistrict, setSelectDistrict] = useState(0)
@@ -60,6 +60,7 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
     useEffect(() => {
         setSelectDistrict(room?.district.id || 0)
         setDescription(room?.description || '');
+        setImage(room?.img || [])
     }, [room]);
 
     const formik = useFormik<IRoomData>({
@@ -82,9 +83,20 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
     });
 
     const handleDeleteImageRoom = (index: number) => {
-        const newListImg = [...image]
-        newListImg.splice(index, 1)
-        setImage(newListImg)
+
+        setImage(prev => {
+            const newListImg = [...prev]
+            newListImg.splice(index, 1)
+            return newListImg
+        })
+    }
+
+    const handleDeleteNewImageRoom = (index: number) => {
+        setNewImage(prev => {
+            const newListImg = [...prev]
+            newListImg.splice(index, 1)
+            return newListImg
+        })
     }
 
     const getDistrictValid = async () => {
@@ -109,37 +121,36 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
         for (let i = 0; i < selectedFile.length; i++) {
             listImg.push(selectedFile[i])
         }
-        setImage(listImg)
+        setNewImage(listImg)
     }
 
     const handleSubmit = async (values) => {
+        const data = new FormData();
+        newImage.length != 0 && newImage.map((item, index) => {
+            data.append(`file[${index}]`, item)
+        })
         try {
             setLoading(true)
-            const data = new FormData();
-            data.append('id', values.id);
-            data.append('code', values.code);
-            data.append('name', values.name);
-            data.append('description', description);
-            data.append('address', values.address);
-            data.append('price', values.price);
-            data.append('quantity', values.quantity);
-            data.append('capacity', values.capacity);
-            data.append('color', values.color);
-            selectDistrict && data.append('district_id', selectDistrict.toString());
-            image.length != 0 && image.map((item, index) => {
-                data.append(`img[${index}]`, item)
+            const upload = newImage.length != 0 ? await axiosInstance.post('upload', data, { headers: { 'Content-Type': 'multipart/form-data' } }) : { data: [] }
+            await axiosInstance.post('room/update', {
+                id: values.id,
+                code: values.code,
+                name: values.name,
+                description,
+                address: values.address,
+                price: values.price,
+                quantity: values.quantity,
+                capacity: values.capacity,
+                color: values.color,
+                district_id: selectDistrict,
+                img: [...image, ...upload.data]
             })
-            const res = await axiosInstance.post('room/update', data, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-            setLoading(false)
             onClose()
             handleUpdateRoom({
                 ...values,
                 description,
-                img: res.data.img
+                img: [...image, ...upload.data],
+                district: district.find(item => item.id == selectDistrict)
             })
             setSnackBar({
                 ...snackBar,
@@ -147,15 +158,17 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
                 open: true,
                 status: 'success'
             })
-        } catch (error) {
-            setLoading(false)
+            setNewImage([])
+        } catch (e) {
+            console.log(e);
             setSnackBar({
                 ...snackBar,
-                message: error.message,
+                message: e.message,
                 open: true,
                 status: 'error'
             })
         }
+        setLoading(false)
     }
 
     const handleChangeSelect = (e) => {
@@ -165,7 +178,7 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
     return (
         <Modal
             open={open}
-            onClose={() => { onClose() }}
+            onClose={() => { onClose(); setNewImage([]) }}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             disableAutoFocus={true}
@@ -286,12 +299,23 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
                         error={formik.touched.color && Boolean(formik.errors.color)}
                         helperText={formik.touched.color ? (formik.errors.color || '') : ''}
                     /> */}
-                    {image.length != 0 && (
+                    {(
                         <div className="flex gap-[5px] flex-nowrap overflow-x-auto mb-[20px]">
-                            {image.map((item, index) => (
+                            {image.length != 0 && image.map((item, index) => (
+                                <div key={index} className="flex-[0_0_130px] h-[130px] relative">
+                                    <img src={`${import.meta.env.VITE_REACT_APP_URL_RESOURCE}${item}`} alt="" className="object-cover" />
+                                    <div className="absolute top-[10px] right-[10px]" onClick={() => handleDeleteImageRoom(index)}>
+                                        <IconButton>
+                                            <Clear ></Clear>
+                                        </IconButton>
+                                    </div>
+                                </div>
+                            ))}
+
+                            {newImage.length != 0 && newImage.map((item, index) => (
                                 <div key={index} className="flex-[0_0_130px] h-[130px] relative">
                                     <img src={URL.createObjectURL(item)} alt="" className="object-cover" />
-                                    <div className="absolute top-[10px] right-[10px]" onClick={() => handleDeleteImageRoom(index)}>
+                                    <div className="absolute top-[10px] right-[10px]" onClick={() => handleDeleteNewImageRoom(index)}>
                                         <IconButton>
                                             <Clear ></Clear>
                                         </IconButton>

@@ -71,7 +71,7 @@ const ListRoom = () => {
         <>
             <EditRoomModal open={openModalEditRoom} onClose={handleCloseModalEditRoom} room={roomEdit} handleUpdateRoom={handleUpdateRoom} />
             <AddRoomModal open={openModalAddRoom} onClose={handleCloseModalAddRoom} handleAddRoom={handleAddRoom} />
-            <DeleteRoomModal open={openModalDeleteRoom} onClose={handleCloseModalDeleteRoom} roomId={roomIdDelete} handleDeleteRoom={handleDeleteRoom}/>
+            <DeleteRoomModal open={openModalDeleteRoom} onClose={handleCloseModalDeleteRoom} room={roomIdDelete} handleDeleteRoom={handleDeleteRoom}/>
             <div className="flex flex-col gap-[20px] max-w-7xl mx-auto my-[40px] text-left">
                 {room.map((item, index) => (
                     <div key={index} className="rounded-[30px] flex items-center p-[10px] gap-[20px] relative" style={{ backgroundColor: `${item.color || '#AB9D80'}` }}>
