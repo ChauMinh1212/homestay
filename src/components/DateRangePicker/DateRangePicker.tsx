@@ -14,8 +14,6 @@ import 'dayjs/locale/vi'
 import * as React from 'react';
 import './DateRangePicker.css';
 
-const week = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7']
-
 dayjs.locale('vi', {
     name: 'vi',
     weekdays: ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'],
@@ -33,6 +31,8 @@ dayjs.locale('vi', {
         LLLL: 'dddd, D MMMM YYYY HH:mm'
     }
 })
+
+const week = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7']
 
 LicenseInfo.setLicenseKey('e0d9bb8070ce0054c9d9ecb6e82cb58fTz0wLEU9MzI0NzIxNDQwMDAwMDAsUz1wcmVtaXVtLExNPXBlcnBldHVhbCxLVj0y');
 interface DateRangeButtonFieldProps extends SingleInputDateRangeFieldProps<Dayjs> {
@@ -104,19 +104,21 @@ const ButtonDateRangePicker = React.forwardRef(
         const selectItem = props.selectItem
 
         return (
-            <DateRangePicker
-                slots={{ field: DateRangeButtonField, ...props.slots }}
-                slotProps={{ field: { setOpen, dateDisplay, selectItem } as any }}
-                ref={ref}
-                {...props}
-                open={open}
-                value={value}
-                onClose={() => setOpen(false)}
-                onOpen={() => setOpen(true)}
-                onChange={handleChangeDate}
-                dayOfWeekFormatter={(date) => week[dayjs(date).day()]}
-                disablePast
-            />
+            <>
+                    <DateRangePicker
+                        slots={{ field: DateRangeButtonField, ...props.slots }}
+                        slotProps={{ field: { setOpen, dateDisplay, selectItem } as any }}
+                        ref={ref}
+                        {...props}
+                        open={open}
+                        value={value}
+                        onClose={() => setOpen(false)}
+                        onOpen={() => setOpen(true)}
+                        onChange={handleChangeDate}
+                        dayOfWeekFormatter={(date) => week[dayjs(date).day()]}
+                        disablePast
+                    />
+            </>
         );
     },
 );
@@ -125,7 +127,7 @@ export default function DateRangePickerWithButtonField({ selectItem, setDateDisp
     const [value, setValue] = React.useState<DateRange<Dayjs>>([null, null]);
 
     return (
-        <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
             <ButtonDateRangePicker
                 label={
                     value[0] === null && value[1] === null

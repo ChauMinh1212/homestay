@@ -1,7 +1,21 @@
-.css-1juxbee-MuiButtonBase-root-MuiPickersDay-root-MuiDateRangePickerDay-day.Mui-selected, .css-tbuks1-MuiButtonBase-root-MuiPickersDay-root-MuiDateRangePickerDay-day.Mui-selected, .css-grqin-MuiButtonBase-root-MuiPickersDay-root-MuiDateRangePickerDay-day.Mui-selected {
+/* .css-1juxbee-MuiButtonBase-root-MuiPickersDay-root-MuiDateRangePickerDay-day.Mui-selected, .css-tbuks1-MuiButtonBase-root-MuiPickersDay-root-MuiDateRangePickerDay-day.Mui-selected, .css-grqin-MuiButtonBase-root-MuiPickersDay-root-MuiDateRangePickerDay-day.Mui-selected {
     background-color: #C8B997!important;
 }
 
 .css-1ny3jyh-MuiDateRangePickerDay-root, .css-f8wito-MuiDateRangePickerDay-root, .css-1jt0kfk-MuiDateRangePickerDay-root {
     background-color: #ece7da!important;
+} */
+
+.MuiButtonBase-root.MuiPickersDay-root.Mui-selected.MuiPickersDay-today,
+.MuiButtonBase-root.MuiPickersDay-root.Mui-selected.MuiDateRangePickerDay-day {
+    background-color: #C8B997 !important;
+
+}
+
+.MuiDateRangePickerDay-root.MuiDateRangePickerDay-rangeIntervalDayHighlight.MuiDateRangePickerDay-rangeIntervalDayHighlightStart, .MuiDateRangePickerDay-root.MuiDateRangePickerDay-rangeIntervalDayHighlight {
+    background-color: #ece7da !important;
+}
+
+.MuiDateRangePickerDay-root.MuiDateRangePickerDay-rangeIntervalDayHighlight.MuiDateRangePickerDay-outsideCurrentMonth {
+    background-color: transparent!important;
 }

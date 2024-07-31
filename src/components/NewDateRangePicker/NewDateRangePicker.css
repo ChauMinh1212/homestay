@@ -1,0 +1,46 @@
+/* .MuiTabs-flexContainer {
+    justify-content: center;
+    background-color: #E5E1E1;
+}
+
+.MuiTabs-indicator {
+    background-color: transparent!important;
+}
+
+.MuiButtonBase-root.MuiTab-root.MuiTab-textColorPrimary.Mui-selected {
+    color: black;
+    background-color: #fff;
+    border-radius: 50px;
+    font-weight: bold;
+} */
+
+.MuiInputBase-root.MuiOutlinedInput-root {
+    height: 32px;
+    background-color: #E5E1E1;
+    border-radius: 20px;
+}
+
+.MuiStack-root {
+    overflow: hidden!important;
+    height: 340px;
+}
+
+.MuiPaper-root {
+    overflow: hidden!important;
+}
+
+.rectangle-up {
+    width: 0;
+    height: 0;
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-bottom: 30px solid #C8B997;
+}
+
+.rectangle-down {
+    width: 0;
+    height: 0;
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-top: 30px solid #C8B997;
+}

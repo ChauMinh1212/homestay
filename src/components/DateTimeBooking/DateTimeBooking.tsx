@@ -1,11 +1,11 @@
-import { LocationOnOutlined, Search, SupervisorAccountOutlined } from '@mui/icons-material';
+import { CalendarMonthOutlined, LocationOnOutlined, Search, SupervisorAccountOutlined } from '@mui/icons-material';
 import { DateRange } from '@mui/lab';
 import { IconButton, Menu } from '@mui/material';
+import dayjs, { Dayjs } from 'dayjs';
 import { useContext, useEffect, useState } from 'react';
-import DateRangePickerWithButtonField from '../DateRangePicker/DateRangePicker';
-import dayjs, { Dayjs } from 'dayjs'
-import SnackBarContext from '~/contexts/SnackBarContext';
 import axiosInstance from '~/axios/axiosConfig';
+import SnackBarContext from '~/contexts/SnackBarContext';
+import NewDateRangePicker from '../NewDateRangePicker/NewDateRangPicker';
 
 interface IDistrict {
     id: number
@@ -96,10 +96,19 @@ const DateTimeBooking = ({ setRoomValid }) => {
         handleCloseLocation()
     }
 
+    const [anchorElCalender, setAnchorElCalender] = useState<null | HTMLElement>(null);
+    const openCalender = Boolean(anchorElCalender);
+    const handleClickCalender = (event: React.MouseEvent<HTMLDivElement>) => {
+        setAnchorElCalender(event.currentTarget);
+    };
+    const handleCloseCalender = () => {
+        setAnchorElCalender(null);
+    };
+
     return (
         <div className='px-[20px]'>
             <form onSubmit={handleSubmit} className="mx-auto flex justify-center rounded-[50px] border-[2px] max-w-[930px] overflow-hidden md:flex-col" style={{ backgroundColor: selectItem ? '#E5E1E1' : '#fff' }}>
-                <div onClick={(e) => { setSelectItem(1); handleClickLocation(e) }} className='cursor-pointer relative flex basis-1/4 items-center gap-[10px] px-[10px] py-[20px] after:absolute after:right-0 after:border-[1px] after:h-[30px] after:w-[1px]' style={selectItem == 1 ? { backgroundColor: '#fff', borderRadius: '50px' } : { backgroundColor: 'transparent' }}>
+                <div onClick={(e) => { setSelectItem(1); handleClickLocation(e) }} className='rounded-[50px] cursor-pointer relative flex basis-1/4 items-center gap-[10px] px-[10px] py-[20px] after:absolute after:right-0 after:border-[1px] after:h-[30px] after:w-[1px] hover:!bg-[#dddddd]' style={selectItem == 1 ? { backgroundColor: '#fff' } : { backgroundColor: 'transparent' }}>
                     <div>
                         <LocationOnOutlined className='!text-[30px]'></LocationOnOutlined>
                     </div>
@@ -129,10 +138,38 @@ const DateTimeBooking = ({ setRoomValid }) => {
                         </div>
                     </div>
                 </Menu>
-                <div className='flex-1 flex justify-center' onClick={() => setSelectItem(2)}>
-                    <DateRangePickerWithButtonField selectItem={selectItem} setDateDisplay={setDateDisplay} />
+                <div className='flex-1 flex justify-center' onClick={(e) => { setSelectItem(2); handleClickCalender(e) }}>
+                    <div className='flex-1 flex justify-center' style={selectItem == 2 ? { backgroundColor: '#fff', borderRadius: '50px' } : { backgroundColor: 'transparent' }}>
+                        <div className='cursor-pointer flex flex-1 items-center gap-[10px] px-[10px] py-[20px] relative after:absolute after:right-0 after:border-[1px] after:h-[30px] after:w-[1px]'>
+                            <div>
+                                <CalendarMonthOutlined className='!text-[30px]'></CalendarMonthOutlined>
+                            </div>
+                            <div className='flex-1 pb-[5px]'>
+                                <p>Nhận phòng</p>
+                                <p className='text-[14px] text-[#0000008c]'>{dayjs(dateDisplay[0]).format('DD-MM-YYYY')}</p>
+                            </div>
+                        </div>
+                        <div className='cursor-pointer flex flex-1 items-center gap-[10px] px-[10px] py-[20px] relative after:absolute after:right-0 after:border-[1px] after:h-[30px] after:w-[1px]'>
+                            <div>
+                                <CalendarMonthOutlined className='!text-[30px]'></CalendarMonthOutlined>
+                            </div>
+                            <div className='flex-1 pb-[5px]'>
+                                <p>Trả phòng</p>
+                                <p className='text-[14px] text-[#0000008c]'>{dayjs(dateDisplay[1]).format('DD-MM-YYYY')}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {/* <DateRangePickerWithButtonField selectItem={selectItem} setDateDisplay={setDateDisplay} /> */}
                 </div>
-                <div onClick={(e) => { setSelectItem(4); handleClick(e) }} className='cursor-pointer flex basis-1/5 items-center gap-[10px] px-[10px] py-[20px]' style={selectItem == 4 ? { backgroundColor: '#fff', borderRadius: '50px' } : { backgroundColor: 'transparent' }}>
+                <Menu
+                    id="calender-menu"
+                    anchorEl={anchorElCalender}
+                    open={openCalender}
+                    onClose={handleCloseCalender}
+                >  
+                    <NewDateRangePicker setDateDisplay={setDateDisplay}></NewDateRangePicker>
+                </Menu>
+                <div onClick={(e) => { setSelectItem(4); handleClick(e) }} className='rounded-[50px] cursor-pointer flex basis-1/5 items-center gap-[10px] px-[10px] py-[20px] hover:!bg-[#dddddd]' style={selectItem == 4 ? { backgroundColor: '#fff' } : { backgroundColor: 'transparent' }}>
                     <div>
                         <SupervisorAccountOutlined className='!text-[30px]'></SupervisorAccountOutlined>
                     </div>
