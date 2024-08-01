@@ -1,3 +1,4 @@
+import styled from '@emotion/styled';
 import { CalendarMonthOutlined, LocationOnOutlined, Search, SupervisorAccountOutlined } from '@mui/icons-material';
 import { DateRange } from '@mui/lab';
 import { IconButton, Menu } from '@mui/material';
@@ -6,6 +7,15 @@ import { useContext, useEffect, useState } from 'react';
 import axiosInstance from '~/axios/axiosConfig';
 import SnackBarContext from '~/contexts/SnackBarContext';
 import NewDateRangePicker from '../NewDateRangePicker/NewDateRangPicker';
+
+const StyledMenu = styled(Menu)`
+  .MuiList-root {
+    padding: 0
+  }
+  .MuiPaper-root {
+    border-radius: 10px
+  }
+`;
 
 interface IDistrict {
     id: number
@@ -19,6 +29,7 @@ const DateTimeBooking = ({ setRoomValid }) => {
     const [districtValid, setDistrictValid] = useState([])
     const [dateDisplay, setDateDisplay] = useState<DateRange<Dayjs>>([dayjs(), dayjs().add(1, 'day')])
     const { snackBar, setSnackBar } = useContext(SnackBarContext)
+    const [time, setTime] = useState([dayjs().set('hour', 14).set('minute', 0), dayjs().set('hour', 12).set('minute', 0)])
 
     const getAllRoom = async () => {
         try {
@@ -42,8 +53,9 @@ const DateTimeBooking = ({ setRoomValid }) => {
         try {
             const from = dayjs(dateDisplay[0]['$d']).format('YYYY-MM-DD')
             const to = dayjs(dateDisplay[1]['$d']).format('YYYY-MM-DD')
-
-            const res = await axiosInstance.get(`room/valid?from=${from}&to=${to}&district_id=${query.district_id}&capacity=${countGuest}`)
+            const timeFrom = dayjs(time[0]).format('H:mm')
+            const timeTo = dayjs(time[1]).format('H:mm')
+            const res = await axiosInstance.get(`room/valid?from=${from}&to=${to}&district_id=${query.district_id}&capacity=${countGuest}&timeFrom=${timeFrom}&timeTo=${timeTo}`)
             return res.data
         } catch (error) {
             console.log(error);
@@ -117,7 +129,7 @@ const DateTimeBooking = ({ setRoomValid }) => {
                         <p className='text-[14px] text-[#0000008c]'>{district == null ? 'Bạn muốn đi đâu?' : district.name}</p>
                     </div>
                 </div>
-                <Menu
+                <StyledMenu
                     id="location-menu"
                     anchorEl={anchorElLocation}
                     open={openLocation}
@@ -125,7 +137,6 @@ const DateTimeBooking = ({ setRoomValid }) => {
                     MenuListProps={{
                         'aria-labelledby': 'basic-button',
                     }}
-
                 >
                     <div className='p-[20px]'>
                         <p className='mb-[20px] font-semibold'>Tìm kiếm theo khu vực</p>
@@ -137,7 +148,7 @@ const DateTimeBooking = ({ setRoomValid }) => {
                             ))}
                         </div>
                     </div>
-                </Menu>
+                </StyledMenu>
                 <div className='flex-1 flex justify-center' onClick={(e) => { setSelectItem(2); handleClickCalender(e) }}>
                     <div className='flex-1 flex justify-center' style={selectItem == 2 ? { backgroundColor: '#fff', borderRadius: '50px' } : { backgroundColor: 'transparent' }}>
                         <div className='cursor-pointer flex flex-1 items-center gap-[10px] px-[10px] py-[20px] relative after:absolute after:right-0 after:border-[1px] after:h-[30px] after:w-[1px]'>
@@ -146,7 +157,7 @@ const DateTimeBooking = ({ setRoomValid }) => {
                             </div>
                             <div className='flex-1 pb-[5px]'>
                                 <p>Nhận phòng</p>
-                                <p className='text-[14px] text-[#0000008c]'>{dayjs(dateDisplay[0]).format('DD-MM-YYYY')}</p>
+                                <p className='text-[14px] text-[#0000008c]'>{`${dayjs(dateDisplay[0]).format('DD-MM-YYYY')} ${dayjs(time[0]).format('HH:mm')}`}</p>
                             </div>
                         </div>
                         <div className='cursor-pointer flex flex-1 items-center gap-[10px] px-[10px] py-[20px] relative after:absolute after:right-0 after:border-[1px] after:h-[30px] after:w-[1px]'>
@@ -155,20 +166,20 @@ const DateTimeBooking = ({ setRoomValid }) => {
                             </div>
                             <div className='flex-1 pb-[5px]'>
                                 <p>Trả phòng</p>
-                                <p className='text-[14px] text-[#0000008c]'>{dayjs(dateDisplay[1]).format('DD-MM-YYYY')}</p>
+                                <p className='text-[14px] text-[#0000008c]'>{`${dayjs(dateDisplay[1]).format('DD-MM-YYYY')} ${dayjs(time[1]).format('HH:mm')}`}</p>
                             </div>
                         </div>
                     </div>
                     {/* <DateRangePickerWithButtonField selectItem={selectItem} setDateDisplay={setDateDisplay} /> */}
                 </div>
-                <Menu
+                <StyledMenu
                     id="calender-menu"
                     anchorEl={anchorElCalender}
                     open={openCalender}
                     onClose={handleCloseCalender}
-                >  
-                    <NewDateRangePicker setDateDisplay={setDateDisplay}></NewDateRangePicker>
-                </Menu>
+                >
+                    <NewDateRangePicker setDateDisplay={setDateDisplay} setTimeDisplay={setTime}></NewDateRangePicker>
+                </StyledMenu>
                 <div onClick={(e) => { setSelectItem(4); handleClick(e) }} className='rounded-[50px] cursor-pointer flex basis-1/5 items-center gap-[10px] px-[10px] py-[20px] hover:!bg-[#dddddd]' style={selectItem == 4 ? { backgroundColor: '#fff' } : { backgroundColor: 'transparent' }}>
                     <div>
                         <SupervisorAccountOutlined className='!text-[30px]'></SupervisorAccountOutlined>
@@ -179,7 +190,7 @@ const DateTimeBooking = ({ setRoomValid }) => {
                     </div>
 
                 </div>
-                <Menu
+                <StyledMenu
                     id="basic-menu"
                     anchorEl={anchorEl}
                     open={open}
@@ -196,7 +207,7 @@ const DateTimeBooking = ({ setRoomValid }) => {
                             <p className='cursor-pointer h-[30px] w-[30px] rounded-[50%] border-[1px] border-[#000] flex justify-center items-center' onClick={() => setCountGuest(prev => prev + 1)}>+</p>
                         </div>
                     </div>
-                </Menu>
+                </StyledMenu>
                 <div className='flex items-center justify-center p-[20px] md:bg-primary md:h-[55px]'>
                     <IconButton type='submit' className='!bg-primary'>
                         <Search className='text-white !text-[30px]' />

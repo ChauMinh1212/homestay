@@ -85,6 +85,12 @@ const Account = ({ user }) => {
                                     </ListItemIcon>
                                     Quản lý user
                                 </MenuItem>
+                                <MenuItem onClick={() => { handleClose(); navigate('/admin/create-booking') }}>
+                                    <ListItemIcon>
+                                        <Group fontSize="medium" />
+                                    </ListItemIcon>
+                                    Tạo booking
+                                </MenuItem>
                                 <MenuItem onClick={() => {handleClose(); navigate('/admin/setting')}}>
                                     <ListItemIcon>
                                         <Settings fontSize="medium" />
