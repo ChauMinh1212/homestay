@@ -1,4 +1,4 @@
-import { Group, Logout, MeetingRoom, Settings } from "@mui/icons-material";
+import { EditCalendar, Group, Logout, MeetingRoom, Settings } from "@mui/icons-material";
 import { Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from "@mui/material";
 import Cookies from 'js-cookie';
 import { useContext, useState } from "react";
@@ -87,7 +87,7 @@ const Account = ({ user }) => {
                                 </MenuItem>
                                 <MenuItem onClick={() => { handleClose(); navigate('/admin/create-booking') }}>
                                     <ListItemIcon>
-                                        <Group fontSize="medium" />
+                                        <EditCalendar fontSize="medium" />
                                     </ListItemIcon>
                                     Tạo booking
                                 </MenuItem>

@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "~/axios/axiosConfig";
 import RegisterForm from "~/components/RegisterForm/RegisterForm";
+import ModalUpdateUser from "~/components/User/ModalUpdateUser";
 import UserContext from "~/contexts/UserContext";
 
 const style = {
@@ -23,6 +24,8 @@ const AdminUserPage = () => {
     const { user } = useContext(UserContext)
     const navigate = useNavigate()
     const [openRegister, setOpenRegister] = useState(false)
+    const [openModalUpdateUser, setOpenModalUpdateUser] = useState(false)
+    const [userInfo, setUserInfo] = useState(null)
 
     const getAllUser = async () => {
         try {
@@ -41,9 +44,19 @@ const AdminUserPage = () => {
         })();
     }, [])
 
+    const handleUpdateUser = (values) => {
+        setUsers(prev => {
+            const newUsers = [...prev]
+            const index = newUsers.findIndex(item => item.id == values.id)
+            newUsers[index] = values
+            return newUsers
+        })
+        setOpenModalUpdateUser(false)
+    }
+
     return (
         <>
-            <div className="text-right">
+            <div className="text-right mb-[20px]">
                 <Button variant="contained" onClick={() => setOpenRegister(pre => !pre)}>Thêm user</Button>
             </div>
             <Modal open={openRegister} onClose={() => setOpenRegister(pre => !pre)}>
@@ -78,7 +91,7 @@ const AdminUserPage = () => {
                                 <TableCell>{row.point}</TableCell>
                                 <TableCell>
                                     <div className="flex">
-                                        <IconButton color="primary" aria-label="Edit">
+                                        <IconButton onClick={() => {setOpenModalUpdateUser(true); setUserInfo(row)}} color="primary" aria-label="Edit">
                                             <Edit />
                                         </IconButton>
                                     </div>
@@ -88,6 +101,7 @@ const AdminUserPage = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <ModalUpdateUser userInfo={userInfo} open={openModalUpdateUser} handleClose={() => setOpenModalUpdateUser(false)} handleUpdateUser={handleUpdateUser}></ModalUpdateUser>
         </>
     )
 }
