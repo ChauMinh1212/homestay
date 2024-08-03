@@ -39,7 +39,7 @@ const validationSchema = yup.object({
 const RegisterForm = (prop) => {
     const { setSnackBar, snackBar } = useContext(SnackBarContext)
     const { setUser } = useContext(UserContext)
-    const { onClose, isAdminRegister } = prop
+    const { onClose, isAdminRegister, handleAddUser } = prop
     const [loading, setLoading] = useState(false)
 
     const handleSubmit = async (values: IRegister) => {
@@ -75,7 +75,13 @@ const RegisterForm = (prop) => {
                 Cookies.set('user', JSON.stringify(user))
             }
 
-
+            handleAddUser({
+                id: res.data.id,
+                username: values.name,
+                email: values.email,
+                phone: values.phone,
+                point: 0,
+            })
             onClose()
         } catch (e) {
             setLoading(false)

@@ -54,6 +54,13 @@ const AdminUserPage = () => {
         setOpenModalUpdateUser(false)
     }
 
+    const handleAddUser = (values) => {
+        setUsers(prev => {
+            const newUsers = [...prev, values]
+            return newUsers
+        })
+    }
+
     return (
         <>
             <div className="text-right mb-[20px]">
@@ -61,7 +68,7 @@ const AdminUserPage = () => {
             </div>
             <Modal open={openRegister} onClose={() => setOpenRegister(pre => !pre)}>
                 <Box sx={style}>
-                    <RegisterForm onClose={() => setOpenRegister(pre => !pre)} isAdminRegister={true}></RegisterForm>
+                    <RegisterForm onClose={() => setOpenRegister(pre => !pre)} isAdminRegister={true} handleAddUser={handleAddUser}></RegisterForm>
                 </Box>
             </Modal>
             <TableContainer component={Paper}>
