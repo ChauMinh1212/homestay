@@ -111,19 +111,19 @@ const HomePage = () => {
                 <div>
                     <div className="flex gap-[40px] justify-center flex-wrap">
                         <div onClick={() => navigate('/homestay')} className="basis-[310px] cursor-pointer">
-                            <div className="h-[400px] border-[7px] border-[#000] rounded-[80px] overflow-hidden">
+                            <div className="h-[400px] border-[5px] border-[#c8b997] rounded-[80px] overflow-hidden">
                                 <img src="images/home_6.png" alt="" className="h-[100%]" />
                             </div>
                             <p className="font-bold text-center mt-[10px]">HOMESTAY SÀI GÒN</p>
                         </div>
                         <div onClick={() => navigate('/room/HABOUR%20HOMESTAY/30')} className="basis-[310px] cursor-pointer">
-                            <div className="h-[400px] border-[7px] border-[#000] rounded-[80px] overflow-hidden">
+                            <div className="h-[400px] border-[5px] border-[#c8b997] rounded-[80px] overflow-hidden">
                                 <img src="images/home_7.png" alt="" className="h-[100%]" />
                             </div>
                             <p className="font-bold text-center mt-[10px]">HABOUR HOMESTAY</p>
                         </div>
                         <div onClick={() => navigate('/room/GARDEN%20HOMESTAY/31')} className="basis-[310px] cursor-pointer">
-                            <div className="h-[400px] border-[7px] border-[#000] rounded-[80px] overflow-hidden">
+                            <div className="h-[400px] border-[5px] border-[#c8b997] rounded-[80px] overflow-hidden">
                                 <img src="images/home_8.png" alt="" className="h-[100%]" />
                             </div>
                             <p className="font-bold text-center mt-[10px]">GARDEN HOMESTAY</p>
