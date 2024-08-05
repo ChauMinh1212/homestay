@@ -61,22 +61,23 @@ const HomePage = () => {
                     </div>
                 </div>
             </div>
-            <div className="flex items-center max-w-[810px] m-auto">
+            <div className="flex items-center max-w-[1000px] px-[20px] m-auto relative">
                 <div className="custom-nav-button-prev triangle-button-prev md:h-[35px] md:mr-[5px]"></div>
                 <Swiper
                     loop={true}
                     navigation={
                         {
-                            nextEl: '.custom-nav-button-next',
-                            prevEl: '.custom-nav-button-prev',
+                            nextEl: '.custom-nav-button-prev',
+                            prevEl: '.custom-nav-button-next',
                         }
+                        // true
                     }
                     pagination={{
                         clickable: true
                     }}
 
                     modules={[Navigation, Autoplay, Pagination]}
-                    className="mx-h-[100%] w-[700px] h-[400px] md:h-[300px]"
+                    className="mx-h-[100%] w-[1000px] h-[400px] md:h-[300px]"
                     autoplay={{
                         delay: 2500,
                         disableOnInteraction: false,
@@ -97,6 +98,8 @@ const HomePage = () => {
                     <SwiperSlide><img src="/images/slide_4.jpeg" alt="" className="object-cover" /></SwiperSlide>
                     <SwiperSlide><img src="/images/slide_5.jpeg" alt="" className="object-cover" /></SwiperSlide> */}
                 </Swiper>
+                {/* <div className="swiper-button-next"></div>
+                <div className="swiper-button-prev"></div> */}
                 <div className="custom-nav-button-next triangle-button-next md:h-[35px] md:ml-[5px]"></div>
             </div>
             <div className="">

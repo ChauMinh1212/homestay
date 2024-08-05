@@ -21,6 +21,7 @@ export interface IRoomData {
 
 const HomestayPage = () => {
     const [roomValid, setRoomValid] = useState([])
+    const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -33,9 +34,12 @@ const HomestayPage = () => {
 
     return (
         <div className="max-w-[1200px] mx-auto">
-            <DateTimeBooking setRoomValid={setRoomValid} />
-            {roomValid.length == 0 && (
+            <DateTimeBooking setRoomValid={setRoomValid} setLoading={(v) => setLoading(v)}/>
+            {roomValid.length == 0 && !loading && (
                 <div className='py-[200px] text-center font-bold text-[20px]'>Không còn phòng trống</div>
+            )}
+            {roomValid.length == 0 && loading && (
+                <div className='py-[200px] text-center font-bold text-[20px]'>Loading.....</div>
             )}
             {
                 roomValid.filter(item => item.type == 0 || item.type == 1).length !== 0 && (

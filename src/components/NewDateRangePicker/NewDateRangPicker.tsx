@@ -57,10 +57,9 @@ const StyledTimePicker = styled(TimePicker)`
   }
 `;
 
-const NewDateRangePicker = ({ setDateDisplay, setTimeDisplay }) => {
-    // const [selectedTab, setSelectedTab] = useState(0)
-    const [value, setValue] = useState<DateRange<Dayjs>>([dayjs(), dayjs().add(1, 'day')])
-    const [time, setTime] = useState([dayjs().set('hour', 14).set('minute', 0), dayjs().set('hour', 12).set('minute', 0)])
+const NewDateRangePicker = ({ setDateDisplay, setTimeDisplay, timeDisplay, dateDisplay }) => {
+    const [value, setValue] = useState<DateRange<Dayjs>>(dateDisplay)
+    const [time, setTime] = useState(timeDisplay)
     const [combo, setCombo] = useState(['COMBO', 'THỜI GIAN'])
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -116,23 +115,6 @@ const NewDateRangePicker = ({ setDateDisplay, setTimeDisplay }) => {
 
     return (
         <div >
-            {/* <div className="flex justify-center bg-[#E5E1E1] w-fit mx-auto rounded-[30px] px-[10px] py-[5px]">
-                <div className="font-semibold py-[20px] px-[30px] cursor-pointer" onClick={() => {setSelectedTab(0)}} style={selectedTab == 0 ? {backgroundColor: '#fff', borderRadius: '100px'} : {backgroundColor: 'transparent'}}>
-                    Ngày
-                </div>
-                <div className="font-semibold py-[20px] px-[30px] cursor-pointer" onClick={() => {setSelectedTab(1)}} style={selectedTab == 1 ? {backgroundColor: '#fff', borderRadius: '100px'} : {backgroundColor: 'transparent'}}>
-                    Theo giờ
-                </div>
-            </div>
-            <div>
-                {selectedTab == 0 && (
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                        <DemoContainer components={['DateRangeCalendar']}>
-                            <DateRangeCalendar />
-                        </DemoContainer>
-                    </LocalizationProvider>
-                )}
-            </div> */}
             <div>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DemoContainer components={['DateRangeCalendar']}>

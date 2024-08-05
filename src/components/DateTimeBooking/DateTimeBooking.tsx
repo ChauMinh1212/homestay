@@ -22,7 +22,7 @@ interface IDistrict {
     name: string
 }
 
-const DateTimeBooking = ({ setRoomValid }) => {
+const DateTimeBooking = ({ setRoomValid, setLoading }) => {
     const [countGuest, setCountGuest] = useState(1)
     const [selectItem, setSelectItem] = useState<number>(null)
     const [district, setDistrict] = useState<IDistrict | null>(null)
@@ -64,9 +64,11 @@ const DateTimeBooking = ({ setRoomValid }) => {
 
     useEffect(() => {
         (async () => {
+            setLoading(true)
             const [room, district] = await Promise.all([getAllRoom(), getDistrictValid()])
             setRoomValid(room)
             setDistrictValid(district)
+            setLoading(false)
         })();
     }, [])
 
@@ -81,9 +83,10 @@ const DateTimeBooking = ({ setRoomValid }) => {
                 status: 'error'
             })
         }
-
+        setLoading(true)
         const room = await getRoomValid({ district_id: district.id, dateDisplay, countGuest })
         setRoomValid(room)
+        setLoading(false)
     }
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -178,7 +181,7 @@ const DateTimeBooking = ({ setRoomValid }) => {
                     open={openCalender}
                     onClose={handleCloseCalender}
                 >
-                    <NewDateRangePicker setDateDisplay={setDateDisplay} setTimeDisplay={setTime}></NewDateRangePicker>
+                    <NewDateRangePicker dateDisplay={dateDisplay} setDateDisplay={setDateDisplay} timeDisplay={time} setTimeDisplay={setTime}></NewDateRangePicker>
                 </StyledMenu>
                 <div onClick={(e) => { setSelectItem(4); handleClick(e) }} className='rounded-[50px] cursor-pointer flex basis-1/5 items-center gap-[10px] px-[10px] py-[20px] hover:!bg-[#dddddd]' style={selectItem == 4 ? { backgroundColor: '#fff' } : { backgroundColor: 'transparent' }}>
                     <div>

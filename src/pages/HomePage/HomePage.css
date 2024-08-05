@@ -29,18 +29,19 @@
 }
 
 .swiper-pagination-bullet {
-    background-color: white!important;
-    opacity: 1!important;
-    width: 10px!important;
-    height: 10px!important;
+    background-color: white !important;
+    opacity: 1 !important;
+    width: 10px !important;
+    height: 10px !important;
 }
 
 .swiper-pagination-bullet-active {
-    background-color: #C8B997!important;
+    background-color: #C8B997 !important;
 }
 
 .custom-dashed-line {
-    border-bottom: 2px dashed #d3c7a0; /* Màu vàng của đường kẻ */
+    border-bottom: 2px dashed #d3c7a0;
+    /* Màu vàng của đường kẻ */
     height: 0;
     border-image: initial;
     border-width: 2px;
@@ -49,4 +50,20 @@
     border-image-slice: 1;
     border-image-source: linear-gradient(to right, #d3c7a0 33%, rgba(255, 255, 255, 0) 0%);
     border-image-width: 3px;
-  }
+}
+
+.custom-nav-button-prev {
+    position: absolute;
+    top: 50%;
+    left: 40px;
+    transform: translateY(-50%);
+    z-index: 2;
+}
+
+.custom-nav-button-next {
+    position: absolute;
+    top: 50%;
+    right: 40px;
+    transform: translateY(-50%);
+    z-index: 2;
+}
