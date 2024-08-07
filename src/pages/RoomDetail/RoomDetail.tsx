@@ -1,3 +1,4 @@
+import { Menu } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Autoplay, Pagination } from "swiper/modules";
@@ -65,13 +66,6 @@ const RoomDetail = () => {
 
                                     ))
                                 }
-                                {/* <SwiperSlide>
-                                    <img src="/images/slide_1.jpeg" alt="" />
-                                </SwiperSlide>
-                                <SwiperSlide><img src="/images/slide_2.jpeg" alt="" className="object-cover" /></SwiperSlide>
-                                <SwiperSlide><img src="/images/slide_3.jpeg" alt="" className="object-cover" /></SwiperSlide>
-                                <SwiperSlide><img src="/images/slide_4.jpeg" alt="" className="object-cover" /></SwiperSlide>
-                                <SwiperSlide><img src="/images/slide_5.jpeg" alt="" className="object-cover" /></SwiperSlide> */}
                             </Swiper>
                         </div>
                         <div className="flex gap-[5%]">
@@ -128,13 +122,12 @@ const RoomDetail = () => {
                                 <img src="/images/service.png" className="w-[90%] mx-auto" alt="" />
                             </div>
                         </div>
-
-                        {/* <TextEditor></TextEditor> */}
                     </>
                 )
             }
 
         </div>
+        
     )
 }
 

@@ -173,7 +173,6 @@ const DateTimeBooking = ({ setRoomValid, setLoading }) => {
                             </div>
                         </div>
                     </div>
-                    {/* <DateRangePickerWithButtonField selectItem={selectItem} setDateDisplay={setDateDisplay} /> */}
                 </div>
                 <StyledMenu
                     id="calender-menu"
