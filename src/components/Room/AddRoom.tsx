@@ -8,6 +8,7 @@ import axiosInstance from "~/axios/axiosConfig";
 import SnackBarContext from "~/contexts/SnackBarContext";
 import { IRoomData } from "~/pages/HomestayPage/HomestayPage";
 import TextEditor from "../Editor/Editor";
+import { TYPE_ROOM } from "~/common/contants";
 
 export const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -65,6 +66,7 @@ const AddRoomModal = ({ open, onClose, handleAddRoom }) => {
     const [description, setDescription] = useState('')
     const [district, setDistrict] = useState([])
     const [selectDistrict, setSelectDistrict] = useState(0)
+    const [typeRoom, setTypeRoom] = useState(0)
 
     const getDistrictValid = async () => {
         try {
@@ -125,6 +127,7 @@ const AddRoomModal = ({ open, onClose, handleAddRoom }) => {
             data.append('quantity', values.quantity);
             data.append('capacity', values.capacity);
             data.append('color', values.color);
+            data.append('type', `${typeRoom}`);
             selectDistrict && data.append('district_id', selectDistrict.toString());
             image.map((item, index) => {
                 data.append(`img[${index}]`, item)
@@ -161,6 +164,10 @@ const AddRoomModal = ({ open, onClose, handleAddRoom }) => {
 
     const handleChangeSelect = (e) => {
         setSelectDistrict(e.target.value)
+    }
+
+    const handleChangeSelectType = (e) => {
+        setTypeRoom(e.target.value)
     }
 
     return (
@@ -212,6 +219,23 @@ const AddRoomModal = ({ open, onClose, handleAddRoom }) => {
                                 ))
                             }
                             <MenuItem key={981203} value={0}>None</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <FormControl fullWidth className="!mb-[20px]">
+                        <InputLabel id="demo-simple-select-label">Loại</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label-type"
+                            id="demo-simple-select-type"
+                            value={typeRoom}
+                            label="Loại"
+                            onChange={handleChangeSelectType}
+                        >
+                            {
+                                TYPE_ROOM.map(item => (
+                                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                ))
+                            }
+                            {/* <MenuItem key={981203} value={0}>None</MenuItem> */}
                         </Select>
                     </FormControl>
                     <TextField

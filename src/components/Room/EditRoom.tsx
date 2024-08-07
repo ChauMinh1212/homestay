@@ -9,6 +9,7 @@ import SnackBarContext from "~/contexts/SnackBarContext";
 import { IRoomData } from "~/pages/HomestayPage/HomestayPage";
 import TextEditor from "../Editor/Editor";
 import { VisuallyHiddenInput } from "./AddRoom";
+import { TYPE_ROOM } from "~/common/contants";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -56,11 +57,13 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
     const [description, setDescription] = useState(room?.description || '')
     const [district, setDistrict] = useState([])
     const [selectDistrict, setSelectDistrict] = useState(0)
+    const [typeRoom, setTypeRoom] = useState(0)
 
     useEffect(() => {
         setSelectDistrict(room?.district.id || 0)
         setDescription(room?.description || '');
         setImage(room?.img || [])
+        setTypeRoom(room?.type || 0)
     }, [room]);
 
     const formik = useFormik<IRoomData>({
@@ -143,14 +146,16 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
                 capacity: values.capacity,
                 color: values.color,
                 district_id: selectDistrict,
-                img: [...image, ...upload.data]
+                img: [...image, ...upload.data],
+                type: typeRoom
             })
             onClose()
             handleUpdateRoom({
                 ...values,
                 description,
                 img: [...image, ...upload.data],
-                district: district.find(item => item.id == selectDistrict)
+                district: district.find(item => item.id == selectDistrict),
+                type: typeRoom
             })
             setSnackBar({
                 ...snackBar,
@@ -173,6 +178,10 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
 
     const handleChangeSelect = (e) => {
         setSelectDistrict(e.target.value)
+    }
+
+    const handleChangeSelectType = (e) => {
+        setTypeRoom(e.target.value)
     }
 
     return (
@@ -224,6 +233,23 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
                                 ))
                             }
                             <MenuItem key={981203} value={0}>None</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <FormControl fullWidth className="!mb-[20px]">
+                        <InputLabel id="demo-simple-select-label">Loại</InputLabel>
+                        <Select
+                            labelId="demo-simple-select-label-type"
+                            id="demo-simple-select-type"
+                            value={typeRoom}
+                            label="Loại"
+                            onChange={handleChangeSelectType}
+                        >
+                            {
+                                TYPE_ROOM.map(item => (
+                                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                                ))
+                            }
+                            {/* <MenuItem key={981203} value={0}>None</MenuItem> */}
                         </Select>
                     </FormControl>
                     <TextField

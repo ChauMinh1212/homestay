@@ -65,18 +65,14 @@ const HomePage = () => {
                 <div className="custom-nav-button-prev triangle-button-prev md:h-[35px] md:mr-[5px]"></div>
                 <Swiper
                     loop={true}
-                    navigation={
-                        {
-                            nextEl: '.custom-nav-button-prev',
-                            prevEl: '.custom-nav-button-next',
-                        }
-                        // true
-                    }
+                    navigation={{
+                        nextEl: '.custom-nav-button-next',
+                        prevEl: '.custom-nav-button-prev'
+                    }}
                     pagination={{
                         clickable: true
                     }}
-
-                    modules={[Navigation, Autoplay, Pagination]}
+                    modules={[Autoplay, Pagination, Navigation]}
                     className="mx-h-[100%] w-[1000px] h-[400px] md:h-[300px]"
                     autoplay={{
                         delay: 2500,
@@ -84,22 +80,13 @@ const HomePage = () => {
                     }}
                 >
                     {
-                        banner && banner.map((item) => (
-                            <SwiperSlide>
-                                <img src={`${import.meta.env.VITE_REACT_APP_URL_RESOURCE}${item}`} alt="" />
+                        banner && banner.length != 0 && banner.map((item, index) => (
+                            <SwiperSlide key={index}>
+                                <img src={`${import.meta.env.VITE_REACT_APP_URL_RESOURCE}${item}`} alt="" className="object-cover" />
                             </SwiperSlide>
                         ))
                     }
-                    {/* <SwiperSlide>
-                        <img src="/images/combo_meal.png" alt="" />
-                    </SwiperSlide>
-                    <SwiperSlide><img src="/images/slide_2.jpeg" alt="" className="object-cover" /></SwiperSlide>
-                    <SwiperSlide><img src="/images/slide_3.jpeg" alt="" className="object-cover" /></SwiperSlide>
-                    <SwiperSlide><img src="/images/slide_4.jpeg" alt="" className="object-cover" /></SwiperSlide>
-                    <SwiperSlide><img src="/images/slide_5.jpeg" alt="" className="object-cover" /></SwiperSlide> */}
                 </Swiper>
-                {/* <div className="swiper-button-next"></div>
-                <div className="swiper-button-prev"></div> */}
                 <div className="custom-nav-button-next triangle-button-next md:h-[35px] md:ml-[5px]"></div>
             </div>
             <div className="">

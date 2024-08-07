@@ -65,5 +65,5 @@
     top: 50%;
     right: 40px;
     transform: translateY(-50%);
-    z-index: 2;
+    z-index: 1;
 }

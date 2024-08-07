@@ -123,7 +123,7 @@ const DateTimeBooking = ({ setRoomValid, setLoading }) => {
     return (
         <div className='px-[20px]'>
             <form onSubmit={handleSubmit} className="mx-auto flex justify-center rounded-[50px] border-[2px] max-w-[930px] overflow-hidden md:flex-col" style={{ backgroundColor: selectItem ? '#E5E1E1' : '#fff' }}>
-                <div onClick={(e) => { setSelectItem(1); handleClickLocation(e) }} className='rounded-[50px] cursor-pointer relative flex basis-1/4 items-center gap-[10px] px-[10px] py-[20px] after:absolute after:right-0 after:border-[1px] after:h-[30px] after:w-[1px] hover:!bg-[#dddddd]' style={selectItem == 1 ? { backgroundColor: '#fff' } : { backgroundColor: 'transparent' }}>
+                <div onClick={(e) => { setSelectItem(1); handleClickLocation(e) }} className='rounded-[50px] cursor-pointer relative flex basis-1/4 items-center gap-[10px] px-[10px] py-[20px] after:absolute after:right-0 after:border-[1px] after:h-[30px] after:w-[1px] hover:!bg-[#f0efef]' style={selectItem == 1 ? { backgroundColor: '#fff' } : { backgroundColor: 'transparent' }}>
                     <div>
                         <LocationOnOutlined className='!text-[30px]'></LocationOnOutlined>
                     </div>
@@ -152,7 +152,7 @@ const DateTimeBooking = ({ setRoomValid, setLoading }) => {
                         </div>
                     </div>
                 </StyledMenu>
-                <div className='flex-1 flex justify-center' onClick={(e) => { setSelectItem(2); handleClickCalender(e) }}>
+                <div className='flex-1 flex justify-center hover:!bg-[#f0efef] rounded-[50px]' onClick={(e) => { setSelectItem(2); handleClickCalender(e) }}>
                     <div className='flex-1 flex justify-center' style={selectItem == 2 ? { backgroundColor: '#fff', borderRadius: '50px' } : { backgroundColor: 'transparent' }}>
                         <div className='cursor-pointer flex flex-1 items-center gap-[10px] px-[10px] py-[20px] relative after:absolute after:right-0 after:border-[1px] after:h-[30px] after:w-[1px]'>
                             <div>
@@ -183,7 +183,7 @@ const DateTimeBooking = ({ setRoomValid, setLoading }) => {
                 >
                     <NewDateRangePicker dateDisplay={dateDisplay} setDateDisplay={setDateDisplay} timeDisplay={time} setTimeDisplay={setTime}></NewDateRangePicker>
                 </StyledMenu>
-                <div onClick={(e) => { setSelectItem(4); handleClick(e) }} className='rounded-[50px] cursor-pointer flex basis-1/5 items-center gap-[10px] px-[10px] py-[20px] hover:!bg-[#dddddd]' style={selectItem == 4 ? { backgroundColor: '#fff' } : { backgroundColor: 'transparent' }}>
+                <div onClick={(e) => { setSelectItem(4); handleClick(e) }} className='rounded-[50px] cursor-pointer flex basis-1/5 items-center gap-[10px] px-[10px] py-[20px] hover:!bg-[#f0efef]' style={selectItem == 4 ? { backgroundColor: '#fff' } : { backgroundColor: 'transparent' }}>
                     <div>
                         <SupervisorAccountOutlined className='!text-[30px]'></SupervisorAccountOutlined>
                     </div>
