@@ -1,8 +1,13 @@
-.react-calendar__tile--active {
+.MuiButtonBase-root.MuiPickersDay-root.Mui-selected.MuiPickersDay-today,
+.MuiButtonBase-root.MuiPickersDay-root.Mui-selected.MuiDateRangePickerDay-day {
     background-color: #C8B997 !important;
+
 }
 
-.react-calendar__tile--hasActive {
-    background-color: #C8B997 !important;
-    color: #fff
+.MuiDateRangePickerDay-root.MuiDateRangePickerDay-rangeIntervalDayHighlight.MuiDateRangePickerDay-rangeIntervalDayHighlightStart, .MuiDateRangePickerDay-root.MuiDateRangePickerDay-rangeIntervalDayHighlight {
+    background-color: #ece7da !important;
+}
+
+.MuiDateRangePickerDay-root.MuiDateRangePickerDay-rangeIntervalDayHighlight.MuiDateRangePickerDay-outsideCurrentMonth {
+    background-color: transparent!important;
 }

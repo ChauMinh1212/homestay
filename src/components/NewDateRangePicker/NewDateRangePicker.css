@@ -13,17 +13,3 @@
     border-right: 10px solid transparent;
     border-top: 13px solid #C8B997;
 }
-
-.MuiButtonBase-root.MuiPickersDay-root.Mui-selected.MuiPickersDay-today,
-.MuiButtonBase-root.MuiPickersDay-root.Mui-selected.MuiDateRangePickerDay-day {
-    background-color: #C8B997 !important;
-
-}
-
-.MuiDateRangePickerDay-root.MuiDateRangePickerDay-rangeIntervalDayHighlight.MuiDateRangePickerDay-rangeIntervalDayHighlightStart, .MuiDateRangePickerDay-root.MuiDateRangePickerDay-rangeIntervalDayHighlight {
-    background-color: #ece7da !important;
-}
-
-.MuiDateRangePickerDay-root.MuiDateRangePickerDay-rangeIntervalDayHighlight.MuiDateRangePickerDay-outsideCurrentMonth {
-    background-color: transparent!important;
-}
