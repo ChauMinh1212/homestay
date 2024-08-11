@@ -28,7 +28,8 @@ export default {
         league: ["League Spartan", "sans-serif"],
         sanchez: ["Sanchez", "serif"],
         libre: ["Libre Franklin", "sans-serif"],
-        paytone: ["Paytone One", "sans-serif"]
+        paytone: ["Paytone One", "sans-serif"],
+        dejavu: ["DejaVu Serif", "sans-serif"]
       },
 
       colors: {

@@ -27,11 +27,12 @@ const week = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7']
 
 LicenseInfo.setLicenseKey('e0d9bb8070ce0054c9d9ecb6e82cb58fTz0wLEU9MzI0NzIxNDQwMDAwMDAsUz1wcmVtaXVtLExNPXBlcnBldHVhbCxLVj0y');
 
-const Calender = ({value, handleChangeDate}) => {
+const Calender = (prop) => {
+  const {value, handleChangeDate, shouldDisableDate} = prop
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={['DateRangeCalendar']}>
-        <DateRangeCalendar disablePast value={value} onChange={handleChangeDate} dayOfWeekFormatter={(date) => week[dayjs(date).day()]} />
+        <DateRangeCalendar disablePast value={value} onChange={handleChangeDate} dayOfWeekFormatter={(date) => week[dayjs(date).day()]} shouldDisableDate={shouldDisableDate}/>
       </DemoContainer>
     </LocalizationProvider>
   )

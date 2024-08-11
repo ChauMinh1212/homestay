@@ -126,7 +126,7 @@ const RoomDetail = () => {
 
                             </div>
                             <StyledMenu open={open} onClose={handleClose}>
-                                <ModalCheckBooking />
+                                <ModalCheckBooking roomId={roomId}/>
                             </StyledMenu>
                         </div>
 
