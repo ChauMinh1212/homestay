@@ -24,7 +24,7 @@ const StyledMenu = styled(Menu)`
     padding: 0;
   }
   .MuiPaper-root {
-    border-radius: 10px
+    border-radius: 10px;
   }
 `;
 

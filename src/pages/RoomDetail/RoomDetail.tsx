@@ -16,6 +16,7 @@ const StyledMenu = styled(Menu)`
     border-radius: 10px;
     right: 16px;
     left: auto!important;
+    max-height: fit-content
   }
 `;
 
