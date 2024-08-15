@@ -27,7 +27,7 @@ const DateTimeBooking = ({ setRoomValid, setLoading }) => {
     const [selectItem, setSelectItem] = useState<number>(null)
     const [district, setDistrict] = useState<IDistrict | null>(null)
     const [districtValid, setDistrictValid] = useState([])
-    const [dateDisplay, setDateDisplay] = useState<DateRange<Dayjs>>([dayjs(), dayjs().add(1, 'day')])
+    const [dateDisplay, setDateDisplay] = useState<DateRange<Dayjs>>([null, null])
     const { snackBar, setSnackBar } = useContext(SnackBarContext)
     const [time, setTime] = useState([dayjs().set('hour', 14).set('minute', 0), dayjs().set('hour', 12).set('minute', 0)])
 
@@ -160,7 +160,7 @@ const DateTimeBooking = ({ setRoomValid, setLoading }) => {
                             </div>
                             <div className='flex-1 pb-[5px]'>
                                 <p>Nhận phòng</p>
-                                <p className='text-[14px] text-[#0000008c]'>{`${dayjs(dateDisplay[0]).format('DD-MM-YYYY')} ${dayjs(time[0]).format('HH:mm')}`}</p>
+                                <p className='text-[14px] text-[#0000008c]'>{dateDisplay[0] ? `${dayjs(dateDisplay[0]).format('DD-MM-YYYY')} ${dayjs(time[0]).format('HH:mm')}` : `Thêm ngày`}</p>
                             </div>
                         </div>
                         <div className='cursor-pointer flex flex-1 items-center gap-[10px] px-[10px] py-[20px] relative after:absolute after:right-0 after:border-[1px] after:h-[30px] after:w-[1px]'>
@@ -169,7 +169,7 @@ const DateTimeBooking = ({ setRoomValid, setLoading }) => {
                             </div>
                             <div className='flex-1 pb-[5px]'>
                                 <p>Trả phòng</p>
-                                <p className='text-[14px] text-[#0000008c]'>{`${dayjs(dateDisplay[1]).format('DD-MM-YYYY')} ${dayjs(time[1]).format('HH:mm')}`}</p>
+                                <p className='text-[14px] text-[#0000008c]'>{dateDisplay[1] ? `${dayjs(dateDisplay[1]).format('DD-MM-YYYY')} ${dayjs(time[1]).format('HH:mm')}` : 'Thêm ngày'}</p>
                             </div>
                         </div>
                     </div>

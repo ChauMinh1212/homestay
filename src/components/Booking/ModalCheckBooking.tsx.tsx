@@ -1,16 +1,99 @@
-import { DateRange } from "@mui/lab"
+import { DateRange, Skeleton } from "@mui/lab"
 import dayjs, { Dayjs } from "dayjs"
 import Cookie from "js-cookie"
 import { useEffect, useState } from "react"
 import axiosInstance from "~/axios/axiosConfig"
 import Calender from "../Calendar/Calendar"
 
+const hasThreeConsecutiveHoursFree = (booking, num) => {
+    // Tạo một mảng 24 phần tử, khởi tạo tất cả các phần tử là false (chưa được đặt)
+    let hours = Array(24).fill(false);
+
+    // Đánh dấu các giờ đã được đặt trong mảng booking
+    booking.forEach(b => {
+        let start = parseInt(b.from);
+        let end = parseInt(b.to);
+        for (let i = start; i < end; i++) {
+            hours[i] = true;
+        }
+    });
+
+    // Kiểm tra xem có 3 giờ trống liên tiếp không
+    let consecutiveFreeHours = 0;
+    for (let i = 0; i < 24; i++) {
+        if (!hours[i]) {
+            consecutiveFreeHours++;
+            if (consecutiveFreeHours >= num) {
+                return true;
+            }
+        } else {
+            consecutiveFreeHours = 0;
+        }
+    }
+
+    return false;
+}
+
 const ModalCheckBooking = ({ roomId }) => {
     const dateCookie = Cookie.get('date') ? JSON.parse(Cookie.get('date')) : undefined
-    const [value, setValue] = useState<DateRange<Dayjs>>(!dateCookie ? [dayjs(), dayjs().add(1, 'day')] : [dayjs(dateCookie[0]), dayjs(dateCookie[1])])
+    // const [value, setValue] = useState<DateRange<Dayjs>>(!dateCookie ? [dayjs(), dayjs().add(1, 'day')] : [dayjs(dateCookie[0]), dayjs(dateCookie[1])])
+    const [value, setValue] = useState<DateRange<Dayjs>>(!dateCookie ? [null, null] : [dayjs(dateCookie[0]), dayjs(dateCookie[1])])
+    const [disableDate, setDisableDate] = useState([])
+    const [loading, setLoading] = useState(false)
+
+    // const disableDate = [
+    //     dayjs('16/08/2024', 'DD/MM/YYYY'),
+    //     dayjs('17/08/2024', 'DD/MM/YYYY'),
+    // ];
+
     const handleChangeDate = (e) => {
-        setValue(e)
+        // setValue(e)
+
+        // if (
+        //     e[0] &&
+        //     e[1] &&
+        //     e[0].isBefore(disableDate) &&
+        //     e[1].isAfter(disableDate)
+        // ) {
+        //     return;
+        // }
+        // setValue(e);
+
+        if (
+            e[0] &&
+            e[1] &&
+            disableDate.some(disabledDate =>
+                e[0].isBefore(disabledDate) && e[1].isAfter(disabledDate)
+            )
+        ) {
+            return;
+        }
+        setValue(e);
     }
+
+    const isDateDisabled = (date) => {
+        return disableDate.some(disabledDate => date.isSame(disabledDate, 'day'));
+    };
+
+    const shouldDisableDate = (date) => {
+        // Disable bất kỳ ngày nào có trong mảng `disabledDates`
+        if (isDateDisabled(date)) {
+            return true;
+        }
+
+        // Nếu đã chọn ngày bắt đầu và ngày kết thúc
+        if (value[0] && value[1]) {
+            // Kiểm tra nếu phạm vi chứa bất kỳ ngày nào trong mảng `disabledDates`
+            const isRangeDisabled = disableDate.some(disabledDate =>
+                value[0].isBefore(disabledDate) && value[1].isAfter(disabledDate)
+            );
+            if (isRangeDisabled) {
+                return true;
+            }
+        }
+
+        return false;
+    };
 
     const getDateDetail = async (roomId: number) => {
         try {
@@ -21,32 +104,37 @@ const ModalCheckBooking = ({ roomId }) => {
         }
     }
 
-    const disableDate = dayjs('12/08/2024', 'DD/MM/YYYY');
 
-    const shouldDisableDate = (date) => {
-        if (!value[0] || !value[1]) {
-            // Nếu chưa có ngày bắt đầu hoặc kết thúc, chỉ kiểm tra ngày bị disable
-            return date.toString() === disableDate.toString();
-        } else {
-            // Nếu có cả ngày bắt đầu và kết thúc, kiểm tra phạm vi
-            const start = value[0];
-            const end = value[1];
-            const isInRange = date >= start && date <= end;
-            const isDisabledDateInRange = disableDate >= start && disableDate <= end;
+    // const shouldDisableDate = (date) => {
+    //     // Disable ngày 12 tháng 8
+    //     if (date.isSame(disableDate, 'day')) {
+    //         return true;
+    //     }
 
-            return isDisabledDateInRange || date.toString() === disableDate.toString() || isInRange;
-        }
-    };
+    //     // Nếu ngày bắt đầu hoặc kết thúc thuộc phạm vi ngày 11 đến 13 tháng 8
+    //     if (value[0] && date.isAfter(value[0]) && date.isBefore(disableDate)) {
+    //         return true;
+    //     }
+    //     if (value[1] && date.isBefore(value[1]) && date.isAfter(disableDate)) {
+    //         return true;
+    //     }
+
+    //     return false;
+    // };
 
     useEffect(() => {
         console.log('hahh');
         (async () => {
+            setLoading(true)
             const dateValid = await getDateDetail(roomId)
             console.log(dateValid);
+            setDisableDate(dateValid.map(item => dayjs(item.date, 'DD/MM/YYYY')))
+            setLoading(false)
         })()
     }, [])
+
     return (
-        <div className="p-[20px] text-[14px]">
+        (<div className="p-[20px] text-[14px]">
             <div>
                 <div className="flex items-center border-[1px] border-black rounded-[30px] w-fit mx-auto">
                     <div className="px-[30px] py-[5px] text-center">
@@ -63,7 +151,9 @@ const ModalCheckBooking = ({ roomId }) => {
                 </div>
             </div>
             <div>
-                <Calender shouldDisableDate={shouldDisableDate} value={value} handleChangeDate={handleChangeDate} />
+                {
+                    loading ? <Skeleton width="100%" height="500px"></Skeleton> : <Calender shouldDisableDate={shouldDisableDate} value={value} handleChangeDate={handleChangeDate} />
+                }
             </div>
             <div className="flex">
                 <div className="flex-1">
@@ -91,7 +181,7 @@ const ModalCheckBooking = ({ roomId }) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div>)
     )
 }
 
