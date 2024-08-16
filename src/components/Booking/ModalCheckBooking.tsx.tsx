@@ -4,6 +4,8 @@ import Cookie from "js-cookie"
 import { useEffect, useState } from "react"
 import axiosInstance from "~/axios/axiosConfig"
 import Calender from "../Calendar/Calendar"
+import styled from "@emotion/styled"
+import { Menu } from "@mui/material"
 
 const hasThreeConsecutiveHoursFree = (booking, num) => {
     // Tạo một mảng 24 phần tử, khởi tạo tất cả các phần tử là false (chưa được đặt)
@@ -34,17 +36,22 @@ const hasThreeConsecutiveHoursFree = (booking, num) => {
     return false;
 }
 
-const ModalCheckBooking = ({ roomId }) => {
+const StyledMenu = styled(Menu)`
+  .MuiList-root {
+    padding: 0
+  }
+  .MuiPaper-root {
+    border-radius: 10px;
+    right: 16px;
+    left: auto!important;
+    max-height: none
+  }
+`;
+
+const ModalCheckBooking = ({ roomId, open, handleClose }) => {
     const dateCookie = Cookie.get('date') ? JSON.parse(Cookie.get('date')) : undefined
-    // const [value, setValue] = useState<DateRange<Dayjs>>(!dateCookie ? [dayjs(), dayjs().add(1, 'day')] : [dayjs(dateCookie[0]), dayjs(dateCookie[1])])
     const [value, setValue] = useState<DateRange<Dayjs>>(!dateCookie ? [null, null] : [dayjs(dateCookie[0]), dayjs(dateCookie[1])])
     const [disableDate, setDisableDate] = useState([])
-    const [loading, setLoading] = useState(false)
-
-    // const disableDate = [
-    //     dayjs('16/08/2024', 'DD/MM/YYYY'),
-    //     dayjs('17/08/2024', 'DD/MM/YYYY'),
-    // ];
 
     const handleChangeDate = (e) => {
         // setValue(e)
@@ -123,65 +130,64 @@ const ModalCheckBooking = ({ roomId }) => {
     // };
 
     useEffect(() => {
-        console.log('hahh');
         (async () => {
-            setLoading(true)
+            console.log('render');
             const dateValid = await getDateDetail(roomId)
             console.log(dateValid);
             setDisableDate(dateValid.map(item => dayjs(item.date, 'DD/MM/YYYY')))
-            setLoading(false)
         })()
     }, [])
 
     return (
-        (<div className="p-[20px] text-[14px]">
-            <div>
-                <div className="flex items-center border-[1px] border-black rounded-[30px] w-fit mx-auto">
-                    <div className="px-[30px] py-[5px] text-center">
-                        <p className="font-semibold">Nhận phòng</p>
-                        <p>7/7/2024</p>
-                    </div>
-                    <div className="px-[30px] py-[5px] text-center">
-                        <p className="font-semibold">2 đêm</p>
-                    </div>
-                    <div className="px-[30px] py-[5px] text-center">
-                        <p className="font-semibold">Trả phòng</p>
-                        <p>9/7/2024</p>
-                    </div>
-                </div>
-            </div>
-            <div>
-                {
-                    loading ? <Skeleton width="100%" height="500px"></Skeleton> : <Calender shouldDisableDate={shouldDisableDate} value={value} handleChangeDate={handleChangeDate} />
-                }
-            </div>
-            <div className="flex">
-                <div className="flex-1">
-                    <div className="flex items-center">
-                        <div className="mr-[7px] border-[2px] border-black w-[20px] h-[20px] text-[10px] font-bold rounded-[50%] flex justify-center items-center">1</div>
-                        <p className="text-[11px] font-semibold">Trống nguyên ngày (14h - 12h hôm sau) , có thể đặt</p>
-                    </div>
-                    <div className="flex items-center mt-[5px] text-[#c4c4c4] w-fit">
-                        <div className="mr-[7px] border-[2px] border-[#c4c4c4] w-[20px] h-[20px] text-[10px] font-bold rounded-[50%] flex justify-center items-center relative">1
-                            <div className="absolute w-full border-t-[1px] border-[#c4c4c4] translate-y-[50%] top-[50%]"></div>
+        <StyledMenu open={open} onClose={handleClose}>
+            <div className="p-[20px] text-[14px]">
+                <div>
+                    <div className="flex items-center border-[1px] border-black rounded-[30px] w-fit mx-auto">
+                        <div className="px-[30px] py-[5px] text-center">
+                            <p className="font-semibold">Nhận phòng</p>
+                            <p>7/7/2024</p>
                         </div>
-                        <p className="text-[11px] font-semibold">Ngày đã full, không thể đặt </p>
-                    </div>
-                    <div className="flex items-center mt-[5px]">
-                        <div className="mr-[7px] border-[2px] border-[#8f7a5a] w-[20px] h-[20px] text-[10px] text-[#8f7a5a] font-bold rounded-[50%] flex justify-center items-center">1</div>
-                        <p className="text-[11px] text-[#8f7a5a] font-semibold">Còn trống giờ trong ngày, có thể đặt</p>
+                        <div className="px-[30px] py-[5px] text-center">
+                            <p className="font-semibold">2 đêm</p>
+                        </div>
+                        <div className="px-[30px] py-[5px] text-center">
+                            <p className="font-semibold">Trả phòng</p>
+                            <p>9/7/2024</p>
+                        </div>
                     </div>
                 </div>
-                <div className="flex-1 flex justify-center items-center font-dejavu">
-                    <div className="text-[#8f7a5a] mr-[30px] text-[20px]">
-                        Chi tiết giờ
+                <div>
+                    <Calender shouldDisableDate={shouldDisableDate} value={value} handleChangeDate={handleChangeDate} />
+                </div>
+                <div className="flex">
+                    <div className="flex-1">
+                        <div className="flex items-center">
+                            <div className="mr-[7px] border-[2px] border-black w-[20px] h-[20px] text-[10px] font-bold rounded-[50%] flex justify-center items-center">1</div>
+                            <p className="text-[11px] font-semibold">Trống nguyên ngày (14h - 12h hôm sau) , có thể đặt</p>
+                        </div>
+                        <div className="flex items-center mt-[5px] text-[#c4c4c4] w-fit">
+                            <div className="mr-[7px] border-[2px] border-[#c4c4c4] w-[20px] h-[20px] text-[10px] font-bold rounded-[50%] flex justify-center items-center relative">1
+                                <div className="absolute w-full border-t-[1px] border-[#c4c4c4] translate-y-[50%] top-[50%]"></div>
+                            </div>
+                            <p className="text-[11px] font-semibold">Ngày đã full, không thể đặt </p>
+                        </div>
+                        <div className="flex items-center mt-[5px]">
+                            <div className="mr-[7px] border-[2px] border-[#8f7a5a] w-[20px] h-[20px] text-[10px] text-[#8f7a5a] font-bold rounded-[50%] flex justify-center items-center">1</div>
+                            <p className="text-[11px] text-[#8f7a5a] font-semibold">Còn trống giờ trong ngày, có thể đặt</p>
+                        </div>
                     </div>
-                    <div className="text-white px-[20px] py-[5px] bg-[#8f7a5a] w-fit text-[20px] rounded-[15px]">
-                        Đặt ngay
+                    <div className="flex-1 flex justify-center items-center font-dejavu">
+                        <div className="text-[#8f7a5a] mr-[30px] text-[20px]">
+                            Chi tiết giờ
+                        </div>
+                        <div className="text-white px-[20px] py-[5px] bg-[#8f7a5a] w-fit text-[20px] rounded-[15px]">
+                            Đặt ngay
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>)
+        </StyledMenu>
+
     )
 }
 

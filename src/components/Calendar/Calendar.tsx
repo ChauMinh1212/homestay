@@ -30,7 +30,7 @@ LicenseInfo.setLicenseKey('e0d9bb8070ce0054c9d9ecb6e82cb58fTz0wLEU9MzI0NzIxNDQwM
 const Calender = (prop) => {
   const {value, handleChangeDate, shouldDisableDate} = prop
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
       <DemoContainer components={['DateRangeCalendar']}>
         <DateRangeCalendar disablePast value={value} onChange={handleChangeDate} dayOfWeekFormatter={(date) => week[dayjs(date).day()]} shouldDisableDate={shouldDisableDate}/>
       </DemoContainer>
