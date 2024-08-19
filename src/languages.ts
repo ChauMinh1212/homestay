@@ -17,7 +17,7 @@ const languages = {
       about: 'GIỚI THIỆU',
       homestay: 'HOMESTAY / RESORT',
       service: 'DỊCH VỤ',
-      event: 'SỰ KIỆN',
+      event: 'CHƯƠNG TRÌNH',
       shop: 'CỬA HÀNG',
       contact: 'LIÊN HỆ'
     },

@@ -128,11 +128,11 @@ const Header = () => {
                                 <span className={isActive ? "text-white coconut" : ""}>{t('event')}</span>
                             )}
                         </NavLink>
-                        <NavLink onClick={() => { setMenuActive(t('shop')) }} to="/shop" className="flex-1 hover:text-second flex items-center justify-center">
+                        {/* <NavLink onClick={() => { setMenuActive(t('shop')) }} to="/shop" className="flex-1 hover:text-second flex items-center justify-center">
                             {({ isActive }) => (
                                 <span className={isActive ? "text-white coconut" : ""}>{t('shop')}</span>
                             )}
-                        </NavLink>
+                        </NavLink> */}
                         <NavLink onClick={() => { setMenuActive(t('contact')) }} to="/contact" className="flex-1 hover:text-second flex items-center justify-center">
                             {({ isActive }) => (
                                 <span className={isActive ? "text-white coconut" : ""}>{t('contact')}</span>
@@ -185,11 +185,11 @@ const Header = () => {
                                         <span className={isActive ? "text-white coconut-mobile" : ""}>{t('event')}</span>
                                     )}
                                 </NavLink>
-                                <NavLink onClick={() => { setMenuActive(t('shop')); handleCloseMenu() }} to="/shop" className="hover:text-second relative flex items-center justify-center">
+                                {/* <NavLink onClick={() => { setMenuActive(t('shop')); handleCloseMenu() }} to="/shop" className="hover:text-second relative flex items-center justify-center">
                                     {({ isActive }) => (
                                         <span className={isActive ? "text-white coconut-mobile" : ""}>{t('shop')}</span>
                                     )}
-                                </NavLink>
+                                </NavLink> */}
                                 <NavLink onClick={() => { setMenuActive(t('contact')); handleCloseMenu() }} to="/contact" className="hover:text-second relative flex items-center justify-center">
                                     {({ isActive }) => (
                                         <span className={isActive ? "text-white coconut-mobile" : ""}>{t('contact')}</span>

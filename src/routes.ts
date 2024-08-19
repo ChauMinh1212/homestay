@@ -4,6 +4,7 @@ import AdminBookingPage from "./pages/Admin/AdminBookingPage";
 import AdminRoomPage from "./pages/Admin/AdminRoomPage";
 import AdminSetting from "./pages/Admin/AdminSetting";
 import AdminUserPage from "./pages/Admin/AdminUserPage";
+import EventPage from "./pages/EventPage/EventPage";
 import HomePage from "./pages/HomePage/HomePage";
 import HomestayPage from "./pages/HomestayPage/HomestayPage";
 import RoomDetail from "./pages/RoomDetail/RoomDetail";
@@ -14,7 +15,7 @@ const routes = [
   { path: "/about", element: AboutPage },
   { path: "/homestay", element: HomestayPage },
   { path: "/service", element: ServicePage },
-  { path: "/event", element: NotFound },
+  { path: "/event", element: EventPage },
   { path: "/shop", element: NotFound },
   { path: "/contact", element: NotFound },
 
