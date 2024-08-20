@@ -48,24 +48,12 @@ const StyledMenu = styled(Menu)`
   }
 `;
 
-const ModalCheckBooking = ({ roomId, open, handleClose }) => {
-    const dateCookie = Cookie.get('date') ? JSON.parse(Cookie.get('date')) : undefined
-    const [value, setValue] = useState<DateRange<Dayjs>>(!dateCookie ? [null, null] : [dayjs(dateCookie[0]), dayjs(dateCookie[1])])
+const ModalCheckBooking = ({ roomId, open, handleClose, anchorEl }) => {
+    const [value, setValue] = useState<DateRange<Dayjs>>([null, null])
     const [disableDate, setDisableDate] = useState([])
+    const [loading, setLoading] = useState(true)
 
     const handleChangeDate = (e) => {
-        // setValue(e)
-
-        // if (
-        //     e[0] &&
-        //     e[1] &&
-        //     e[0].isBefore(disableDate) &&
-        //     e[1].isAfter(disableDate)
-        // ) {
-        //     return;
-        // }
-        // setValue(e);
-
         if (
             e[0] &&
             e[1] &&
@@ -76,6 +64,10 @@ const ModalCheckBooking = ({ roomId, open, handleClose }) => {
             return;
         }
         setValue(e);
+        if (!e[1]) {
+            setValue([e[0], e[0]])
+            return
+        }
     }
 
     const isDateDisabled = (date) => {
@@ -111,48 +103,30 @@ const ModalCheckBooking = ({ roomId, open, handleClose }) => {
         }
     }
 
-
-    // const shouldDisableDate = (date) => {
-    //     // Disable ngày 12 tháng 8
-    //     if (date.isSame(disableDate, 'day')) {
-    //         return true;
-    //     }
-
-    //     // Nếu ngày bắt đầu hoặc kết thúc thuộc phạm vi ngày 11 đến 13 tháng 8
-    //     if (value[0] && date.isAfter(value[0]) && date.isBefore(disableDate)) {
-    //         return true;
-    //     }
-    //     if (value[1] && date.isBefore(value[1]) && date.isAfter(disableDate)) {
-    //         return true;
-    //     }
-
-    //     return false;
-    // };
-
     useEffect(() => {
         (async () => {
-            console.log('render');
             const dateValid = await getDateDetail(roomId)
-            console.log(dateValid);
             setDisableDate(dateValid.map(item => dayjs(item.date, 'DD/MM/YYYY')))
+            console.log(disableDate);
+            
         })()
     }, [])
 
     return (
-        <StyledMenu open={open} onClose={handleClose}>
+        <StyledMenu open={open} onClose={handleClose} anchorEl={anchorEl}>
             <div className="p-[20px] text-[14px]">
                 <div>
                     <div className="flex items-center border-[1px] border-black rounded-[30px] w-fit mx-auto">
                         <div className="px-[30px] py-[5px] text-center">
                             <p className="font-semibold">Nhận phòng</p>
-                            <p>7/7/2024</p>
+                            <p>{!value[0] ? 'Thêm ngày' : dayjs(value[0]).format('DD/MM/YYYY')}</p>
                         </div>
                         <div className="px-[30px] py-[5px] text-center">
-                            <p className="font-semibold">2 đêm</p>
+                            <p className="font-semibold">{dayjs(value[1]).diff(value[0], 'day')} đêm</p>
                         </div>
                         <div className="px-[30px] py-[5px] text-center">
                             <p className="font-semibold">Trả phòng</p>
-                            <p>9/7/2024</p>
+                            <p>{!value[0] ? 'Thêm ngày' : dayjs(value[1]).format('DD/MM/YYYY')}</p>
                         </div>
                     </div>
                 </div>

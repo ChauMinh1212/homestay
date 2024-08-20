@@ -84,8 +84,8 @@ const RoomDetail = () => {
                                 }}
                             >
                                 {
-                                    room && room.img.length != 0 && room.img.map(item => (
-                                        <SwiperSlide><img src={`${import.meta.env.VITE_REACT_APP_URL_RESOURCE}${item}`} alt="" className="object-cover" /></SwiperSlide>
+                                    room && room.img.length != 0 && room.img.map((item, index) => (
+                                        <SwiperSlide key={index}><img src={`${import.meta.env.VITE_REACT_APP_URL_RESOURCE}${item}`} alt="" className="object-cover" /></SwiperSlide>
 
                                     ))
                                 }
@@ -127,7 +127,7 @@ const RoomDetail = () => {
 
                             </div>
                             {/* <StyledMenu open={open} onClose={handleClose}> */}
-                                <ModalCheckBooking roomId={roomId} open={open} handleClose={handleClose}/>
+                                <ModalCheckBooking roomId={roomId} open={open} handleClose={handleClose} anchorEl={anchorEl}/>
                             {/* </StyledMenu> */}
                         </div>
 
