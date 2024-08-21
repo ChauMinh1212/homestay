@@ -1,11 +1,11 @@
-import { DateRange, Skeleton } from "@mui/lab"
+import styled from "@emotion/styled"
+import { DateRange } from "@mui/lab"
+import { Menu } from "@mui/material"
 import dayjs, { Dayjs } from "dayjs"
-import Cookie from "js-cookie"
+import moment from "moment"
 import { useEffect, useState } from "react"
 import axiosInstance from "~/axios/axiosConfig"
 import Calender from "../Calendar/Calendar"
-import styled from "@emotion/styled"
-import { Menu } from "@mui/material"
 
 const hasThreeConsecutiveHoursFree = (booking, num) => {
     // Tạo một mảng 24 phần tử, khởi tạo tất cả các phần tử là false (chưa được đặt)
@@ -106,9 +106,9 @@ const ModalCheckBooking = ({ roomId, open, handleClose, anchorEl }) => {
     useEffect(() => {
         (async () => {
             const dateValid = await getDateDetail(roomId)
-            setDisableDate(dateValid.map(item => dayjs(item.date, 'DD/MM/YYYY')))
-            console.log(disableDate);
-            
+            const dateValidHandle = dateValid.map(item => moment(item.date, 'DD/MM/YYYY'))
+            setDisableDate(dateValidHandle)
+            setLoading(false)
         })()
     }, [])
 
@@ -122,7 +122,7 @@ const ModalCheckBooking = ({ roomId, open, handleClose, anchorEl }) => {
                             <p>{!value[0] ? 'Thêm ngày' : dayjs(value[0]).format('DD/MM/YYYY')}</p>
                         </div>
                         <div className="px-[30px] py-[5px] text-center">
-                            <p className="font-semibold">{dayjs(value[1]).diff(value[0], 'day')} đêm</p>
+                            <p className="font-semibold">{value[0] ? dayjs(value[1]).diff(value[0], 'day') : 0} đêm</p>
                         </div>
                         <div className="px-[30px] py-[5px] text-center">
                             <p className="font-semibold">Trả phòng</p>
@@ -131,7 +131,7 @@ const ModalCheckBooking = ({ roomId, open, handleClose, anchorEl }) => {
                     </div>
                 </div>
                 <div>
-                    <Calender shouldDisableDate={shouldDisableDate} value={value} handleChangeDate={handleChangeDate} />
+                    {!loading && <Calender shouldDisableDate={shouldDisableDate} value={value} handleChangeDate={handleChangeDate} />}
                 </div>
                 <div className="flex">
                     <div className="flex-1">

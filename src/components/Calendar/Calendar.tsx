@@ -1,10 +1,14 @@
+import { styled } from '@mui/material/styles'
 import { LocalizationProvider } from "@mui/x-date-pickers"
 import { DateRangeCalendar, LicenseInfo } from "@mui/x-date-pickers-pro"
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo"
-import dayjs from "dayjs"
-import { useEffect, useState } from "react"
+import dayjs, { Dayjs } from "dayjs"
 import './Calendar.css'
+import {
+  DateRangePickerDay as MuiDateRangePickerDay,
+  DateRangePickerDayProps,
+} from '@mui/x-date-pickers-pro/DateRangePickerDay';
 
 dayjs.locale('vi', {
   name: 'vi',
@@ -29,12 +33,40 @@ const week = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7']
 LicenseInfo.setLicenseKey('e0d9bb8070ce0054c9d9ecb6e82cb58fTz0wLEU9MzI0NzIxNDQwMDAwMDAsUz1wcmVtaXVtLExNPXBlcnBldHVhbCxLVj0y');
 
 const Calender = (prop) => {
-  const { value, handleChangeDate, shouldDisableDate } = prop
+  const { value, handleChangeDate, shouldDisableDate, dateDisable } = prop
+
+  const DateRangePickerDay = styled(MuiDateRangePickerDay)(
+    ({
+      // theme,
+      // isHighlighting,
+      // isStartOfHighlighting,
+      // isEndOfHighlighting,
+      // outsideCurrentMonth,
+    }) => ({
+      // ...(!outsideCurrentMonth &&
+      //   isHighlighting && {
+      //   borderRadius: 0,
+      //   backgroundColor: theme.palette.primary.main,
+      //   color: theme.palette.common.white,
+      //   '&:hover, &:focus': {
+      //     backgroundColor: theme.palette.primary.dark,
+      //   },
+      // }),
+      // ...(isStartOfHighlighting && {
+      //   borderTopLeftRadius: '50%',
+      //   borderBottomLeftRadius: '50%',
+      // }),
+      // ...(isEndOfHighlighting && {
+      //   borderTopRightRadius: '50%',
+      //   borderBottomRightRadius: '50%',
+      // }),
+    }),
+  ) as React.ComponentType<DateRangePickerDayProps<Dayjs>>;
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
       <DemoContainer components={['DateRangeCalendar']}>
-        <DateRangeCalendar disablePast value={value} onChange={handleChangeDate} dayOfWeekFormatter={(date) => week[dayjs(date).day()]} shouldDisableDate={shouldDisableDate} />
+        <DateRangeCalendar slots={{day: DateRangePickerDay}} disablePast value={value} onChange={handleChangeDate} dayOfWeekFormatter={(date) => week[dayjs(date).day()]} shouldDisableDate={shouldDisableDate} />
       </DemoContainer>
     </LocalizationProvider>
   )
