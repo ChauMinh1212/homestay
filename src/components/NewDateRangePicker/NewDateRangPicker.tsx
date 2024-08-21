@@ -1,14 +1,14 @@
 import styled from "@emotion/styled";
 import { Menu } from "@mui/material";
 import { LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
-import { DateRange, LicenseInfo } from "@mui/x-date-pickers-pro";
+import { DateRange } from "@mui/x-date-pickers-pro";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs, { Dayjs } from "dayjs";
 import 'dayjs/locale/vi';
+import Cookies from 'js-cookie';
 import { useState } from "react";
 import Calender from "../Calendar/Calendar";
 import './NewDateRangePicker.css';
-import Cookies from 'js-cookie'
 
 const comboList = [
     { name: 'COMBO 1', time: ['14:00', '12:00'], inday: 0 },

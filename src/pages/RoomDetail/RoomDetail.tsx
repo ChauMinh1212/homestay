@@ -8,17 +8,17 @@ import ModalCheckBooking from "~/components/Booking/ModalCheckBooking.tsx";
 import { Menu } from "@mui/material";
 import styled from "@emotion/styled";
 
-const StyledMenu = styled(Menu)`
-  .MuiList-root {
-    padding: 0
-  }
-  .MuiPaper-root {
-    border-radius: 10px;
-    right: 16px;
-    left: auto!important;
-    max-height: none
-  }
-`;
+// const StyledMenu = styled(Menu)`
+//   .MuiList-root {
+//     padding: 0
+//   }
+//   .MuiPaper-root {
+//     border-radius: 10px;
+//     right: 16px;
+//     left: auto!important;
+//     max-height: none
+//   }
+// `;
 
 const RoomDetail = () => {
     const { roomId } = useParams()

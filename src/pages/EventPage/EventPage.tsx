@@ -2,18 +2,18 @@ import { CalendarMonth } from "@mui/icons-material";
 import { useEffect } from "react";
 
 const EventPage = () => {
-    const getEvent = () => {
-        try {
+    // const getEvent = () => {
+    //     try {
             
-        } catch (e) {
-            console.log(e);
-        }
-    }
+    //     } catch (e) {
+    //         console.log(e);
+    //     }
+    // }
     useEffect(() => {
         window.scrollTo(0, 0);
         (async () => {
             console.log('render');
-            const dateValid = await getDateDetail(roomId)
+            // const dateValid = await getDateDetail(roomId)
         })()
     }, []);
     return (

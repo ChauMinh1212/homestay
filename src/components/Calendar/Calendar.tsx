@@ -33,7 +33,7 @@ const week = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7']
 LicenseInfo.setLicenseKey('e0d9bb8070ce0054c9d9ecb6e82cb58fTz0wLEU9MzI0NzIxNDQwMDAwMDAsUz1wcmVtaXVtLExNPXBlcnBldHVhbCxLVj0y');
 
 const Calender = (prop) => {
-  const { value, handleChangeDate, shouldDisableDate, disableDate, availableHoursDate } = prop
+  const { value, handleChangeDate, shouldDisableDate, availableHoursDate } = prop
 
   // const isDisableDate = (date) => {
   //   return disableDate.some(dataDisable => date.isSame(dataDisable, 'day'));
