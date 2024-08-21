@@ -3,10 +3,8 @@ import { useParams } from "react-router-dom";
 import { Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import axiosInstance from "~/axios/axiosConfig";
-import './RoomDetail.css';
 import ModalCheckBooking from "~/components/Booking/ModalCheckBooking.tsx";
-import { Menu } from "@mui/material";
-import styled from "@emotion/styled";
+import './RoomDetail.css';
 
 // const StyledMenu = styled(Menu)`
 //   .MuiList-root {
