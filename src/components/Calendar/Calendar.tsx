@@ -33,7 +33,15 @@ const week = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7']
 LicenseInfo.setLicenseKey('e0d9bb8070ce0054c9d9ecb6e82cb58fTz0wLEU9MzI0NzIxNDQwMDAwMDAsUz1wcmVtaXVtLExNPXBlcnBldHVhbCxLVj0y');
 
 const Calender = (prop) => {
-  const { value, handleChangeDate, shouldDisableDate, dateDisable } = prop
+  const { value, handleChangeDate, shouldDisableDate, disableDate, availableHoursDate } = prop
+
+  // const isDisableDate = (date) => {
+  //   return disableDate.some(dataDisable => date.isSame(dataDisable, 'day'));
+  // };
+
+  const isAvailableHoursDate = (date) => {
+    return availableHoursDate.some(dataDisable => date.isSame(dataDisable, 'day'));
+  };
 
   const DateRangePickerDay = styled(MuiDateRangePickerDay)(
     ({
@@ -42,24 +50,19 @@ const Calender = (prop) => {
       // isStartOfHighlighting,
       // isEndOfHighlighting,
       // outsideCurrentMonth,
+      day
     }) => ({
-      // ...(!outsideCurrentMonth &&
-      //   isHighlighting && {
-      //   borderRadius: 0,
-      //   backgroundColor: theme.palette.primary.main,
-      //   color: theme.palette.common.white,
-      //   '&:hover, &:focus': {
-      //     backgroundColor: theme.palette.primary.dark,
-      //   },
-      // }),
-      // ...(isStartOfHighlighting && {
-      //   borderTopLeftRadius: '50%',
-      //   borderBottomLeftRadius: '50%',
-      // }),
-      // ...(isEndOfHighlighting && {
-      //   borderTopRightRadius: '50%',
-      //   borderBottomRightRadius: '50%',
-      // }),
+        '& .MuiButtonBase-root': {
+          fontWeight: '500'
+        },
+        '& .MuiButtonBase-root.Mui-disabled': {
+          textDecoration: 'line-through'
+        },
+        ...(availableHoursDate && isAvailableHoursDate(day) && {
+          '& .MuiButtonBase-root': {
+            color: '#8f7a5a'
+          },
+        })
     }),
   ) as React.ComponentType<DateRangePickerDayProps<Dayjs>>;
 

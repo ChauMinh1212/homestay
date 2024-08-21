@@ -119,7 +119,7 @@ const RoomDetail = () => {
                                             <p className="text-[#626262] text-[12px]">Thêm ngày</p>
                                         </div>
                                     </div>
-                                    <div className="border-[1px] border-black rounded-[20px] text-center py-[20px] bg-primary cursor-pointer">
+                                    <div className="border-[1px] border-black rounded-[20px] text-center py-[20px] bg-primary cursor-pointer" onClick={handleClick}>
                                         <p className="text-white font-semibold">Kiểm tra tình trạng còn phòng</p>
                                     </div>
 

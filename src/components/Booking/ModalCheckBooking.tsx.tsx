@@ -36,6 +36,42 @@ const hasThreeConsecutiveHoursFree = (booking, num) => {
     return false;
 }
 
+const isFreeBetween = (booking, startHour, endHour) => {
+    // Tạo một mảng 24 phần tử, khởi tạo tất cả các phần tử là false (chưa được đặt)
+    let hours = Array(24).fill(false);
+
+    // Đánh dấu các giờ đã được đặt trong mảng booking
+    booking.forEach(b => {
+        let start = parseInt(b.from.split(':')[0]);
+        let end = parseInt(b.to.split(':')[0]);
+        for (let i = start; i < end; i++) {
+            hours[i] = true;
+        }
+    });
+
+    // Kiểm tra khoảng thời gian từ startHour đến endHour
+    for (let i = startHour; i < endHour; i++) {
+        if (hours[i]) {
+            return false; // Nếu có bất kỳ giờ nào bị đặt thì trả về false
+        }
+    }
+
+    return true; // Nếu tất cả các giờ từ startHour đến endHour đều trống thì trả về true
+}
+
+const checkDate = (dateArr) => { // 0 - Full, 1 - Trống h trong ngày, 2 - Trống 14h - 12h hôm sau
+    return dateArr.map((item, index) => {
+        if(!hasThreeConsecutiveHoursFree(item.booking, 3)){
+            return {date: item.date, type: 0}
+        } else if (isFreeBetween(item.booking, 14, 24) && (!dateArr[index + 1]?.booking || isFreeBetween(dateArr[index + 1].booking, 0, 12))){
+            return {date: item.date, type: 2}
+        } else {
+            return {date: item.date, type: 1}
+        }
+        
+    })
+}
+
 const StyledMenu = styled(Menu)`
   .MuiList-root {
     padding: 0
@@ -51,6 +87,7 @@ const StyledMenu = styled(Menu)`
 const ModalCheckBooking = ({ roomId, open, handleClose, anchorEl }) => {
     const [value, setValue] = useState<DateRange<Dayjs>>([null, null])
     const [disableDate, setDisableDate] = useState([])
+    const [availableHoursDate, setAvailableHoursDate] = useState([])
     const [loading, setLoading] = useState(true)
 
     const handleChangeDate = (e) => {
@@ -106,8 +143,11 @@ const ModalCheckBooking = ({ roomId, open, handleClose, anchorEl }) => {
     useEffect(() => {
         (async () => {
             const dateValid = await getDateDetail(roomId)
-            const dateValidHandle = dateValid.map(item => moment(item.date, 'DD/MM/YYYY'))
-            setDisableDate(dateValidHandle)
+            const checkDateValid = checkDate(dateValid)
+            const dateDisable = checkDateValid.filter(item => item.type == 0).map(item => moment(item.date, 'DD/MM/YYYY'))
+            const dateAvailableHours = checkDateValid.filter(item => item.type == 1).map(item => moment(item.date, 'DD/MM/YYYY'))
+            setDisableDate(dateDisable)
+            setAvailableHoursDate(dateAvailableHours)
             setLoading(false)
         })()
     }, [])
@@ -131,7 +171,7 @@ const ModalCheckBooking = ({ roomId, open, handleClose, anchorEl }) => {
                     </div>
                 </div>
                 <div>
-                    {!loading && <Calender shouldDisableDate={shouldDisableDate} value={value} handleChangeDate={handleChangeDate} />}
+                    {!loading && <Calender disableDate={disableDate} availableHoursDate={availableHoursDate} shouldDisableDate={shouldDisableDate} value={value} handleChangeDate={handleChangeDate} />}
                 </div>
                 <div className="flex">
                     <div className="flex-1">
