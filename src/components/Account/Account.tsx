@@ -1,4 +1,4 @@
-import { EditCalendar, Group, Logout, MeetingRoom, Settings } from "@mui/icons-material";
+import { Discount, EditCalendar, Group, Logout, MeetingRoom, Settings } from "@mui/icons-material";
 import { Avatar, Box, IconButton, ListItemIcon, Menu, MenuItem, Tooltip } from "@mui/material";
 import Cookies from 'js-cookie';
 import { useContext, useState } from "react";
@@ -84,6 +84,12 @@ const Account = ({ user }) => {
                                         <Group fontSize="medium" />
                                     </ListItemIcon>
                                     Quản lý user
+                                </MenuItem>
+                                <MenuItem onClick={() => { handleClose(); navigate('/admin/event') }}>
+                                    <ListItemIcon>
+                                        <Discount fontSize="medium" />
+                                    </ListItemIcon>
+                                    Quản lý event
                                 </MenuItem>
                                 <MenuItem onClick={() => { handleClose(); navigate('/admin/create-booking') }}>
                                     <ListItemIcon>

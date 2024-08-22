@@ -1,6 +1,7 @@
 import NotFound from "./components/NotFound/NotFound";
 import AboutPage from "./pages/AboutPage/AboutPage";
 import AdminBookingPage from "./pages/Admin/AdminBookingPage";
+import AdminEventPage from "./pages/Admin/AdminEventPage";
 import AdminRoomPage from "./pages/Admin/AdminRoomPage";
 import AdminSetting from "./pages/Admin/AdminSetting";
 import AdminUserPage from "./pages/Admin/AdminUserPage";
@@ -24,6 +25,7 @@ const routes = [
   { path: "/admin/user", element: AdminUserPage },
   { path: "/admin/setting", element: AdminSetting },
   { path: "/admin/create-booking", element: AdminBookingPage },
+  { path: "/admin/event", element: AdminEventPage },
 
   //Room detail
   { path: "/room/:roomCode/:roomId", element: RoomDetail }
