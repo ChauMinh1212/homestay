@@ -1,6 +1,14 @@
-import { Box, Modal, TextField } from "@mui/material"
+import { Box, Button, IconButton, Modal, TextField } from "@mui/material"
 import { useFormik } from "formik";
 import * as yup from 'yup'
+import TextEditor from "../Editor/Editor";
+import { useState } from "react";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { VisuallyHiddenInput } from "../Room/AddRoom";
+import { LoadingButton } from "@mui/lab";
+import { Clear, CloudUpload } from "@mui/icons-material";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -41,6 +49,7 @@ const validationSchema = yup.object({
 });
 
 const AddEventModal = ({ onClose, open, handleAddEvent }) => {
+    const [content, setContent] = useState('')
     const formik = useFormik<IEvent>({
         initialValues: {
             title: '',
@@ -71,111 +80,25 @@ const AddEventModal = ({ onClose, open, handleAddEvent }) => {
                 <form onSubmit={formik.handleSubmit} autoComplete="off">
                     <TextField
                         fullWidth
-                        id="code"
-                        name="code"
-                        label="Code"
+                        id="title"
+                        name="title"
+                        label="Tên chương trình"
                         className="!mb-[20px]"
-                        value={formik.values.code}
+                        value={formik.values.title}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
-                        error={formik.touched.code && Boolean(formik.errors.code)}
-                        helperText={formik.touched.code ? (formik.errors.code || '') : ''}
+                        error={formik.touched.title && Boolean(formik.errors.title)}
+                        helperText={formik.touched.title ? (formik.errors.title || '') : ''}
                     />
-                    <TextField
-                        fullWidth
-                        id="name"
-                        name="name"
-                        label="Tên phòng"
-                        className="!mb-[20px]"
-                        value={formik.values.name}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.name && Boolean(formik.errors.name)}
-                        helperText={formik.touched.name ? (formik.errors.name || '') : ''}
-                    />
-                    <FormControl fullWidth className="!mb-[20px]">
-                        <InputLabel id="demo-simple-select-label">Quận</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            value={selectDistrict}
-                            label="Quận"
-                            onChange={handleChangeSelect}
-                        >
-                            {
-                                district.map(item => (
-                                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
-                                ))
-                            }
-                            <MenuItem key={981203} value={0}>None</MenuItem>
-                        </Select>
-                    </FormControl>
-                    <FormControl fullWidth className="!mb-[20px]">
-                        <InputLabel id="demo-simple-select-label">Loại</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label-type"
-                            id="demo-simple-select-type"
-                            value={typeRoom}
-                            label="Loại"
-                            onChange={handleChangeSelectType}
-                        >
-                            {
-                                TYPE_ROOM.map(item => (
-                                    <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
-                                ))
-                            }
-                            {/* <MenuItem key={981203} value={0}>None</MenuItem> */}
-                        </Select>
-                    </FormControl>
-                    <TextField
-                        fullWidth
-                        id="price"
-                        name="price"
-                        label="Giá"
-                        className="!mb-[20px]"
-                        value={formik.values.price}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.price && Boolean(formik.errors.price)}
-                        helperText={formik.touched.price ? (formik.errors.price || '') : ''}
-                    />
-                    <TextField
-                        fullWidth
-                        id="address"
-                        name="address"
-                        label="Địa chỉ"
-                        className="!mb-[20px]"
-                        value={formik.values.address}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.address && Boolean(formik.errors.address)}
-                        helperText={formik.touched.address ? (formik.errors.address || '') : ''}
-                    />
-                    <TextEditor defaultValue={description} setDescription={setDescription}></TextEditor>
-                    <TextField
-                        fullWidth
-                        id="capacity"
-                        name="capacity"
-                        label="Sức chứa"
-                        className="!mb-[20px] !mt-[20px]"
-                        value={formik.values.capacity}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.capacity && Boolean(formik.errors.capacity)}
-                        helperText={formik.touched.capacity ? (formik.errors.capacity || '') : ''}
-                    />
-                    <TextField
-                        fullWidth
-                        id="quantity"
-                        name="quantity"
-                        className="!mb-[20px]"
-                        label="Số lượng"
-                        value={formik.values.quantity}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.quantity && Boolean(formik.errors.quantity)}
-                        helperText={formik.touched.quantity ? (formik.errors.quantity || '') : ''}
-                    />
+                    <TextEditor defaultValue={content} setDescription={setContent}></TextEditor>
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DemoContainer components={['DatePicker']}>
+                            <DatePicker label="Basic date picker" />
+                        </DemoContainer>
+                        <DemoContainer components={['DatePicker']}>
+                            <DatePicker label="Basic date picker" />
+                        </DemoContainer>
+                    </LocalizationProvider>
                     {/* <TextField
                         fullWidth
                         id="color"
