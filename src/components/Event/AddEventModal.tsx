@@ -1,14 +1,17 @@
-import { Box, Button, IconButton, Modal, TextField } from "@mui/material"
-import { useFormik } from "formik";
-import * as yup from 'yup'
-import TextEditor from "../Editor/Editor";
-import { useState } from "react";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { VisuallyHiddenInput } from "../Room/AddRoom";
-import { LoadingButton } from "@mui/lab";
 import { Clear, CloudUpload } from "@mui/icons-material";
+import { LoadingButton } from "@mui/lab";
+import { Box, Button, IconButton, Modal, TextField } from "@mui/material";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import dayjs, { Dayjs } from "dayjs";
+import { useFormik } from "formik";
+import { useContext, useState } from "react";
+import * as yup from 'yup';
+import axiosInstance from "~/axios/axiosConfig";
+import SnackBarContext from "~/contexts/SnackBarContext";
+import TextEditor from "../Editor/Editor";
+import { VisuallyHiddenInput } from "../Room/AddRoom";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -21,42 +24,40 @@ const style = {
     p: 4,
     borderRadius: '10px',
     overflow: 'auto',
-    height: '90%'
+    maxHeight: '90%'
     // maxHeight: '700px',
 };
 
 interface IEvent {
     title: string
-    content: string
-    img: string
-    from: string
-    to: string
+    from: Dayjs
+    to: Dayjs
 }
 
 const validationSchema = yup.object({
     title: yup
         .string()
-        .required('code is required'),
-    content: yup
-        .string()
-        .required('name is required'),
-    img: yup
-        .string(),
+        .required('title is required'),
     from: yup
-        .string(),
+        .date()
+        .required(' is required'),
     to: yup
-        .string()
+        .date()
+        .required('name is required'),
+
 });
 
 const AddEventModal = ({ onClose, open, handleAddEvent }) => {
     const [content, setContent] = useState('')
+    const [image, setImage] = useState([])
+    const [loading, setLoading] = useState(false)
+    const {snackBar, setSnackBar} = useContext(SnackBarContext)
+
     const formik = useFormik<IEvent>({
         initialValues: {
             title: '',
-            content: '',
-            img: '',
-            from: '',
-            to: ''
+            from: dayjs(),
+            to: dayjs()
         },
         validationSchema: validationSchema,
         onSubmit: (values) => {
@@ -64,8 +65,55 @@ const AddEventModal = ({ onClose, open, handleAddEvent }) => {
         },
     });
 
-    const handleSubmit = (values) => {
+    const handleSubmit = async (values) => {
+        setLoading(true)
+        try {
+            let resUpload = []
+            if (image.length != 0) {
+                const formData = new FormData()
+                image.map((item, index) => formData.append(`file[${index}]`, item))
+                const res = await axiosInstance.post('upload', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+                resUpload = res.data
+            }
+            const res = await axiosInstance.post('event/create', {
+                ...values,
+                from: dayjs(values.from).format('YYYY-MM-DD'),
+                to: dayjs(values.to).format('YYYY-MM-DD'),
+                img: resUpload[0] || '',
+                content
+            })
+            handleAddEvent(res.data)
+            setSnackBar({
+                ...snackBar,
+                open: true,
+                message: 'Tạo chương trình thành công',
+                status: 'success'
+            })
+            onClose()
+        } catch (e) {
+            setSnackBar({
+                ...snackBar,
+                open: true,
+                message: e.message,
+                status: 'error'
+            })
+        }
+        setLoading(false)
+    }
 
+    const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFile = event.target.files
+        const listImg = []
+        for (let i = 0; i < selectedFile.length; i++) {
+            listImg.push(selectedFile[i])
+        }
+        setImage(listImg)
+    }
+
+    const handleDeleteImageRoom = (index: number) => {
+        const newListImg = [...image]
+        newListImg.splice(index, 1)
+        setImage(newListImg)
     }
 
     return (
@@ -91,27 +139,41 @@ const AddEventModal = ({ onClose, open, handleAddEvent }) => {
                         helperText={formik.touched.title ? (formik.errors.title || '') : ''}
                     />
                     <TextEditor defaultValue={content} setDescription={setContent}></TextEditor>
+                    <div className="mt-[20px]"></div>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DemoContainer components={['DatePicker']}>
-                            <DatePicker label="Basic date picker" />
+                            <DatePicker
+                                label="Từ ngày"
+                                className="w-full"
+                                value={formik.values.from}
+                                onChange={formik.handleChange}
+                                format="DD/MM/YYYY"
+                                slotProps={{
+                                    textField: {
+                                        helperText: (formik.touched.from ? (formik.errors.from || '') : '') as string,
+                                        error: formik.touched.from && Boolean(formik.errors.from),
+                                        onBlur: formik.handleBlur
+                                    }
+                                }}
+                            />
                         </DemoContainer>
                         <DemoContainer components={['DatePicker']}>
-                            <DatePicker label="Basic date picker" />
+                            <DatePicker
+                                label="Đến ngày"
+                                className="w-full !mt-[20px] !mb-[20px]"
+                                value={formik.values.to}
+                                onChange={formik.handleChange}
+                                format="DD/MM/YYYY"
+                                slotProps={{
+                                    textField: {
+                                        helperText: (formik.touched.to ? (formik.errors.to || '') : '') as string,
+                                        error: formik.touched.to && Boolean(formik.errors.to),
+                                        onBlur: formik.handleBlur
+                                    }
+                                }}
+                            />
                         </DemoContainer>
                     </LocalizationProvider>
-                    {/* <TextField
-                        fullWidth
-                        id="color"
-                        name="color"
-                        className="!mb-[20px]"
-                        label="Màu nền"
-                        value={formik.values.color}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                        error={formik.touched.color && Boolean(formik.errors.color)}
-                        helperText={formik.touched.color ? (formik.errors.color || '') : ''}
-                    /> */}
-
                     {image.length != 0 && (
                         <div className="flex gap-[5px] flex-nowrap overflow-x-auto mb-[20px]">
                             {image.map((item, index) => (
