@@ -1,19 +1,23 @@
 import { CalendarMonth } from "@mui/icons-material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import axiosInstance from "~/axios/axiosConfig";
 
 const EventPage = () => {
-    // const getEvent = () => {
-    //     try {
-            
-    //     } catch (e) {
-    //         console.log(e);
-    //     }
-    // }
+    const [event, setEvent] = useState([])
+    const getEvent = async () => {
+        try {
+            const res = await axiosInstance.get(`event?status=1`)
+            return res.data
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     useEffect(() => {
         window.scrollTo(0, 0);
         (async () => {
-            console.log('render');
-            // const dateValid = await getDateDetail(roomId)
+            const data = await getEvent()
+            setEvent(data)
         })()
     }, []);
     return (
@@ -24,33 +28,17 @@ const EventPage = () => {
                 <div className="flex-1 border-t-[3px] border-dashed h-0 border-primary"></div>
             </div>
             <div className="flex flex-wrap gap-[8%] md:gap-[4%]">
-                <div className="w-[28%] md:w-[48%] flex items-center flex-col">
-                    <div className="h-[300px] w-[280px]">
-                        <img src="/images/combo_meal.png" className="object-cover" alt="" />
+                {event.map(item => (
+                    <div className="w-[28%] md:w-[48%] flex items-center flex-col">
+                        <div className="h-[300px] w-[280px]">
+                            <img src={`${import.meta.env.VITE_REACT_APP_URL_RESOURCE}${item.img}`} className="object-cover" alt="" />
+                        </div>
+                        <div className="flex gap-[10px] justify-center mt-[7px]">
+                            <CalendarMonth className="text-primary" />
+                            <p>{item.from + ' - ' + item.to}</p>
+                        </div>
                     </div>
-                    <div className="flex gap-[10px] justify-center mt-[7px]">
-                        <CalendarMonth className="text-primary" />
-                        <p>01/08/2024 - 30/09/2024</p>
-                    </div>
-                </div>
-                <div className="w-[28%] md:w-[48%] flex items-center flex-col">
-                    <div className="h-[300px] w-[280px]">
-                        <img src="/images/combo_meal.png" className="object-cover" alt="" />
-                    </div>
-                    <div className="flex gap-[10px] justify-center mt-[7px]">
-                        <CalendarMonth className="text-primary" />
-                        <p>01/08/2024 - 30/09/2024</p>
-                    </div>
-                </div>
-                <div className="w-[28%] md:w-[48%] flex items-center flex-col">
-                    <div className="h-[300px] w-[280px]">
-                        <img src="/images/combo_meal.png" className="object-cover" alt="" />
-                    </div>
-                    <div className="flex gap-[10px] justify-center mt-[7px]">
-                        <CalendarMonth className="text-primary" />
-                        <p>01/08/2024 - 30/09/2024</p>
-                    </div>
-                </div>
+                ))}
             </div>
         </div>
     )

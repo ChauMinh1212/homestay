@@ -6,7 +6,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs, { Dayjs } from "dayjs";
 import { useFormik } from "formik";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import * as yup from 'yup';
 import axiosInstance from "~/axios/axiosConfig";
 import SnackBarContext from "~/contexts/SnackBarContext";
@@ -47,11 +47,12 @@ const validationSchema = yup.object({
 
 });
 
-const AddEventModal = ({ onClose, open, handleAddEvent }) => {
-    const [content, setContent] = useState('')
-    const [image, setImage] = useState(null)
+const AddEventModal = ({ onClose, open, handleAddEvent, event }) => {
+    const [content, setContent] = useState(event.content || '')
+    const [oldImage, setOldImage] = useState(event.img)
+    const [newImage, setNewImage] = useState(null)
     const [loading, setLoading] = useState(false)
-    const { snackBar, setSnackBar } = useContext(SnackBarContext)
+    const {snackBar, setSnackBar} = useContext(SnackBarContext)
 
     const formik = useFormik<IEvent>({
         initialValues: {
@@ -69,10 +70,10 @@ const AddEventModal = ({ onClose, open, handleAddEvent }) => {
         setLoading(true)
         try {
             let resUpload = []
-            if (image) {
+            if (image.length != 0) {
                 const formData = new FormData()
-                formData.append(`file[0]`, image)
-                const res = await axiosInstance.post('upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
+                image.map((item, index) => formData.append(`file[${index}]`, item))
+                const res = await axiosInstance.post('upload', formData, {headers: {'Content-Type': 'multipart/form-data'}})
                 resUpload = res.data
             }
             const res = await axiosInstance.post('event/create', {
@@ -103,12 +104,17 @@ const AddEventModal = ({ onClose, open, handleAddEvent }) => {
 
     const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files
-        // const listImg = []
-        // for (let i = 0; i < selectedFile.length; i++) {
-        //     listImg.push(selectedFile[i])
-        // }
-        // setImage(listImg)
-        setImage(selectedFile[0])
+        const listImg = []
+        for (let i = 0; i < selectedFile.length; i++) {
+            listImg.push(selectedFile[i])
+        }
+        setImage(listImg)
+    }
+
+    const handleDeleteImageRoom = (index: number) => {
+        const newListImg = [...image]
+        newListImg.splice(index, 1)
+        setImage(newListImg)
     }
 
     return (
@@ -169,14 +175,18 @@ const AddEventModal = ({ onClose, open, handleAddEvent }) => {
                             />
                         </DemoContainer>
                     </LocalizationProvider>
-                    {image && (
-                        <div className="w-[130px] h-[130px] relative mb-[20px]">
-                            <img src={URL.createObjectURL(image)} alt="" className="object-cover" />
-                            <div className="absolute top-[10px] right-[10px]" onClick={() => setImage(null)}>
-                                <IconButton>
-                                    <Clear ></Clear>
-                                </IconButton>
-                            </div>
+                    {image.length != 0 && (
+                        <div className="flex gap-[5px] flex-nowrap overflow-x-auto mb-[20px]">
+                            {image.map((item, index) => (
+                                <div key={index} className="flex-[0_0_130px] h-[130px] relative">
+                                    <img src={URL.createObjectURL(item)} alt="" className="object-cover" />
+                                    <div className="absolute top-[10px] right-[10px]" onClick={() => handleDeleteImageRoom(index)}>
+                                        <IconButton>
+                                            <Clear ></Clear>
+                                        </IconButton>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
                     )}
 

@@ -68,14 +68,14 @@ const AdminEventPage = () => {
                     <TableBody>
                         {event.map((row, index) => (
                             <TableRow
-                                key={row.name}
+                                key={index}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell component="th" scope="row">
                                     {index + 1}
                                 </TableCell>
                                 <TableCell>{row.title}</TableCell>
-                                <TableCell>{row.from + ' đến ' + row.to}</TableCell>
+                                <TableCell>{row.from + ' - ' + row.to}</TableCell>
                                 <TableCell>
                                     <div className="html-output ml-[30px]" dangerouslySetInnerHTML={{ __html: row.content }} />
                                 </TableCell>
