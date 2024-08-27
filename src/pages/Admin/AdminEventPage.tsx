@@ -4,6 +4,8 @@ import { useContext, useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import axiosInstance from "~/axios/axiosConfig"
 import AddEventModal from "~/components/Event/AddEventModal"
+import DeleteEventModal from "~/components/Event/DeleteEventModal"
+import EditEventModal from "~/components/Event/EditEventModal"
 import UserContext from "~/contexts/UserContext"
 
 
@@ -13,7 +15,10 @@ const AdminEventPage = () => {
     const navigate = useNavigate()
 
     const [event, setEvent] = useState([])
+    const [dataEvent, setDataEvent] = useState(null)
     const [openAdd, setOpenAdd] = useState(false)
+    const [openEdit, setOpenEdit] = useState(false)
+    const [openDelete, setOpenDelete] = useState(false)
 
     const getAllEvent = async () => {
         try {
@@ -28,8 +33,6 @@ const AdminEventPage = () => {
         (async () => {
             const data = await getAllEvent()
             setEvent(data)
-            console.log(data);
-
         })();
     }, [])
 
@@ -40,17 +43,40 @@ const AdminEventPage = () => {
         })
     }
 
-    const handleOnClickEdit = (row) => {
+    const handleEditEvent = (value) => {
+        setEvent(prev => {
+            const index = prev.findIndex(item => item.id == value.id)
+            const newEvent = [...prev]
+            newEvent[index] = {
+                ...value
+            }
 
+            return newEvent
+        })
+    }
+
+    const handleDeleteEvent = () => {
+        setEvent(prev => {
+            const newEvent = [...prev]
+            return newEvent.filter(item => item.id != dataEvent.id)
+        })
+    }
+
+    const handleOnClickEdit = (row) => {
+        setOpenEdit(true)
+        setDataEvent(row)
     }
 
     const handleOnClickDelete = (row) => {
-
+        setOpenDelete(true)
+        setDataEvent(row)
     }
 
     return (
         <>
             <AddEventModal open={openAdd} onClose={() => setOpenAdd(false)} handleAddEvent={handleAddEvent} />
+            <EditEventModal event={dataEvent} open={openEdit} onClose={() => setOpenEdit(false)} handleEditEvent={handleEditEvent}/>
+            <DeleteEventModal event={dataEvent} open={openDelete} onClose={() => setOpenDelete(false)} handleDeleteEvent={handleDeleteEvent}/>
             <div className="text-right mb-[20px]">
                 <Button onClick={() => setOpenAdd(true)} variant="contained">Thêm event</Button>
             </div>

@@ -47,50 +47,64 @@ const validationSchema = yup.object({
 
 });
 
-const AddEventModal = ({ onClose, open, handleAddEvent, event }) => {
-    const [content, setContent] = useState(event.content || '')
-    const [oldImage, setOldImage] = useState(event.img)
+const EditEventModal = ({ onClose, open, handleEditEvent, event }) => {
+    const [content, setContent] = useState('')
+    const [oldImage, setOldImage] = useState(null)
     const [newImage, setNewImage] = useState(null)
     const [loading, setLoading] = useState(false)
-    const {snackBar, setSnackBar} = useContext(SnackBarContext)
+    const { snackBar, setSnackBar } = useContext(SnackBarContext)
 
     const formik = useFormik<IEvent>({
         initialValues: {
-            title: '',
-            from: dayjs(),
-            to: dayjs()
+            title: event?.title || '',
+            from: event?.from ? dayjs(event.from, 'DD/MM/YYYY') : dayjs(),
+            to: event?.to ? dayjs(event.to, 'DD/MM/YYYY') : dayjs()
         },
         validationSchema: validationSchema,
+        enableReinitialize: true,
         onSubmit: (values) => {
             handleSubmit(values)
         },
     });
 
+    useEffect(() => {
+        setContent(event?.content || '')
+        setOldImage(event?.img || null)
+    }, [event])
+
     const handleSubmit = async (values) => {
         setLoading(true)
         try {
             let resUpload = []
-            if (image.length != 0) {
+            if (newImage) {
                 const formData = new FormData()
-                image.map((item, index) => formData.append(`file[${index}]`, item))
-                const res = await axiosInstance.post('upload', formData, {headers: {'Content-Type': 'multipart/form-data'}})
+                formData.append(`file[0]`, newImage)
+                const res = await axiosInstance.post('upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } })
                 resUpload = res.data
             }
-            const res = await axiosInstance.post('event/create', {
+            const payload = {
+                id: event?.id || 0,
                 ...values,
                 from: dayjs(values.from).format('YYYY-MM-DD'),
                 to: dayjs(values.to).format('YYYY-MM-DD'),
-                img: resUpload[0] || '',
+                ...(!oldImage && { img: resUpload[0] || '' }),
                 content
+            }
+            await axiosInstance.post('event/update', payload)
+            handleEditEvent({
+                ...payload,
+                from: dayjs(values.from).format('DD/MM/YYYY'),
+                to: dayjs(values.to).format('DD/MM/YYYY'),
+                img: newImage ? (resUpload[0] || '') : oldImage
             })
-            handleAddEvent(res.data)
             setSnackBar({
                 ...snackBar,
                 open: true,
-                message: 'Tạo chương trình thành công',
+                message: 'Cập nhật chương trình thành công',
                 status: 'success'
             })
             onClose()
+            setNewImage(null)
         } catch (e) {
             setSnackBar({
                 ...snackBar,
@@ -104,17 +118,12 @@ const AddEventModal = ({ onClose, open, handleAddEvent, event }) => {
 
     const handleUploadImage = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files
-        const listImg = []
-        for (let i = 0; i < selectedFile.length; i++) {
-            listImg.push(selectedFile[i])
-        }
-        setImage(listImg)
+        setNewImage(selectedFile[0])
+        setOldImage(null)
     }
 
-    const handleDeleteImageRoom = (index: number) => {
-        const newListImg = [...image]
-        newListImg.splice(index, 1)
-        setImage(newListImg)
+    const handleDeleteImageRoom = (type: number) => { // 0 - old, 1 - new
+        type == 0 ? setOldImage(null) : setNewImage(null)
     }
 
     return (
@@ -175,21 +184,26 @@ const AddEventModal = ({ onClose, open, handleAddEvent, event }) => {
                             />
                         </DemoContainer>
                     </LocalizationProvider>
-                    {image.length != 0 && (
-                        <div className="flex gap-[5px] flex-nowrap overflow-x-auto mb-[20px]">
-                            {image.map((item, index) => (
-                                <div key={index} className="flex-[0_0_130px] h-[130px] relative">
-                                    <img src={URL.createObjectURL(item)} alt="" className="object-cover" />
-                                    <div className="absolute top-[10px] right-[10px]" onClick={() => handleDeleteImageRoom(index)}>
-                                        <IconButton>
-                                            <Clear ></Clear>
-                                        </IconButton>
-                                    </div>
-                                </div>
-                            ))}
+                    {oldImage && (
+                        <div className="w-[130px] h-[130px] relative mb-[20px]">
+                            <img src={`${import.meta.env.VITE_REACT_APP_URL_RESOURCE}${oldImage}`} alt="" className="object-cover" />
+                            <div className="absolute top-[10px] right-[10px]" onClick={() => handleDeleteImageRoom(0)}>
+                                <IconButton>
+                                    <Clear ></Clear>
+                                </IconButton>
+                            </div>
                         </div>
                     )}
-
+                    {newImage && (
+                        <div className="w-[130px] h-[130px] relative mb-[20px]">
+                            <img src={URL.createObjectURL(newImage)} alt="" className="object-cover" />
+                            <div className="absolute top-[10px] right-[10px]" onClick={() => handleDeleteImageRoom(1)}>
+                                <IconButton>
+                                    <Clear ></Clear>
+                                </IconButton>
+                            </div>
+                        </div>
+                    )}
                     <Button
                         component="label"
                         role={undefined}
@@ -201,7 +215,7 @@ const AddEventModal = ({ onClose, open, handleAddEvent, event }) => {
                         <VisuallyHiddenInput type="file" onChange={handleUploadImage} />
                     </Button>
                     <LoadingButton color="primary" variant="contained" fullWidth type="submit" className="!mt-[20px]" loading={loading}>
-                        Thêm mới
+                        Cập nhật
                     </LoadingButton>
                 </form>
             </Box>
@@ -209,4 +223,4 @@ const AddEventModal = ({ onClose, open, handleAddEvent, event }) => {
     )
 }
 
-export default AddEventModal
+export default EditEventModal

@@ -21,15 +21,15 @@ const EventPage = () => {
         })()
     }, []);
     return (
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-7xl mx-auto px-[20px]">
             <div className="flex items-center py-[20px]">
                 <div className="flex-1 border-t-[3px] border-dashed h-0 border-primary"></div>
                 <div className="w-[450px] text-shadow-line text-primary text-[35px] text-center font-primary md:text-[30px] font-semibold">TIN MỚI VÀ ƯU ĐÃI</div>
                 <div className="flex-1 border-t-[3px] border-dashed h-0 border-primary"></div>
             </div>
-            <div className="flex flex-wrap gap-[8%] md:gap-[4%]">
+            <div className="flex flex-wrap gap-[8%] md:gap-[4%] mb-[20px]">
                 {event.map(item => (
-                    <div className="w-[28%] md:w-[48%] flex items-center flex-col">
+                    <div className="w-[28%] md:w-[48%] sm:w-full flex items-center flex-col sm:mb-[20px] md:mb-[20px]">
                         <div className="h-[300px] w-[280px]">
                             <img src={`${import.meta.env.VITE_REACT_APP_URL_RESOURCE}${item.img}`} className="object-cover" alt="" />
                         </div>
