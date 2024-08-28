@@ -5,6 +5,7 @@ import AdminEventPage from "./pages/Admin/AdminEventPage";
 import AdminRoomPage from "./pages/Admin/AdminRoomPage";
 import AdminSetting from "./pages/Admin/AdminSetting";
 import AdminUserPage from "./pages/Admin/AdminUserPage";
+import EventDetailPage from "./pages/EventPage/EventDetailPage";
 import EventPage from "./pages/EventPage/EventPage";
 import HomePage from "./pages/HomePage/HomePage";
 import HomestayPage from "./pages/HomestayPage/HomestayPage";
@@ -28,7 +29,10 @@ const routes = [
   { path: "/admin/event", element: AdminEventPage },
 
   //Room detail
-  { path: "/room/:roomCode/:roomId", element: RoomDetail }
+  { path: "/room/:roomCode/:roomId", element: RoomDetail },
+
+  //Event detail
+  { path: "/event/:eventName/:eventId", element: EventDetailPage }
 ];
 
 export default routes;
