@@ -1,5 +1,6 @@
+import { Close } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { Box, Link, Modal, Typography } from "@mui/material";
+import { Box, IconButton, Link, Modal, Typography } from "@mui/material";
 import moment from "moment";
 import { useContext, useState } from "react";
 import { Link as LinkRouter } from "react-router-dom";
@@ -16,6 +17,7 @@ const style = {
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 3,
+    pt: 7,
     borderRadius: '10px'
 };
 
@@ -57,6 +59,18 @@ const Booking = ({ open, onClose, infoBooking, afterBooking }) => {
             disableAutoFocus={true}
         >
             <Box sx={style}>
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={(theme) => ({
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: theme.palette.grey[500],
+                    })}
+                >
+                    <Close />
+                </IconButton>
                 <Typography variant="h6" align="center">
                     THÔNG TIN ĐẶT PHÒNG
                 </Typography>

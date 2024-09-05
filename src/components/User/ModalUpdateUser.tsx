@@ -1,5 +1,6 @@
+import { Close } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { Box, Modal, TextField } from "@mui/material"
+import { Box, IconButton, Modal, TextField } from "@mui/material"
 import { useFormik } from "formik";
 import { useContext, useState } from "react";
 import * as yup from "yup"
@@ -14,7 +15,8 @@ const style = {
     width: 400,
     bgcolor: 'background.paper',
     boxShadow: 24,
-    p: 4,
+    p: 3,
+    pt: 7,
     borderRadius: '10px'
 };
 
@@ -35,9 +37,9 @@ const validationSchema = yup.object({
 
 const ModalUpdateUser = ({ open, handleClose, userInfo, handleUpdateUser }) => {
     const [loading, setLoading] = useState(false)
-    const {snackBar, setSnackBar} = useContext(SnackBarContext)
+    const { snackBar, setSnackBar } = useContext(SnackBarContext)
 
-    const formik = useFormik<{id: Number, username: string, phone: string, email: string, point: number}>({
+    const formik = useFormik<{ id: Number, username: string, phone: string, email: string, point: number }>({
         initialValues: {
             id: userInfo?.id || 0,
             username: userInfo?.username || '',
@@ -77,6 +79,18 @@ const ModalUpdateUser = ({ open, handleClose, userInfo, handleUpdateUser }) => {
     return (
         <Modal open={open} onClose={handleClose}>
             <Box sx={style}>
+                <IconButton
+                    aria-label="close"
+                    onClick={handleClose}
+                    sx={(theme) => ({
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: theme.palette.grey[500],
+                    })}
+                >
+                    <Close />
+                </IconButton>
                 <form onSubmit={formik.handleSubmit} autoComplete="off">
                     <TextField
                         fullWidth

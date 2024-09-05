@@ -1,4 +1,4 @@
-import { Edit } from "@mui/icons-material";
+import { Close, Edit } from "@mui/icons-material";
 import { Box, Button, IconButton, Modal, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ const style = {
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 3,
+    pt: 7,
     borderRadius: '10px'
 };
 
@@ -68,6 +69,18 @@ const AdminUserPage = () => {
             </div>
             <Modal open={openRegister} onClose={() => setOpenRegister(pre => !pre)}>
                 <Box sx={style}>
+                    <IconButton
+                        aria-label="close"
+                        onClick={() => setOpenRegister(pre => !pre)}
+                        sx={(theme) => ({
+                            position: 'absolute',
+                            right: 8,
+                            top: 8,
+                            color: theme.palette.grey[500],
+                        })}
+                    >
+                        <Close />
+                    </IconButton>
                     <RegisterForm onClose={() => setOpenRegister(pre => !pre)} isAdminRegister={true} handleAddUser={handleAddUser}></RegisterForm>
                 </Box>
             </Modal>
@@ -98,7 +111,7 @@ const AdminUserPage = () => {
                                 <TableCell>{row.point}</TableCell>
                                 <TableCell>
                                     <div className="flex">
-                                        <IconButton onClick={() => {setOpenModalUpdateUser(true); setUserInfo(row)}} color="primary" aria-label="Edit">
+                                        <IconButton onClick={() => { setOpenModalUpdateUser(true); setUserInfo(row) }} color="primary" aria-label="Edit">
                                             <Edit />
                                         </IconButton>
                                     </div>

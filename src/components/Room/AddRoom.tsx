@@ -1,4 +1,4 @@
-import { Clear, CloudUpload } from "@mui/icons-material";
+import { Clear, Close, CloudUpload } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Modal, Select, styled, TextField } from "@mui/material";
 import { useFormik } from "formik";
@@ -30,7 +30,8 @@ const style = {
     width: 500,
     bgcolor: 'background.paper',
     boxShadow: 24,
-    p: 4,
+    p: 3,
+    pt: 7,
     borderRadius: '10px',
     overflow: 'auto',
     height: '90%'
@@ -173,12 +174,25 @@ const AddRoomModal = ({ open, onClose, handleAddRoom }) => {
     return (
         <Modal
             open={open}
-            onClose={() => { onClose() }}
+            onClose={onClose}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
             disableAutoFocus={true}
         >
+
             <Box sx={style}>
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={(theme) => ({
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: theme.palette.grey[500],
+                    })}
+                >
+                    <Close />
+                </IconButton>
                 <form onSubmit={formik.handleSubmit} autoComplete="off">
                     <TextField
                         fullWidth

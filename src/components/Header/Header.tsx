@@ -27,7 +27,7 @@ const styleMenu = {
 
 const Header = () => {
     const { t } = useTranslation();
-    const {openMenuLogin: open, setOpenMenuLogin: setOpen} = useContext(MenuLoginContext);
+    const { openMenuLogin: open, setOpenMenuLogin: setOpen } = useContext(MenuLoginContext);
     const [openMenu, setOpenMenu] = useState(false);
     const location = useLocation()
 
@@ -48,7 +48,9 @@ const Header = () => {
         bgcolor: 'background.paper',
         boxShadow: 24,
         p: 4,
-        borderRadius: '10px'
+        borderRadius: '10px',
+        maxHeight: '90%',
+        overflow: 'auto'
     };
     const { user } = useContext(UserContext);
 
@@ -83,6 +85,18 @@ const Header = () => {
                     >
                         <Fade in={open}>
                             <Box sx={style}>
+                                <IconButton
+                                    aria-label="close"
+                                    onClick={handleClose}
+                                    sx={(theme) => ({
+                                        position: 'absolute',
+                                        right: 8,
+                                        top: 8,
+                                        color: theme.palette.grey[500],
+                                    })}
+                                >
+                                    <Close />
+                                </IconButton>
                                 <AuthForm onClose={handleClose}></AuthForm>
                             </Box>
                         </Fade>

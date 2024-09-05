@@ -1,4 +1,4 @@
-import { Clear, CloudUpload } from "@mui/icons-material";
+import { Clear, Close, CloudUpload } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, IconButton, Modal, TextField } from "@mui/material";
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
@@ -21,7 +21,8 @@ const style = {
     width: 500,
     bgcolor: 'background.paper',
     boxShadow: 24,
-    p: 4,
+    p: 3,
+    pt: 7,
     borderRadius: '10px',
     overflow: 'auto',
     maxHeight: '90%'
@@ -120,6 +121,18 @@ const AddEventModal = ({ onClose, open, handleAddEvent }) => {
             disableAutoFocus={true}
         >
             <Box sx={style}>
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={(theme) => ({
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: theme.palette.grey[500],
+                    })}
+                >
+                    <Close />
+                </IconButton>
                 <form onSubmit={formik.handleSubmit} autoComplete="off">
                     <TextField
                         fullWidth

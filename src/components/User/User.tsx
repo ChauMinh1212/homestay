@@ -1,5 +1,5 @@
-import { Email, Phone, Redeem } from "@mui/icons-material";
-import { Avatar, Box, Modal, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from "@mui/material";
+import { Close, Email, Phone, Redeem } from "@mui/icons-material";
+import { Avatar, Box, IconButton, Modal, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tabs, Typography } from "@mui/material";
 import { useContext, useState } from "react";
 import axiosInstance from "~/axios/axiosConfig";
 import UserContext from "~/contexts/UserContext";
@@ -12,7 +12,7 @@ const style = {
     width: 500,
     bgcolor: 'background.paper',
     boxShadow: 24,
-    // p: 4,
+    pt: 5,
     borderRadius: '10px',
     overflow: 'hidden'
 };
@@ -67,6 +67,18 @@ const User = ({ open, onClose }) => {
             disableAutoFocus={true}
         >
             <Box sx={style}>
+                <IconButton
+                    aria-label="close"
+                    onClick={onClose}
+                    sx={(theme) => ({
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: theme.palette.grey[500],
+                    })}
+                >
+                    <Close />
+                </IconButton>
                 <Tabs
                     value={value}
                     onChange={handleChange}
