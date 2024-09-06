@@ -5,6 +5,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import axiosInstance from "~/axios/axiosConfig";
 import ModalCheckBooking from "~/components/Booking/ModalCheckBooking.tsx";
 import './RoomDetail.css';
+import { TYPE_DETAIL_ROOM } from "~/common/contants";
 
 // const StyledMenu = styled(Menu)`
 //   .MuiList-root {
@@ -21,7 +22,6 @@ import './RoomDetail.css';
 const RoomDetail = () => {
     const { roomId } = useParams()
     const [room, setRoom] = useState(null)
-    const type = ['S.HOME SÀI GÒN', 'S.HOME SÀI GÒN', 'S.HOME HABOUR', 'S.HOME GARDEN']
     const [htmlContent, setHtmlContent] = useState('')
     const [hiddenPrice, setHiddenPrice] = useState(false)
     const [hiddenPriceService, setHiddenPriceService] = useState(false)
@@ -59,7 +59,7 @@ const RoomDetail = () => {
                     <>
                         <div className="flex justify-between items-center">
                             <div className="font-semibold text-[23px]">
-                                <span>{type[room.type]}: </span><span>{room.code} (</span><span>{room.name}</span>)
+                                <span>{TYPE_DETAIL_ROOM[room.type]}: </span><span>{room.code} (</span><span>{room.name}</span>)
                             </div>
                             <div className="flex items-center cursor-pointer">
                                 <img className="w-[15px] h-[15px] mr-[5px]" src="/images/forward.png" alt="" />
@@ -125,7 +125,7 @@ const RoomDetail = () => {
 
                             </div>
                             {/* <StyledMenu open={open} onClose={handleClose}> */}
-                                <ModalCheckBooking roomId={roomId} open={open} handleClose={handleClose} anchorEl={anchorEl}/>
+                                <ModalCheckBooking roomCode={room.code} roomId={roomId} open={open} handleClose={handleClose} anchorEl={anchorEl}/>
                             {/* </StyledMenu> */}
                         </div>
 
