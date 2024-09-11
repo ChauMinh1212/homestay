@@ -1,13 +1,15 @@
+import dayjs from "dayjs"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import axiosInstance from "~/axios/axiosConfig"
-import { COMBO_LIST, TYPE_DETAIL_ROOM } from "~/common/contants"
+import { TYPE_DETAIL_ROOM } from "~/common/contants"
 import Calender from "~/components/Calendar/Calendar"
 import Combo from "~/components/Combo/Combo"
 
 const BookingPage = () => {
-    const { roomId } = useParams()
+    const { roomCode, roomId, from, to } = useParams()
     const [room, setRoom] = useState(null)
+    const [value, setValue] = useState([dayjs(from), dayjs(to)])
 
     const getDateDetail = async (roomId: number) => {
         try {
@@ -28,19 +30,43 @@ const BookingPage = () => {
     }
 
     const handleComboClick = () => {
-        
+
+    }
+
+    const handleChangeDate = (e) => {
+        // if (
+        //     e[0] &&
+        //     e[1] &&
+        //     disableDate.some(disabledDate =>
+        //         e[0].isBefore(disabledDate) && e[1].isAfter(disabledDate)
+        //     )
+        // ) {
+        //     return;
+        // }
+
+        if (!e[1]) {
+            const newUrl = `/booking/${roomCode}/${roomId}/${dayjs(e[0]).format('MM-DD-YYYY')}/${dayjs(e[0]).format('MM-DD-YYYY')}`;
+            window.history.pushState({ path: newUrl }, '', newUrl);
+            setValue([e[0], e[0]])
+            return
+        }
+        const newUrl = `/booking/${roomCode}/${roomId}/${dayjs(e[0]).format('MM-DD-YYYY')}/${dayjs(e[1]).format('MM-DD-YYYY')}`;
+        window.history.pushState({ path: newUrl }, '', newUrl);
+        setValue(e);
     }
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         (async () => {
             const [timeDetail, roomDetail] = await Promise.all([getDateDetail(+roomId), getRoomDetail(+roomId)])
+
             setRoom(roomDetail);
         })();
     }, [])
 
     return (
-        <div>
-            <div className="max-w-3xl mx-auto px-[40px]">
+        <div className="max-w-7xl px-[40px] mx-auto">
+            <div className="max-w-3xl mx-auto">
                 <div className="flex items-center gap-[10px]">
                     <div className="w-[70px] h-[70px] rounded-[50%] overflow-hidden border-[1px] border-black">
                         <img src={`${import.meta.env.VITE_REACT_APP_URL_RESOURCE}${room?.img[0]}`} alt="" />
@@ -60,16 +86,28 @@ const BookingPage = () => {
                 <div className="flex justify-evenly">
                     <div className="text-center">
                         <p className="font-semibold">Nhận phòng</p>
-                        <p className="text-[14px]">01/02/2024</p>
+                        <p className="text-[14px]">{dayjs(value[0]).format('DD/MM/YYYY')}</p>
                     </div>
                     <div className="text-center">
                         <p className="font-semibold">Trả phòng</p>
-                        <p className="text-[14px]">01/02/2024</p>
+                        <p className="text-[14px]">{dayjs(value[1]).format('DD/MM/YYYY')}</p>
                     </div>
                 </div>
-                <Calender></Calender>
+                <Calender value={value} handleChangeDate={handleChangeDate}></Calender>
             </div>
-            <Combo handleComboClickEx={handleComboClick}></Combo>
+            <div className="w-[625px] mx-auto mt-[15px]">
+                <Combo handleComboClickEx={handleComboClick}></Combo>
+            </div>
+            <div className="flex max-w-3xl mx-auto justify-between">
+                <div className="text-center font-dejavu text-white bg-[#8f7a5a] p-2 rounded-[10px] w-[200px]">
+                    <p className="font-semibold">Nhận phòng</p>
+                    <p className="text-[14px]">{dayjs(value[0]).format('DD/MM/YYYY')}</p>
+                </div>
+                <div className="text-center font-dejavu text-white bg-[#8f7a5a] p-2 rounded-[10px] w-[200px]">
+                    <p className="font-semibold">Trả phòng</p>
+                    <p className="text-[14px]">{dayjs(value[1]).format('DD/MM/YYYY')}</p>
+                </div>
+            </div>
         </div>
     )
 }

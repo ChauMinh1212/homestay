@@ -1,17 +1,24 @@
 import { styled } from '@mui/material/styles'
 import { LocalizationProvider } from "@mui/x-date-pickers"
 import { DateRangeCalendar, LicenseInfo } from "@mui/x-date-pickers-pro"
+import {
+  DateRangeCalendar as MuiDateRangeCalendar,
+  DateRangeCalendarProps
+} from '@mui/x-date-pickers-pro/DateRangeCalendar'
+import {
+  DateRangePickerDay as MuiDateRangePickerDay,
+  DateRangePickerDayProps
+} from '@mui/x-date-pickers-pro/DateRangePickerDay'
+import {
+  PickersRangeCalendarHeader,
+  PickersRangeCalendarHeaderProps
+} from '@mui/x-date-pickers-pro/PickersRangeCalendarHeader'
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo"
 import dayjs, { Dayjs } from "dayjs"
 import './Calendar.css'
-import {
-  DateRangePickerDay as MuiDateRangePickerDay,
-  DateRangePickerDayProps,
-} from '@mui/x-date-pickers-pro/DateRangePickerDay';
 
-dayjs.locale('vi', {
-  name: 'vi',
+dayjs.locale('vi-custom', {
   weekdays: ['Chủ Nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'],
   weekdaysShort: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
   weekdaysMin: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
@@ -52,24 +59,30 @@ const Calender = (prop) => {
       // outsideCurrentMonth,
       day
     }) => ({
+      '& .MuiButtonBase-root': {
+        fontWeight: '500'
+      },
+      '& .MuiButtonBase-root.Mui-disabled': {
+        textDecoration: 'line-through'
+      },
+      ...(availableHoursDate && isAvailableHoursDate(day) && {
         '& .MuiButtonBase-root': {
-          fontWeight: '500'
+          color: '#8f7a5a'
         },
-        '& .MuiButtonBase-root.Mui-disabled': {
-          textDecoration: 'line-through'
-        },
-        ...(availableHoursDate && isAvailableHoursDate(day) && {
-          '& .MuiButtonBase-root': {
-            color: '#8f7a5a'
-          },
-        })
+      })
     }),
   ) as React.ComponentType<DateRangePickerDayProps<Dayjs>>;
 
+  const DateRangePickerHeader = styled(PickersRangeCalendarHeader)({
+    '& .MuiTypography-root': {
+      fontWeight: '600'
+    }
+  }) as React.ComponentType<PickersRangeCalendarHeaderProps<Dayjs>>;
+
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi">
+    <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="vi-custom">
       <DemoContainer components={['DateRangeCalendar']}>
-        <DateRangeCalendar slots={{day: DateRangePickerDay}} disablePast value={value} onChange={handleChangeDate} dayOfWeekFormatter={(date) => week[dayjs(date).day()]} shouldDisableDate={shouldDisableDate} />
+        <DateRangeCalendar slots={{ day: DateRangePickerDay, calendarHeader: DateRangePickerHeader }} disablePast value={value} onChange={handleChangeDate} dayOfWeekFormatter={(date) => week[dayjs(date).day()]} shouldDisableDate={shouldDisableDate} />
       </DemoContainer>
     </LocalizationProvider>
   )

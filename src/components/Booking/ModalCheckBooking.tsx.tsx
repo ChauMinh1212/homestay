@@ -3,10 +3,11 @@ import { DateRange } from "@mui/lab"
 import { Menu } from "@mui/material"
 import dayjs, { Dayjs } from "dayjs"
 import moment from "moment"
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import axiosInstance from "~/axios/axiosConfig"
 import Calender from "../Calendar/Calendar"
 import { useNavigate } from "react-router-dom"
+import SnackBarContext from "~/contexts/SnackBarContext"
 
 const hasThreeConsecutiveHoursFree = (booking, num) => {
     // Tạo một mảng 24 phần tử, khởi tạo tất cả các phần tử là false (chưa được đặt)
@@ -91,6 +92,7 @@ const ModalCheckBooking = ({ roomId, roomCode, open, handleClose, anchorEl }) =>
     const [availableHoursDate, setAvailableHoursDate] = useState([])
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
+    const {snackBar, setSnackBar} = useContext(SnackBarContext)
 
     const handleChangeDate = (e) => {
         if (
@@ -143,7 +145,16 @@ const ModalCheckBooking = ({ roomId, roomCode, open, handleClose, anchorEl }) =>
     }
 
     const navigateToBookingPage = () => {
-        navigate(`/booking/${roomCode}/${roomId}`)
+        if(!value[0]) {
+            setSnackBar({
+                ...snackBar,
+                open: true,
+                status: 'error',
+                message: 'Vui lòng chọn ngày!!!'
+            })
+            return
+        }
+        navigate(`/booking/${roomCode}/${roomId}/${dayjs(value[0]).format('MM-DD-YYYY')}/${value[1] ? dayjs(value[1]).format('MM-DD-YYYY'): dayjs(value[0]).format('DD-MM-YYYY')}`)
     }
 
     useEffect(() => {
@@ -197,10 +208,10 @@ const ModalCheckBooking = ({ roomId, roomCode, open, handleClose, anchorEl }) =>
                         </div>
                     </div>
                     <div className="flex-1 flex justify-center items-center font-dejavu">
-                        <div className="text-[#8f7a5a] mr-[30px] text-[20px]" onClick={navigateToBookingPage}>
+                        <div className="text-[#8f7a5a] mr-[30px] text-[20px] cursor-pointer" onClick={navigateToBookingPage}>
                             Chi tiết giờ
                         </div>
-                        <div className="text-white px-[20px] py-[5px] bg-[#8f7a5a] w-fit text-[20px] rounded-[15px]" onClick={navigateToBookingPage}>
+                        <div className="text-white px-[20px] py-[5px] bg-[#8f7a5a] w-fit text-[20px] rounded-[15px] cursor-pointer" onClick={navigateToBookingPage}>
                             Đặt ngay
                         </div>
                     </div>

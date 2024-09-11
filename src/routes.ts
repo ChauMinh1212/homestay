@@ -36,7 +36,7 @@ const routes = [
   { path: "/event/:eventName/:eventId", element: EventDetailPage },
 
   //Booking
-  {path: "/booking/:roomCode/:roomId", element: BookingPage}
+  {path: "/booking/:roomCode/:roomId/:from/:to", element: BookingPage}
 ];
 
 export default routes;

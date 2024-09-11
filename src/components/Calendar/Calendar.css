@@ -11,3 +11,8 @@
 .MuiDateRangePickerDay-root.MuiDateRangePickerDay-rangeIntervalDayHighlight.MuiDateRangePickerDay-outsideCurrentMonth {
     background-color: transparent!important;
 }
+
+.MuiDayCalendar-root .MuiDayCalendar-header .MuiTypography-root {
+    color: #8f7a5a;
+    font-weight: 600;
+}
