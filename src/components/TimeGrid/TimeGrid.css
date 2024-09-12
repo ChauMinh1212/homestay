@@ -1,0 +1,15 @@
+/* TimeGrid.css */
+.time-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 8 cột */
+    grid-gap: 1px; /* Khoảng cách giữa các ô */
+    /* border: 1px solid black; Viền khung */
+  }
+  
+  .time-slot {
+    padding: 7px;
+    border: 1px solid black; /* Viền của từng ô */
+    text-align: center; /* Căn giữa nội dung */
+    box-sizing: border-box; /* Bao gồm cả viền trong kích thước */
+  }
+  

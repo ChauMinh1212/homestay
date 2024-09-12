@@ -5,6 +5,7 @@ import axiosInstance from "~/axios/axiosConfig"
 import { TYPE_DETAIL_ROOM } from "~/common/contants"
 import Calender from "~/components/Calendar/Calendar"
 import Combo from "~/components/Combo/Combo"
+import TimeGrid from "~/components/TimeGrid/TimeGrid"
 
 const BookingPage = () => {
     const { roomCode, roomId, from, to } = useParams()
@@ -98,7 +99,7 @@ const BookingPage = () => {
             <div className="w-[625px] mx-auto mt-[15px]">
                 <Combo handleComboClickEx={handleComboClick}></Combo>
             </div>
-            <div className="flex max-w-3xl mx-auto justify-between">
+            <div className="flex max-w-3xl mx-auto justify-between mb-[20px]">
                 <div className="text-center font-dejavu text-white bg-[#8f7a5a] p-2 rounded-[10px] w-[200px]">
                     <p className="font-semibold">Nhận phòng</p>
                     <p className="text-[14px]">{dayjs(value[0]).format('DD/MM/YYYY')}</p>
@@ -108,6 +109,8 @@ const BookingPage = () => {
                     <p className="text-[14px]">{dayjs(value[1]).format('DD/MM/YYYY')}</p>
                 </div>
             </div>
+            <TimeGrid></TimeGrid>
+            
         </div>
     )
 }
