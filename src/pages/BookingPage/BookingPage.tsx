@@ -11,6 +11,7 @@ const BookingPage = () => {
     const { roomCode, roomId, from, to } = useParams()
     const [room, setRoom] = useState(null)
     const [value, setValue] = useState([dayjs(from), dayjs(to)])
+    const [timeDetail, setTimeDetail] = useState(null)
 
     const getDateDetail = async (roomId: number) => {
         try {
@@ -62,6 +63,7 @@ const BookingPage = () => {
             const [timeDetail, roomDetail] = await Promise.all([getDateDetail(+roomId), getRoomDetail(+roomId)])
 
             setRoom(roomDetail);
+            setTimeDetail(timeDetail)
         })();
     }, [])
 
@@ -109,8 +111,33 @@ const BookingPage = () => {
                     <p className="text-[14px]">{dayjs(value[1]).format('DD/MM/YYYY')}</p>
                 </div>
             </div>
-            <TimeGrid></TimeGrid>
-            
+            <TimeGrid isSameDay={from == to ? true : false} timeDetail={timeDetail && timeDetail.filter(item => item.date == dayjs(value[0]).format('DD/MM/YYYY') || item.date == dayjs(value[1]).format('DD/MM/YYYY'))}></TimeGrid>
+            <div className="mt-[40px] relative mb-[20px]">
+                <div className="absolute top-[-18px] left-[50%] translate-x-[-50%] bg-[#8f7a5a] w-fit p-[8px] text-white font-semibold rounded-[10px]">
+                    <p><span>{TYPE_DETAIL_ROOM[room?.type]}: </span><span>{room?.code} (</span><span>{room?.name}</span>)</p>
+                </div>
+                <div className="w-fit border-[1px] border-black rounded-[10px] mx-auto px-[40px] pt-[30px] py-[8px]">
+                    <div className="flex gap-[40px]">
+                        <div className="font-semibold">
+                            <p>NHẬN HOME:</p>
+                            <p>TRẢ HOME:</p>
+                            <p>THỜI GIAN LƯU TRÚ:</p>
+                            <p>SỐ LƯỢNG KHÁCH:</p>
+                            <p>THÀNH TIỀN:</p>
+                            <p>SỐ ĐIỂM TÍCH LUỸ:</p>
+                        </div>
+                        <div>
+                            <p>13:30 giờ, ngày 31/7/2024</p>
+                            <p>19:00 giờ, ngày 31/7/2024</p>
+                            <p>COMBO 3</p>
+                            <p>COMBO 3</p>
+                            <p>710.000 đồng</p>
+                            <p>14 điểm</p>
+                        </div>
+                    </div>
+                    <div className="cursor-pointer bg-[#8f7a5a] p-[2px_16px_3px_16px] text-white font-semibold w-fit ml-auto rounded-[15px]">Đặt ngay</div>
+                </div>
+            </div>
         </div>
     )
 }

@@ -42,7 +42,7 @@ const Footer = () => {
         //         </div>
         //     </div>
         // </div>
-        <div className="bg-slate-100 py-[20px] text-center text-[20px] md:text-[15px]">
+        <div className="bg-[#e5e1e1] py-[20px] text-center text-[20px] md:text-[15px]">
             <p className="font-bold ">THÔNG TIN LIÊN HỆ</p>
             <div className="">
                 <span className="font-bold">Hotline: </span>

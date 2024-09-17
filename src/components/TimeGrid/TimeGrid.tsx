@@ -1,9 +1,31 @@
-import "./TimeGrid.css"; // Import file CSS
+import { useEffect, useState } from "react";
+import "./TimeGrid.css";
+import clsx from "clsx";
 
-const TimeGrid = () => {
+const TimeGrid = ({ isSameDay, timeDetail }) => {
     const times = [];
+    const [startTime, setStartTime] = useState(null);
+    const [endTime, setEndTime] = useState(null);
+    const [time, setTime] = useState(timeDetail)
 
-    // Tạo danh sách các mốc thời gian từ 00:00 đến 23:30
+    console.log(time);
+    
+
+    useEffect(() => {
+        setTime(timeDetail)
+    }, [timeDetail])
+
+    const handleSlotClick = (slot) => {
+        if (startTime == null && endTime == null) {
+            setStartTime(slot)
+        } else if (startTime != null && endTime == null && slot > startTime) {
+            setEndTime(slot)
+        } else if (startTime != null && endTime != null) {
+            setStartTime(slot)
+            setEndTime(null)
+        }
+    };
+
     for (let hour = 0; hour < 24; hour++) {
         for (let minute = 0; minute < 60; minute += 30) {
             const time = `${hour.toString().padStart(2, '0')}:${minute
@@ -14,13 +36,43 @@ const TimeGrid = () => {
     }
 
     return (
-        <div className="max-w-[500px] mx-auto">
-            <div className="time-grid ">
-                {times.map((time, index) => (
-                    <div key={index} className="time-slot">
-                        {time}
+        <div className="max-w-[600px] mx-auto">
+            <div
+                className={clsx('flex', {
+                    'justify-center': !!isSameDay,
+                    'justify-between': !isSameDay
+                })}
+            >
+                <div className="time-grid ">
+                    {times.map((time, index) => (
+                        <div
+                            key={index}
+                            className={clsx('time-slot', {
+                                'selected': ((startTime != null && startTime <= index && index <= endTime) || (startTime === index))
+                            })}
+                            onClick={() => handleSlotClick(index)}
+                        >
+                            {time}
+                        </div>
+                    )
+                    )}
+                </div>
+                {!isSameDay && (
+                    <div className="time-grid">
+                        {times.map((time, index) => (
+                            <div
+                                key={index + 48}
+                                className={clsx('time-slot', {
+                                    'selected': ((startTime != null && startTime <= (index + 48) && (index + 48) <= endTime) || (startTime === (index + 48)))
+                                })}
+                                onClick={() => handleSlotClick(index + 48)}
+                            >
+                                {time}
+                            </div>
+                        )
+                        )}
                     </div>
-                ))}
+                )}
             </div>
             <div className="flex flex-col mt-[10px]">
                 <div className="flex items-center">

@@ -19,6 +19,7 @@
     "@mui/x-date-pickers-pro": "^7.10.0",
     "animate.css": "^4.1.1",
     "axios": "^1.6.8",
+    "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "dayjs": "^1.11.11",
     "dotenv": "^16.4.5",

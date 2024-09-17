@@ -1,15 +1,18 @@
-/* TimeGrid.css */
 .time-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); /* 8 cột */
-    grid-gap: 1px; /* Khoảng cách giữa các ô */
-    /* border: 1px solid black; Viền khung */
-  }
-  
-  .time-slot {
-    padding: 7px;
-    border: 1px solid black; /* Viền của từng ô */
-    text-align: center; /* Căn giữa nội dung */
-    box-sizing: border-box; /* Bao gồm cả viền trong kích thước */
-  }
-  
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 1px;
+}
+
+.time-slot {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid black;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.1s;
+}
+
+.time-slot.selected {
+  background-color: #c7bb96;
+  color: #fff;
+}

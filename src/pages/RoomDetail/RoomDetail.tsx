@@ -7,18 +7,6 @@ import ModalCheckBooking from "~/components/Booking/ModalCheckBooking.tsx";
 import './RoomDetail.css';
 import { TYPE_DETAIL_ROOM } from "~/common/contants";
 
-// const StyledMenu = styled(Menu)`
-//   .MuiList-root {
-//     padding: 0
-//   }
-//   .MuiPaper-root {
-//     border-radius: 10px;
-//     right: 16px;
-//     left: auto!important;
-//     max-height: none
-//   }
-// `;
-
 const RoomDetail = () => {
     const { roomId } = useParams()
     const [room, setRoom] = useState(null)
