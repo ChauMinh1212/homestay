@@ -1,8 +1,10 @@
 import dayjs from "dayjs"
+import moment from "moment"
 import { useEffect, useState } from "react"
 import { useParams } from "react-router-dom"
 import axiosInstance from "~/axios/axiosConfig"
 import { TYPE_DETAIL_ROOM } from "~/common/contants"
+import { checkDate } from "~/components/Booking/ModalCheckBooking.tsx"
 import Calender from "~/components/Calendar/Calendar"
 import Combo from "~/components/Combo/Combo"
 import TimeGrid from "~/components/TimeGrid/TimeGrid"
@@ -12,6 +14,8 @@ const BookingPage = () => {
     const [room, setRoom] = useState(null)
     const [value, setValue] = useState([dayjs(from), dayjs(to)])
     const [timeDetail, setTimeDetail] = useState(null)
+    const [disableDate, setDisableDate] = useState([])
+    const [availableHoursDate, setAvailableHoursDate] = useState([])
 
     const getDateDetail = async (roomId: number) => {
         try {
@@ -36,15 +40,15 @@ const BookingPage = () => {
     }
 
     const handleChangeDate = (e) => {
-        // if (
-        //     e[0] &&
-        //     e[1] &&
-        //     disableDate.some(disabledDate =>
-        //         e[0].isBefore(disabledDate) && e[1].isAfter(disabledDate)
-        //     )
-        // ) {
-        //     return;
-        // }
+        if (
+            e[0] &&
+            e[1] &&
+            disableDate.some(disabledDate =>
+                e[0].isBefore(disabledDate) && e[1].isAfter(disabledDate)
+            )
+        ) {
+            return;
+        }
 
         if (!e[1]) {
             const newUrl = `/booking/${roomCode}/${roomId}/${dayjs(e[0]).format('MM-DD-YYYY')}/${dayjs(e[0]).format('MM-DD-YYYY')}`;
@@ -61,7 +65,11 @@ const BookingPage = () => {
         window.scrollTo(0, 0);
         (async () => {
             const [timeDetail, roomDetail] = await Promise.all([getDateDetail(+roomId), getRoomDetail(+roomId)])
-
+            const checkDateValid = checkDate(timeDetail)
+            const dateDisable = checkDateValid.filter(item => item.type == 0).map(item => moment(item.date, 'DD/MM/YYYY'))
+            const dateAvailableHours = checkDateValid.filter(item => item.type == 1).map(item => moment(item.date, 'DD/MM/YYYY'))
+            setDisableDate(dateDisable)
+            setAvailableHoursDate(dateAvailableHours)
             setRoom(roomDetail);
             setTimeDetail(timeDetail)
         })();
@@ -96,7 +104,7 @@ const BookingPage = () => {
                         <p className="text-[14px]">{dayjs(value[1]).format('DD/MM/YYYY')}</p>
                     </div>
                 </div>
-                <Calender value={value} handleChangeDate={handleChangeDate}></Calender>
+                <Calender value={value} handleChangeDate={handleChangeDate} disableDate={disableDate} availableHoursDate={availableHoursDate}></Calender>
             </div>
             <div className="w-[625px] mx-auto mt-[15px]">
                 <Combo handleComboClickEx={handleComboClick}></Combo>
@@ -111,12 +119,15 @@ const BookingPage = () => {
                     <p className="text-[14px]">{dayjs(value[1]).format('DD/MM/YYYY')}</p>
                 </div>
             </div>
-            <TimeGrid isSameDay={from == to ? true : false} timeDetail={timeDetail && timeDetail.filter(item => item.date == dayjs(value[0]).format('DD/MM/YYYY') || item.date == dayjs(value[1]).format('DD/MM/YYYY'))}></TimeGrid>
+            <TimeGrid
+                isSameDay={dayjs(value[1]).diff(value[0]) == 0 ? true : false}
+                timeDetail={timeDetail && timeDetail.filter(item => item.date == dayjs(value[0]).format('DD/MM/YYYY') || item.date == dayjs(value[1]).format('DD/MM/YYYY'))}
+            />
             <div className="mt-[40px] relative mb-[20px]">
-                <div className="absolute top-[-18px] left-[50%] translate-x-[-50%] bg-[#8f7a5a] w-fit p-[8px] text-white font-semibold rounded-[10px]">
+                <div className="absolute top-[-18px] left-[50%] translate-x-[-50%] bg-[#8f7a5a] p-[8px] text-white font-semibold rounded-[10px]">
                     <p><span>{TYPE_DETAIL_ROOM[room?.type]}: </span><span>{room?.code} (</span><span>{room?.name}</span>)</p>
                 </div>
-                <div className="w-fit border-[1px] border-black rounded-[10px] mx-auto px-[40px] pt-[30px] py-[8px]">
+                <div className="max-w-[500px] border-[1px] border-black rounded-[10px] mx-auto px-[40px] pt-[30px] py-[8px]">
                     <div className="flex gap-[40px]">
                         <div className="font-semibold">
                             <p>NHẬN HOME:</p>

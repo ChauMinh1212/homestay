@@ -61,7 +61,7 @@ const isFreeBetween = (booking, startHour, endHour) => {
     return true; // Nếu tất cả các giờ từ startHour đến endHour đều trống thì trả về true
 }
 
-const checkDate = (dateArr) => { // 0 - Full, 1 - Trống h trong ngày, 2 - Trống 14h - 12h hôm sau
+export const checkDate = (dateArr) => { // 0 - Full, 1 - Trống h trong ngày, 2 - Trống 14h - 12h hôm sau
     return dateArr.map((item, index) => {
         if(!hasThreeConsecutiveHoursFree(item.booking, 3)){
             return {date: item.date, type: 0}
@@ -110,30 +110,6 @@ const ModalCheckBooking = ({ roomId, roomCode, open, handleClose, anchorEl }) =>
             return
         }
     }
-
-    const isDateDisabled = (date) => {
-        return disableDate.some(disabledDate => date.isSame(disabledDate, 'day'));
-    };
-
-    const shouldDisableDate = (date) => {
-        // Disable bất kỳ ngày nào có trong mảng `disabledDates`
-        if (isDateDisabled(date)) {
-            return true;
-        }
-
-        // Nếu đã chọn ngày bắt đầu và ngày kết thúc
-        if (value[0] && value[1]) {
-            // Kiểm tra nếu phạm vi chứa bất kỳ ngày nào trong mảng `disabledDates`
-            const isRangeDisabled = disableDate.some(disabledDate =>
-                value[0].isBefore(disabledDate) && value[1].isAfter(disabledDate)
-            );
-            if (isRangeDisabled) {
-                return true;
-            }
-        }
-
-        return false;
-    };
 
     const getDateDetail = async (roomId: number) => {
         try {
@@ -188,7 +164,7 @@ const ModalCheckBooking = ({ roomId, roomCode, open, handleClose, anchorEl }) =>
                     </div>
                 </div>
                 <div>
-                    {!loading && <Calender disableDate={disableDate} availableHoursDate={availableHoursDate} shouldDisableDate={shouldDisableDate} value={value} handleChangeDate={handleChangeDate} />}
+                    {!loading && <Calender disableDate={disableDate} availableHoursDate={availableHoursDate} value={value} handleChangeDate={handleChangeDate} />}
                 </div>
                 <div className="flex">
                     <div className="flex-1">

@@ -40,11 +40,32 @@ const week = ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7']
 LicenseInfo.setLicenseKey('e0d9bb8070ce0054c9d9ecb6e82cb58fTz0wLEU9MzI0NzIxNDQwMDAwMDAsUz1wcmVtaXVtLExNPXBlcnBldHVhbCxLVj0y');
 
 const Calender = (prop) => {
-  const { value, handleChangeDate, shouldDisableDate, availableHoursDate } = prop
+  const { value, handleChangeDate, availableHoursDate, disableDate } = prop
 
-  // const isDisableDate = (date) => {
-  //   return disableDate.some(dataDisable => date.isSame(dataDisable, 'day'));
-  // };
+  const isDateDisabled = (date) => {
+    return disableDate && disableDate.some(disabledDate => date.isSame(disabledDate, 'day'));
+  };
+
+  const shouldDisableDate = (date) => {
+    if (!disableDate) return false
+    // Disable bất kỳ ngày nào có trong mảng `disabledDates`
+    if (isDateDisabled(date)) {
+      return true;
+    }
+
+    // Nếu đã chọn ngày bắt đầu và ngày kết thúc
+    if (value[0] && value[1]) {
+      // Kiểm tra nếu phạm vi chứa bất kỳ ngày nào trong mảng `disabledDates`
+      const isRangeDisabled = disableDate.some(disabledDate =>
+        value[0].isBefore(disabledDate) && value[1].isAfter(disabledDate)
+      );
+      if (isRangeDisabled) {
+        return true;
+      }
+    }
+
+    return false;
+  };
 
   const isAvailableHoursDate = (date) => {
     return availableHoursDate.some(dataDisable => date.isSame(dataDisable, 'day'));

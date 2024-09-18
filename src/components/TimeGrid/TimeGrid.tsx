@@ -7,12 +7,12 @@ const TimeGrid = ({ isSameDay, timeDetail }) => {
     const [startTime, setStartTime] = useState(null);
     const [endTime, setEndTime] = useState(null);
     const [time, setTime] = useState(timeDetail)
-
     console.log(time);
-    
 
     useEffect(() => {
         setTime(timeDetail)
+        setStartTime(null)
+        setEndTime(null)
     }, [timeDetail])
 
     const handleSlotClick = (slot) => {
