@@ -10,6 +10,7 @@ import { useState } from "react";
 import Calender from "../Calendar/Calendar";
 import Combo from "../Combo/Combo";
 import './NewDateRangePicker.css';
+import { COMBO_LIST } from "~/common/contants";
 
 const StyledMenu = styled(Menu)`
   .MuiList-root {
@@ -113,7 +114,7 @@ const NewDateRangePicker = ({ setDateDisplay, setTimeDisplay, timeDisplay, dateD
                     </LocalizationProvider>
                 </div>
             </div>
-            <Combo handleComboClickEx={handleComboClick}></Combo>
+            <Combo handleComboClickEx={handleComboClick} combo_list={COMBO_LIST}></Combo>
         </div>
     )
 }

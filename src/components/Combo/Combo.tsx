@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Menu } from "@mui/material";
+import clsx from "clsx";
 import { useState } from "react";
-import { COMBO_LIST } from "~/common/contants"
 
 const StyledMenu = styled(Menu)`
   .MuiList-root {
@@ -12,7 +12,7 @@ const StyledMenu = styled(Menu)`
   }
 `;
 
-const Combo = ({handleComboClickEx}) => {
+const Combo = ({ handleComboClickEx, combo_list }) => {
     const [combo, setCombo] = useState(['COMBO', 'THỜI GIAN'])
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -23,7 +23,10 @@ const Combo = ({handleComboClickEx}) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
-    const handleClickIn = (name, time, inday) => {
+    const handleClickIn = (name, time, inday, disabled) => {
+        if(disabled){
+            return
+        }
         setCombo([name, time[0] + ' - ' + time[1] + (inday == 1 ? '' : ' hôm sau')])
         handleComboClickEx(time, inday)
         handleClose()
@@ -50,10 +53,13 @@ const Combo = ({handleComboClickEx}) => {
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                <div className="w-[400px] border-t-[1px] border-l-[1px] border-r-[1px] border-black rounded-[10px]">
+                <div className="w-[400px] border-t-[1px] border-l-[1px] border-r-[1px] border-black rounded-[10px] overflow-hidden">
                     {
-                        COMBO_LIST.map((item, index) => (
-                            <div key={index} className="flex px-[10px] py-[5px] justify-between border-b-[1px] border-b-black cursor-pointer" onClick={() => handleClickIn(item.name, item.time, item.inday)}>
+                        combo_list && combo_list.map((item, index) => (
+                            <div key={index} className={clsx(
+                                'flex px-[10px] py-[5px] justify-between border-b-[1px] border-b-black',
+                                item.disabled ? 'cursor-not-allowed bg-[#d3d3d3]' : 'cursor-pointer'
+                                )} onClick={() => handleClickIn(item.name, item.time, item.inday, item?.disabled)}>
                                 <div className="text-[#8f7a5a] font-semibold">
                                     {item.name}
                                 </div>

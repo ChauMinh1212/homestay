@@ -130,7 +130,12 @@ const ModalCheckBooking = ({ roomId, roomCode, open, handleClose, anchorEl }) =>
             })
             return
         }
-        navigate(`/booking/${roomCode}/${roomId}/${dayjs(value[0]).format('MM-DD-YYYY')}/${value[1] ? dayjs(value[1]).format('MM-DD-YYYY'): dayjs(value[0]).format('DD-MM-YYYY')}`)
+        navigate(
+            `/booking/${roomCode}/${roomId}`,
+            {
+                state: {from: dayjs(value[0]).format('MM-DD-YYYY'), to: value[1] ? dayjs(value[1]).format('MM-DD-YYYY'): dayjs(value[0]).format('DD-MM-YYYY')}
+            }
+        )
     }
 
     useEffect(() => {

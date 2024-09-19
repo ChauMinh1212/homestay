@@ -1,21 +1,27 @@
 import dayjs from "dayjs"
 import moment from "moment"
 import { useEffect, useState } from "react"
-import { useParams } from "react-router-dom"
+import { useLocation, useParams } from "react-router-dom"
 import axiosInstance from "~/axios/axiosConfig"
-import { TYPE_DETAIL_ROOM } from "~/common/contants"
+import { COMBO_LIST, TYPE_DETAIL_ROOM } from "~/common/contants"
 import { checkDate } from "~/components/Booking/ModalCheckBooking.tsx"
 import Calender from "~/components/Calendar/Calendar"
 import Combo from "~/components/Combo/Combo"
 import TimeGrid from "~/components/TimeGrid/TimeGrid"
 
+
+
+
 const BookingPage = () => {
-    const { roomCode, roomId, from, to } = useParams()
+    const location = useLocation();
+    const { from, to } = location.state || {};
+    const { roomCode, roomId } = useParams()
     const [room, setRoom] = useState(null)
     const [value, setValue] = useState([dayjs(from), dayjs(to)])
     const [timeDetail, setTimeDetail] = useState(null)
     const [disableDate, setDisableDate] = useState([])
     const [availableHoursDate, setAvailableHoursDate] = useState([])
+
 
     const getDateDetail = async (roomId: number) => {
         try {
@@ -51,13 +57,9 @@ const BookingPage = () => {
         }
 
         if (!e[1]) {
-            const newUrl = `/booking/${roomCode}/${roomId}/${dayjs(e[0]).format('MM-DD-YYYY')}/${dayjs(e[0]).format('MM-DD-YYYY')}`;
-            window.history.pushState({ path: newUrl }, '', newUrl);
             setValue([e[0], e[0]])
             return
         }
-        const newUrl = `/booking/${roomCode}/${roomId}/${dayjs(e[0]).format('MM-DD-YYYY')}/${dayjs(e[1]).format('MM-DD-YYYY')}`;
-        window.history.pushState({ path: newUrl }, '', newUrl);
         setValue(e);
     }
 
@@ -107,7 +109,7 @@ const BookingPage = () => {
                 <Calender value={value} handleChangeDate={handleChangeDate} disableDate={disableDate} availableHoursDate={availableHoursDate}></Calender>
             </div>
             <div className="w-[625px] mx-auto mt-[15px]">
-                <Combo handleComboClickEx={handleComboClick}></Combo>
+                <Combo handleComboClickEx={handleComboClick} combo_list={timeDetail && checkCombo(timeDetail, dayjs(value[0]).format('DD/MM/YYYY'), dayjs(value[1]).format('DD/MM/YYYY'))}></Combo>
             </div>
             <div className="flex max-w-3xl mx-auto justify-between mb-[20px]">
                 <div className="text-center font-dejavu text-white bg-[#8f7a5a] p-2 rounded-[10px] w-[200px]">
@@ -154,3 +156,43 @@ const BookingPage = () => {
 }
 
 export default BookingPage
+
+const checkCombo = (timeDetail, dateFrom, dateTo) => {
+    const checkDateFrom = timeDetail.find(item => item.date == dateFrom)
+    const checkDateTo = timeDetail.find(item => item.date == dateTo)
+
+    if (!checkDateFrom && !checkDateTo) {
+        return COMBO_LIST.map(item => ({ ...item, disabled: false }))
+    }
+    if (checkDateFrom) {
+        return COMBO_LIST.map(item => {
+            const checkIsDisable = checkDateFrom.booking.map(book => {
+                return isTimeOverlap(item.time[0], item.time[1], book.from, book.to)
+            })
+            
+            return {
+                ...item,
+                disabled: checkIsDisable.some(s => s == true)
+            }
+        })
+    }
+    // if(checkDateFrom && checkDateTo){
+
+    // }
+}
+
+const isTimeOverlap = (startTime1, endTime1, startTime2, endTime2) => {
+    // Chuyển đổi thời gian thành số phút từ đầu ngày để dễ so sánh
+    const convertToMinutes = (time) => {
+        const [hours, minutes] = time.split(':').map(Number);
+        return hours * 60 + minutes;
+    };
+
+    const start1 = convertToMinutes(startTime1);
+    const end1 = convertToMinutes(endTime1);
+    const start2 = convertToMinutes(startTime2);
+    const end2 = convertToMinutes(endTime2);
+
+    // Kiểm tra khoảng thời gian thứ hai có nằm trong khoảng thời gian thứ nhất hay không
+    return (start2 >= start1 && start2 < end1) || (end2 > start1 && end2 <= end1) || (start2 <= start1 && end2 >= end1);
+}
