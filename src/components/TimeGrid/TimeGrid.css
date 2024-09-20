@@ -16,3 +16,9 @@
   background-color: #c7bb96;
   color: #fff;
 }
+
+.time-slot.disabled {
+  background-color: #e5e1e1;
+  color: #fff;
+  cursor: not-allowed;
+}

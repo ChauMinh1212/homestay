@@ -22,7 +22,6 @@ const BookingPage = () => {
     const [disableDate, setDisableDate] = useState([])
     const [availableHoursDate, setAvailableHoursDate] = useState([])
 
-
     const getDateDetail = async (roomId: number) => {
         try {
             const res = await axiosInstance.get(`room/date-valid?id=${roomId}`)

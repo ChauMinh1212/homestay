@@ -6,17 +6,44 @@ const TimeGrid = ({ isSameDay, timeDetail }) => {
     const times = [];
     const [startTime, setStartTime] = useState(null);
     const [endTime, setEndTime] = useState(null);
-    const [time, setTime] = useState(timeDetail)
-    console.log(time);
+    const [timeDisableFrom, setTimeDisableFrom] = useState([])
+    const [timeDisableTo, setTimeDisableTo] = useState([])
+
+    const handleTimeDisable = (time) => {
+        if (time.length != 0) {
+            time.map((item, index) => {
+                item.booking.map(book => {
+                    const indexFrom = times.findIndex(it => {
+                        if (book.from == '24:00') return it == '23:30'
+                        return it == book.from
+                    })
+                    const indexTo = times.findIndex(it => {
+                        if (book.to == '24:00') return it == '23:30'
+                        return it == book.from
+                    })
+                    index == 0 ? setTimeDisableFrom(prev => [...prev, ...times.splice(indexFrom, indexTo + 1)]) : setTimeDisableTo(prev => [...prev, ...times.splice(indexFrom, indexTo + 1)])
+                })
+            })
+        }
+        else {
+            setTimeDisableFrom([])
+            setTimeDisableTo([])
+        }
+    }
 
     useEffect(() => {
-        setTime(timeDetail)
-        setStartTime(null)
-        setEndTime(null)
+        timeDetail && handleTimeDisable(timeDetail)
+
+        return () => {
+            setStartTime(null)
+            setEndTime(null)
+        };
     }, [timeDetail])
 
     const handleSlotClick = (slot) => {
-        if (startTime == null && endTime == null) {
+        console.log(timeDisableFrom.includes(times[slot]));
+        
+        if (startTime == null && endTime == null && !timeDisableFrom.includes(times[slot])) {
             setStartTime(slot)
         } else if (startTime != null && endTime == null && slot > startTime) {
             setEndTime(slot)
@@ -48,9 +75,10 @@ const TimeGrid = ({ isSameDay, timeDetail }) => {
                         <div
                             key={index}
                             className={clsx('time-slot', {
-                                'selected': ((startTime != null && startTime <= index && index <= endTime) || (startTime === index))
+                                'selected': ((startTime != null && startTime <= index && index <= endTime) || (startTime === index)),
+                                'disabled': timeDisableFrom.includes(time)
                             })}
-                            onClick={() => handleSlotClick(index)}
+                            onClick={() => handleSlotClick(index,)}
                         >
                             {time}
                         </div>
@@ -63,7 +91,9 @@ const TimeGrid = ({ isSameDay, timeDetail }) => {
                             <div
                                 key={index + 48}
                                 className={clsx('time-slot', {
-                                    'selected': ((startTime != null && startTime <= (index + 48) && (index + 48) <= endTime) || (startTime === (index + 48)))
+                                    'selected': ((startTime != null && startTime <= (index + 48) && (index + 48) <= endTime) || (startTime === (index + 48))),
+                                    'disabled': timeDisableTo.includes(time)
+
                                 })}
                                 onClick={() => handleSlotClick(index + 48)}
                             >

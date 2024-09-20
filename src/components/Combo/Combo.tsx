@@ -58,9 +58,11 @@ const Combo = ({ handleComboClickEx, combo_list }) => {
                         combo_list && combo_list.map((item, index) => (
                             <div key={index} className={clsx(
                                 'flex px-[10px] py-[5px] justify-between border-b-[1px] border-b-black',
-                                item.disabled ? 'cursor-not-allowed bg-[#d3d3d3]' : 'cursor-pointer'
+                                item.disabled ? 'cursor-not-allowed bg-[#0000001f] text-[#00000042]' : 'cursor-pointer'
                                 )} onClick={() => handleClickIn(item.name, item.time, item.inday, item?.disabled)}>
-                                <div className="text-[#8f7a5a] font-semibold">
+                                <div className={clsx('text-[#8f7a5a] font-semibold',
+                                    item.disabled && 'text-[#00000042]'
+                                )}>
                                     {item.name}
                                 </div>
                                 <div className="font-semibold">
