@@ -45,9 +45,9 @@ const TimeGrid = ({ isSameDay, timeDetail }) => {
         
         if (startTime == null && endTime == null && !timeDisableFrom.includes(times[slot])) {
             setStartTime(slot)
-        } else if (startTime != null && endTime == null && slot > startTime) {
+        } else if (startTime != null && endTime == null && slot > startTime && !timeDisableFrom.includes(times[slot])) {
             setEndTime(slot)
-        } else if (startTime != null && endTime != null) {
+        } else if (startTime != null && endTime != null && !timeDisableFrom.includes(times[slot])) {
             setStartTime(slot)
             setEndTime(null)
         }
