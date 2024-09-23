@@ -22,3 +22,7 @@
   color: #fff;
   cursor: not-allowed;
 }
+
+.time-slot.disabled.clean {
+  background-color: #ba2e2d;
+}

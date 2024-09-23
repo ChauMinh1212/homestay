@@ -65,7 +65,7 @@ export const checkDate = (dateArr) => { // 0 - Full, 1 - Trống h trong ngày, 
     return dateArr.map((item, index) => {
         if(!hasThreeConsecutiveHoursFree(item.booking, 3)){
             return {date: item.date, type: 0}
-        } else if (isFreeBetween(item.booking, 14, 24) && (!dateArr[index + 1]?.booking || isFreeBetween(dateArr[index + 1].booking, 0, 12))){
+        } else if (isFreeBetween(item.booking, 13, 24) && (!dateArr[index + 1]?.booking || isFreeBetween(dateArr[index + 1].booking, 0, 12))){
             return {date: item.date, type: 2}
         } else {
             return {date: item.date, type: 1}
