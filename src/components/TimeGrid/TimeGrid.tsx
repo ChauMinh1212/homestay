@@ -24,9 +24,9 @@ const TimeGrid = ({ isSameDay, timeDetail }) => {
                     const timesCopy = [...times]
                     index == 0
                         ?
-                        setTimeDisableFrom(prev => [...prev, ...timesCopy.slice(indexFrom, indexTo + 1)])
+                        setTimeDisableFrom(prev => [...prev, timesCopy.slice(indexFrom, indexTo + 2)])
                         :
-                        setTimeDisableTo(prev => [...prev, ...timesCopy.slice(indexFrom, indexTo + 4)])
+                        setTimeDisableTo(prev => [...prev, timesCopy.slice(indexFrom, indexTo + 2)])
                 })
             })
         }
@@ -47,25 +47,25 @@ const TimeGrid = ({ isSameDay, timeDetail }) => {
         if (
             startTime == null
             && endTime == null
-            && !timeDisableFrom.includes(times[slot])
-            && !timeDisableTo.includes(times[slot - 48])
+            && !timeDisableFrom.some(subArr => subArr.includes(times[slot]))
+            && !timeDisableTo.some(subArr => subArr.includes(times[slot - 48]))
         ) {
             setStartTime(slot)
         } else if (
             startTime != null
             && endTime == null
             && slot > startTime
-            && !timeDisableFrom.includes(times[slot])
-            && !timeDisableTo.includes(times[slot - 48])
-            && times[slot - 48]
+            && !timeDisableFrom.some(subArr => subArr.includes(times[slot]))
+            && !timeDisableTo.some(subArr => subArr.includes(times[slot - 48]))
+            && 
         ) {
             setEndTime(slot)
         } else if (
             startTime != null
             && endTime == null
             && slot < startTime
-            && !timeDisableFrom.includes(times[slot])
-            && !timeDisableTo.includes(times[slot - 48])
+            && !timeDisableFrom.some(subArr => subArr.includes(times[slot]))
+            && !timeDisableTo.some(subArr => subArr.includes(times[slot - 48]))
         ) {
             setStartTime(slot)
             setEndTime(startTime)
@@ -73,8 +73,8 @@ const TimeGrid = ({ isSameDay, timeDetail }) => {
         else if (
             startTime != null
             && endTime != null
-            && !timeDisableFrom.includes(times[slot])
-            && !timeDisableTo.includes(times[slot - 48])
+            && !timeDisableFrom.some(subArr => subArr.includes(times[slot]))
+            && !timeDisableTo.some(subArr => subArr.includes(times[slot - 48]))
         ) {
             setStartTime(slot)
             setEndTime(null)
@@ -104,8 +104,8 @@ const TimeGrid = ({ isSameDay, timeDetail }) => {
                             key={index}
                             className={clsx('time-slot', {
                                 'selected': ((startTime != null && startTime <= index && index <= endTime) || (startTime === index)),
-                                'disabled': timeDisableFrom.includes(time),
-                                'clean': isSameDay && timeDisableFrom.slice(-3).includes(time)
+                                'disabled': timeDisableFrom.some(subArr => subArr.includes(time)),
+                                'clean': time != '23:30' && timeDisableFrom.some(subArr => subArr.slice(-1).includes(time))
                             })}
                             onClick={() => handleSlotClick(index)}
                         >
@@ -121,8 +121,8 @@ const TimeGrid = ({ isSameDay, timeDetail }) => {
                                 key={index + 48}
                                 className={clsx('time-slot', {
                                     'selected': ((startTime != null && startTime <= (index + 48) && (index + 48) <= endTime) || (startTime === (index + 48))),
-                                    'disabled': timeDisableTo.includes(time),
-                                    'clean': timeDisableTo.slice(-3).includes(time)
+                                    'disabled': timeDisableTo.some(subArr => subArr.includes(time)),
+                                    'clean': time != '23:30' && timeDisableTo.some(subArr => subArr.slice(-1).includes(time))
                                 })}
                                 onClick={() => handleSlotClick(index + 48)}
                             >
