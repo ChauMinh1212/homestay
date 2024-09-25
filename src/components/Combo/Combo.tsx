@@ -15,6 +15,8 @@ const StyledMenu = styled(Menu)`
 const Combo = ({ handleComboClickEx, combo_list }) => {
     const [combo, setCombo] = useState(['COMBO', 'THỜI GIAN'])
 
+    console.log(combo_list);
+    
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {

@@ -9,10 +9,13 @@ const TimeGrid = ({ isSameDay, timeDetail }) => {
     const [timeDisableFrom, setTimeDisableFrom] = useState([])
     const [timeDisableTo, setTimeDisableTo] = useState([])
 
+    console.log(timeDetail);
+
+
     const handleTimeDisable = (time) => {
         if (time.length != 0) {
             time.map((item, index) => {
-                item.booking.map(book => {
+                item?.booking?.map(book => {
                     const indexFrom = times.findIndex(it => {
                         if (book.from == '24:00') return it == '23:30'
                         return it == book.from
@@ -155,8 +158,8 @@ const TimeGrid = ({ isSameDay, timeDetail }) => {
 export default TimeGrid;
 
 const checkTimeValid = (arr, from, to) => {
-    for(let i = 0; i <= arr.length - 1; i++){
-        if(
+    for (let i = 0; i <= arr.length - 1; i++) {
+        if (
             (from > arr[i][arr[i].length - 1] && to > arr[i][arr[i].length - 1])
             ||
             (from < arr[i][0] && to < arr[i][0])

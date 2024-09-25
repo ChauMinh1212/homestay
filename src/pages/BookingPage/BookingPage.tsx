@@ -105,7 +105,7 @@ const BookingPage = () => {
                 <Calender value={value} handleChangeDate={handleChangeDate} disableDate={disableDate} availableHoursDate={availableHoursDate}></Calender>
             </div>
             <div className="w-[625px] mx-auto mt-[15px]">
-                <Combo handleComboClickEx={handleComboClick} combo_list={timeDetail && checkCombo(timeDetail, dayjs(value[0]).format('DD/MM/YYYY'), dayjs(value[1]).format('DD/MM/YYYY'))}></Combo>
+                <Combo handleComboClickEx={handleComboClick} combo_list={timeDetail && timeDetail.length != 0 && checkCombo(timeDetail, dayjs(value[0]).format('DD/MM/YYYY'), dayjs(value[1]).format('DD/MM/YYYY'))}></Combo>
             </div>
             <div className="flex max-w-3xl mx-auto justify-between mb-[20px]">
                 <div className="text-center font-dejavu text-white bg-[#8f7a5a] p-2 rounded-[10px] w-[200px]">
@@ -119,7 +119,11 @@ const BookingPage = () => {
             </div>
             <TimeGrid
                 isSameDay={dayjs(value[1]).diff(value[0]) == 0 ? true : false}
-                timeDetail={timeDetail && timeDetail.filter(item => item.date == dayjs(value[0]).format('DD/MM/YYYY') || item.date == dayjs(value[1]).format('DD/MM/YYYY'))}
+                timeDetail={timeDetail &&
+                    [
+                        timeDetail.find(item => item.date == dayjs(value[0]).format('DD/MM/YYYY')) || {},
+                        timeDetail.find(item => item.date == dayjs(value[1]).format('DD/MM/YYYY'))
+                    ]}
             />
             <div className="mt-[40px] relative mb-[20px]">
                 <div className="absolute top-[-18px] left-[50%] translate-x-[-50%] bg-[#8f7a5a] p-[8px] text-white font-semibold rounded-[10px]">
@@ -164,7 +168,7 @@ const checkCombo = (timeDetail, dateFrom, dateTo) => {
     if (!checkDateFrom && !checkDateTo) {
         return COMBO_LIST.map(item => ({ ...item, disabled: false }))
     }
-    if (checkDateFrom && !checkDateTo) {
+    if (checkDateFrom && !checkDateTo && diff == 1) {
         return COMBO_LIST.map(item => {
             const checkIsDisable = checkDateFrom.booking.map(book => {
                 return item.inday == 1 ? isTimeOverlap(
@@ -200,7 +204,7 @@ const checkCombo = (timeDetail, dateFrom, dateTo) => {
                     book.from,
                     book.to
                 )
-                
+
                 const isDisableTo = checkDateTo.booking.map(bookTo => isTimeOverlap(
                     '00:00',
                     moment(item.time[1], 'HH:mm').add(1, 'hour').format('HH:mm'),
@@ -210,10 +214,27 @@ const checkCombo = (timeDetail, dateFrom, dateTo) => {
 
                 return isDisableTo || isDisableFrom
             })
-            
+
             return {
                 ...item,
-                disabled: checkIsDisable
+                disabled: checkIsDisable.some(s => s == true)
+            }
+        })
+    }
+    if (!checkDateFrom && checkDateTo) {
+        return COMBO_LIST.map(item => {
+            const checkIsDisable = checkDateTo.booking.map(book => {
+                return isTimeOverlap(
+                    '00:00',
+                    moment(item.time[1], 'HH:mm').add(1, 'hour').format('HH:mm'),
+                    book.from,
+                    book.to
+                )
+            })
+
+            return {
+                ...item,
+                disabled: item.inday == 1 ? false : checkIsDisable.some(s => s == true)
             }
         })
     }
