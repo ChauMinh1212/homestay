@@ -98,7 +98,7 @@ const ModalCheckBooking = ({ roomId, roomCode, open, handleClose, anchorEl }) =>
         if (
             e[0] &&
             e[1] &&
-            disableDate.some(disabledDate =>
+            [...disableDate, ...availableHoursDate].some(disabledDate =>
                 e[0].isBefore(disabledDate) && e[1].isAfter(disabledDate)
             )
         ) {

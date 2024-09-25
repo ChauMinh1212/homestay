@@ -21,12 +21,11 @@ const TimeGrid = ({ isSameDay, timeDetail }) => {
                         if (book.to == '24:00') return it == '23:30'
                         return it == book.to
                     })
-                    const timesCopy = [...times]
                     index == 0
                         ?
-                        setTimeDisableFrom(prev => [...prev, timesCopy.slice(indexFrom, indexTo + 2)])
+                        setTimeDisableFrom(prev => [...prev, Array(indexTo + 2 - indexFrom + 1).fill(0).map((_, i) => i + indexFrom - 1)])
                         :
-                        setTimeDisableTo(prev => [...prev, timesCopy.slice(indexFrom, indexTo + 2)])
+                        setTimeDisableTo(prev => [...prev, Array(indexTo + 2 - indexFrom + 1).fill(0).map((_, i) => i + indexFrom - 1 + 48)])
                 })
             })
         }
@@ -47,25 +46,26 @@ const TimeGrid = ({ isSameDay, timeDetail }) => {
         if (
             startTime == null
             && endTime == null
-            && !timeDisableFrom.some(subArr => subArr.includes(times[slot]))
-            && !timeDisableTo.some(subArr => subArr.includes(times[slot - 48]))
+            && !timeDisableFrom.some(subArr => subArr.includes(slot))
+            && !timeDisableTo.some(subArr => subArr.includes(slot))
         ) {
             setStartTime(slot)
         } else if (
             startTime != null
             && endTime == null
             && slot > startTime
-            && !timeDisableFrom.some(subArr => subArr.includes(times[slot]))
-            && !timeDisableTo.some(subArr => subArr.includes(times[slot - 48]))
-            && 
+            && !timeDisableFrom.some(subArr => subArr.includes(slot))
+            && !timeDisableTo.some(subArr => subArr.includes(slot))
+            && checkTimeValid([...timeDisableFrom, ...timeDisableTo], startTime, slot)
         ) {
             setEndTime(slot)
         } else if (
             startTime != null
             && endTime == null
             && slot < startTime
-            && !timeDisableFrom.some(subArr => subArr.includes(times[slot]))
-            && !timeDisableTo.some(subArr => subArr.includes(times[slot - 48]))
+            && !timeDisableFrom.some(subArr => subArr.includes(slot))
+            && !timeDisableTo.some(subArr => subArr.includes(slot))
+            && checkTimeValid([...timeDisableFrom, ...timeDisableTo], slot, startTime)
         ) {
             setStartTime(slot)
             setEndTime(startTime)
@@ -73,8 +73,8 @@ const TimeGrid = ({ isSameDay, timeDetail }) => {
         else if (
             startTime != null
             && endTime != null
-            && !timeDisableFrom.some(subArr => subArr.includes(times[slot]))
-            && !timeDisableTo.some(subArr => subArr.includes(times[slot - 48]))
+            && !timeDisableFrom.some(subArr => subArr.includes(slot))
+            && !timeDisableTo.some(subArr => subArr.includes(slot))
         ) {
             setStartTime(slot)
             setEndTime(null)
@@ -104,8 +104,8 @@ const TimeGrid = ({ isSameDay, timeDetail }) => {
                             key={index}
                             className={clsx('time-slot', {
                                 'selected': ((startTime != null && startTime <= index && index <= endTime) || (startTime === index)),
-                                'disabled': timeDisableFrom.some(subArr => subArr.includes(time)),
-                                'clean': time != '23:30' && timeDisableFrom.some(subArr => subArr.slice(-1).includes(time))
+                                'disabled': timeDisableFrom.some(subArr => subArr.includes(index)),
+                                'clean': timeDisableFrom.some(subArr => subArr.slice(-1).includes(index)) || timeDisableFrom.some(subArr => subArr.slice(0, 1).includes(index))
                             })}
                             onClick={() => handleSlotClick(index)}
                         >
@@ -121,8 +121,8 @@ const TimeGrid = ({ isSameDay, timeDetail }) => {
                                 key={index + 48}
                                 className={clsx('time-slot', {
                                     'selected': ((startTime != null && startTime <= (index + 48) && (index + 48) <= endTime) || (startTime === (index + 48))),
-                                    'disabled': timeDisableTo.some(subArr => subArr.includes(time)),
-                                    'clean': time != '23:30' && timeDisableTo.some(subArr => subArr.slice(-1).includes(time))
+                                    'disabled': timeDisableTo.some(subArr => subArr.includes(index + 48)),
+                                    'clean': timeDisableTo.some(subArr => subArr.slice(-1).includes(index + 48)) || timeDisableTo.some(subArr => subArr.slice(0, 1).includes(index + 48))
                                 })}
                                 onClick={() => handleSlotClick(index + 48)}
                             >
@@ -153,3 +153,15 @@ const TimeGrid = ({ isSameDay, timeDetail }) => {
 };
 
 export default TimeGrid;
+
+const checkTimeValid = (arr, from, to) => {
+    for(let i = 0; i <= arr.length - 1; i++){
+        if(
+            (from > arr[i][arr[i].length - 1] && to > arr[i][arr[i].length - 1])
+            ||
+            (from < arr[i][0] && to < arr[i][0])
+        ) continue
+        return false
+    }
+    return true
+}

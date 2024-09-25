@@ -9,9 +9,6 @@ import Calender from "~/components/Calendar/Calendar"
 import Combo from "~/components/Combo/Combo"
 import TimeGrid from "~/components/TimeGrid/TimeGrid"
 
-
-
-
 const BookingPage = () => {
     const location = useLocation();
     const { from, to } = location.state || {};
@@ -48,7 +45,7 @@ const BookingPage = () => {
         if (
             e[0] &&
             e[1] &&
-            disableDate.some(disabledDate =>
+            [...disableDate, ...availableHoursDate].some(disabledDate =>
                 e[0].isBefore(disabledDate) && e[1].isAfter(disabledDate)
             )
         ) {
@@ -157,27 +154,69 @@ const BookingPage = () => {
 export default BookingPage
 
 const checkCombo = (timeDetail, dateFrom, dateTo) => {
+    const diff = moment(dateTo, 'DD/MM/YYYY').diff(moment(dateFrom, 'DD/MM/YYYY'), 'day')
     const checkDateFrom = timeDetail.find(item => item.date == dateFrom)
     const checkDateTo = timeDetail.find(item => item.date == dateTo)
 
+    if (diff > 1) {
+        return COMBO_LIST.map(item => ({ ...item, disabled: true }))
+    }
     if (!checkDateFrom && !checkDateTo) {
         return COMBO_LIST.map(item => ({ ...item, disabled: false }))
     }
-    if (checkDateFrom) {
+    if (checkDateFrom && !checkDateTo) {
         return COMBO_LIST.map(item => {
             const checkIsDisable = checkDateFrom.booking.map(book => {
-                return isTimeOverlap(item.time[0], item.time[1], book.from, book.to)
+                return item.inday == 1 ? isTimeOverlap(
+                    moment(item.time[0], 'HH:mm').subtract(1, 'hour').format('HH:mm'),
+                    moment(item.time[1], 'HH:mm').add(1, 'hour').format('HH:mm'),
+                    book.from,
+                    book.to
+                ) : isTimeOverlap(
+                    moment(item.time[0], 'HH:mm').subtract(1, 'hour').format('HH:mm'),
+                    '24:00',
+                    book.from,
+                    book.to
+                )
             })
-            
+
             return {
                 ...item,
                 disabled: checkIsDisable.some(s => s == true)
             }
         })
     }
-    // if(checkDateFrom && checkDateTo){
+    if (checkDateFrom && checkDateTo) {
+        return COMBO_LIST.map(item => {
+            const checkIsDisable = checkDateFrom.booking.map(book => {
+                const isDisableFrom = item.inday == 1 ? isTimeOverlap(
+                    moment(item.time[0], 'HH:mm').subtract(1, 'hour').format('HH:mm'),
+                    moment(item.time[1], 'HH:mm').add(1, 'hour').format('HH:mm'),
+                    book.from,
+                    book.to
+                ) : isTimeOverlap(
+                    moment(item.time[0], 'HH:mm').subtract(1, 'hour').format('HH:mm'),
+                    '24:00',
+                    book.from,
+                    book.to
+                )
+                
+                const isDisableTo = checkDateTo.booking.map(bookTo => isTimeOverlap(
+                    '00:00',
+                    moment(item.time[1], 'HH:mm').add(1, 'hour').format('HH:mm'),
+                    bookTo.from,
+                    bookTo.to
+                )).some(e => e == true)
 
-    // }
+                return isDisableTo || isDisableFrom
+            })
+            
+            return {
+                ...item,
+                disabled: checkIsDisable
+            }
+        })
+    }
 }
 
 const isTimeOverlap = (startTime1, endTime1, startTime2, endTime2) => {
