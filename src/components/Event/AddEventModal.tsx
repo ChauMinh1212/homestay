@@ -6,12 +6,13 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import dayjs, { Dayjs } from "dayjs";
 import { useFormik } from "formik";
-import { useContext, useState } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import * as yup from 'yup';
 import axiosInstance from "~/axios/axiosConfig";
-import SnackBarContext from "~/contexts/SnackBarContext";
 import TextEditor from "../Editor/Editor";
 import { VisuallyHiddenInput } from "../Room/AddRoom";
+import { showSnackbar } from "../SnackBarCustom/SnackBarSlice";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -52,7 +53,7 @@ const AddEventModal = ({ onClose, open, handleAddEvent }) => {
     const [content, setContent] = useState('')
     const [image, setImage] = useState(null)
     const [loading, setLoading] = useState(false)
-    const { snackBar, setSnackBar } = useContext(SnackBarContext)
+    const dispatch = useDispatch()
 
     const formik = useFormik<IEvent>({
         initialValues: {
@@ -84,20 +85,11 @@ const AddEventModal = ({ onClose, open, handleAddEvent }) => {
                 content
             })
             handleAddEvent(res.data)
-            setSnackBar({
-                ...snackBar,
-                open: true,
-                message: 'Tạo chương trình thành công',
-                status: 'success'
-            })
+            dispatch(showSnackbar({message: 'Tạo chương trình thành công', status: 'success'}))
+
             onClose()
         } catch (e) {
-            setSnackBar({
-                ...snackBar,
-                open: true,
-                message: e.message,
-                status: 'error'
-            })
+            dispatch(showSnackbar({message: e.message, status: 'error'}))
         }
         setLoading(false)
     }

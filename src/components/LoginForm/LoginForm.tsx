@@ -3,11 +3,12 @@ import { Link, TextField } from "@mui/material";
 import { useFormik } from 'formik';
 import Cookies from 'js-cookie';
 import { useContext, useState } from "react";
+import { useDispatch } from "react-redux";
 import * as yup from 'yup';
 import axiosInstance from "~/axios/axiosConfig";
-import SnackBarContext from "~/contexts/SnackBarContext";
 import UserContext from "~/contexts/UserContext";
 import RegisterForm from "../RegisterForm/RegisterForm";
+import { showSnackbar } from "../SnackBarCustom/SnackBarSlice";
 
 const validationSchema = yup.object({
     email: yup
@@ -24,10 +25,10 @@ const validationSchema = yup.object({
 
 const LoginForm = (prop) => {
     const { setUser } = useContext(UserContext)
-    const { setSnackBar, snackBar } = useContext(SnackBarContext)
     const [error, setError] = useState('')
     const [loading, setLoading] = useState(false)
     const { onClose } = prop
+    const dispatch = useDispatch()
 
     const formik = useFormik({
         initialValues: {
@@ -62,12 +63,7 @@ const LoginForm = (prop) => {
             Cookies.set('user', JSON.stringify(user))
             setUser(user)
             formik.setErrors({ email: '', password: '' })
-            setSnackBar({
-                ...snackBar,
-                open: true,
-                message: 'Đăng nhập thành công',
-                status: 'success'
-            })
+            dispatch(showSnackbar({message: 'Đăng nhập thành công', status: 'success'}))
             onClose()
         } catch (error) {
             setLoading(false)

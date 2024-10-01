@@ -3,11 +3,12 @@ import { DateRange } from "@mui/lab"
 import { Menu } from "@mui/material"
 import dayjs, { Dayjs } from "dayjs"
 import moment from "moment"
-import { useContext, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
+import { useNavigate } from "react-router-dom"
 import axiosInstance from "~/axios/axiosConfig"
 import Calender from "../Calendar/Calendar"
-import { useNavigate } from "react-router-dom"
-import SnackBarContext from "~/contexts/SnackBarContext"
+import { showSnackbar } from "../SnackBarCustom/SnackBarSlice"
 
 const hasThreeConsecutiveHoursFree = (booking, num) => {
     // Tạo một mảng 24 phần tử, khởi tạo tất cả các phần tử là false (chưa được đặt)
@@ -38,7 +39,7 @@ const hasThreeConsecutiveHoursFree = (booking, num) => {
     return false;
 }
 
-const isFreeBetween = (booking, startHour, endHour) => {
+export const isFreeBetween = (booking, startHour, endHour) => {
     // Tạo một mảng 24 phần tử, khởi tạo tất cả các phần tử là false (chưa được đặt)
     let hours = Array(24).fill(false);
 
@@ -63,14 +64,14 @@ const isFreeBetween = (booking, startHour, endHour) => {
 
 export const checkDate = (dateArr) => { // 0 - Full, 1 - Trống h trong ngày, 2 - Trống 14h - 12h hôm sau
     return dateArr.map((item, index) => {
-        if(!hasThreeConsecutiveHoursFree(item.booking, 3)){
-            return {date: item.date, type: 0}
-        } else if (isFreeBetween(item.booking, 13, 24) && (!dateArr[index + 1]?.booking || isFreeBetween(dateArr[index + 1].booking, 0, 12))){
-            return {date: item.date, type: 2}
+        if (!hasThreeConsecutiveHoursFree(item.booking, 3)) {
+            return { date: item.date, type: 0 }
+        } else if (isFreeBetween(item.booking, 13, 24) && (!dateArr[index + 1]?.booking || isFreeBetween(dateArr[index + 1].booking, 0, 13))) {
+            return { date: item.date, type: 2 }
         } else {
-            return {date: item.date, type: 1}
+            return { date: item.date, type: 1 }
         }
-        
+
     })
 }
 
@@ -92,23 +93,44 @@ const ModalCheckBooking = ({ roomId, roomCode, open, handleClose, anchorEl }) =>
     const [availableHoursDate, setAvailableHoursDate] = useState([])
     const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
-    const {snackBar, setSnackBar} = useContext(SnackBarContext)
+    const [timeDetail, setTimeDetail] = useState(null)
+    const dispatch = useDispatch()
 
     const handleChangeDate = (e) => {
+        const findDateTo = timeDetail.find(item => item.date == dayjs(e[1]).format('DD/MM/YYYY'))
+
         if (
             e[0] &&
             e[1] &&
-            [...disableDate, ...availableHoursDate].some(disabledDate =>
-                e[0].isBefore(disabledDate) && e[1].isAfter(disabledDate)
+            (
+                [...disableDate, ...availableHoursDate].some(disabledDate =>
+                    e[0].isBefore(disabledDate) && e[1].isAfter(disabledDate))
+                ||
+                (
+                    [...availableHoursDate].some(disabledDate => {
+                        return e[0].isSame(disabledDate)
+                    })
+                    &&
+                    e[1].diff(e[0], 'day') != 1
+                )
+                ||
+                (
+                    findDateTo && !isFreeBetween(findDateTo.booking, 0, 13) && e[1].diff(e[0], 'day') != 1
+                )
+                ||
+                (
+                    findDateTo && !isFreeBetween(findDateTo.booking, 0, 12) && e[1].diff(e[0], 'day') == 1
+                )
             )
         ) {
             return;
         }
-        setValue(e);
+
         if (!e[1]) {
             setValue([e[0], e[0]])
             return
         }
+        setValue(e);
     }
 
     const getDateDetail = async (roomId: number) => {
@@ -121,19 +143,14 @@ const ModalCheckBooking = ({ roomId, roomCode, open, handleClose, anchorEl }) =>
     }
 
     const navigateToBookingPage = () => {
-        if(!value[0]) {
-            setSnackBar({
-                ...snackBar,
-                open: true,
-                status: 'error',
-                message: 'Vui lòng chọn ngày!!!'
-            })
+        if (!value[0]) {
+            dispatch(showSnackbar({ message: 'Vui lòng chọn ngày!!!', status: 'error' }))
             return
         }
         navigate(
             `/booking/${roomCode}/${roomId}`,
             {
-                state: {from: dayjs(value[0]).format('MM-DD-YYYY'), to: value[1] ? dayjs(value[1]).format('MM-DD-YYYY'): dayjs(value[0]).format('DD-MM-YYYY')}
+                state: { from: dayjs(value[0]).format('MM-DD-YYYY'), to: value[1] ? dayjs(value[1]).format('MM-DD-YYYY') : dayjs(value[0]).format('DD-MM-YYYY') }
             }
         )
     }
@@ -141,6 +158,7 @@ const ModalCheckBooking = ({ roomId, roomCode, open, handleClose, anchorEl }) =>
     useEffect(() => {
         (async () => {
             const dateValid = await getDateDetail(roomId)
+            setTimeDetail(dateValid)
             const checkDateValid = checkDate(dateValid)
             const dateDisable = checkDateValid.filter(item => item.type == 0).map(item => moment(item.date, 'DD/MM/YYYY'))
             const dateAvailableHours = checkDateValid.filter(item => item.type == 1).map(item => moment(item.date, 'DD/MM/YYYY'))

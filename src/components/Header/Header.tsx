@@ -31,7 +31,7 @@ const Header = () => {
     const [openMenu, setOpenMenu] = useState(false);
     const location = useLocation()
 
-    const [menuActive, setMenuActive] = useState(location.pathname == '/' ? t('home') : t(location.pathname.slice(1)))
+    const [menuActive, setMenuActive] = useState(location.pathname == '/' ? t('home') : t(location.pathname.split('/')[1]))
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);

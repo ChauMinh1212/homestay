@@ -3,10 +3,11 @@ import { TextField } from "@mui/material";
 import { useFormik } from "formik";
 import Cookies from 'js-cookie';
 import { useContext, useState } from "react";
+import { useDispatch } from "react-redux";
 import * as yup from 'yup';
 import axiosInstance from "~/axios/axiosConfig";
-import SnackBarContext from "~/contexts/SnackBarContext";
 import UserContext from "~/contexts/UserContext";
+import { showSnackbar } from "../SnackBarCustom/SnackBarSlice";
 
 interface IRegister {
     name: string,
@@ -37,10 +38,10 @@ const validationSchema = yup.object({
 });
 
 const RegisterForm = (prop) => {
-    const { setSnackBar, snackBar } = useContext(SnackBarContext)
     const { setUser } = useContext(UserContext)
     const { onClose, isAdminRegister, handleAddUser } = prop
     const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch()
 
     const handleSubmit = async (values: IRegister) => {
         try {
@@ -52,13 +53,7 @@ const RegisterForm = (prop) => {
                 phone: values.phone
             })
             setLoading(false)
-            setSnackBar({
-                ...snackBar,
-                open: true,
-                status: 'success',
-                message: 'Đăng ký thành công'
-            })
-
+            dispatch(showSnackbar({message: 'Đăng ký thành công', status: 'success'}))
             if (!isAdminRegister) {
                 Cookies.set('at', res.data.access_token)
                 Cookies.set('rt', res.data.refresh_token)
@@ -85,12 +80,7 @@ const RegisterForm = (prop) => {
             onClose()
         } catch (e) {
             setLoading(false)
-            setSnackBar({
-                ...snackBar,
-                open: true,
-                status: 'error',
-                message: e.message
-            })
+            dispatch(showSnackbar({message: e.message, status: 'error'}))
         }
     }
 

@@ -1,28 +1,25 @@
 import { Alert, Snackbar } from "@mui/material";
-import { useContext } from "react";
-import SnackBarContext from "~/contexts/SnackBarContext";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "~/store";
+import { hideSnackbar } from "./SnackBarSlice";
 
 const SnackBarCustom = () => {
-    const { setSnackBar, snackBar } = useContext(SnackBarContext)
-    const handleClose = (_event: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') {
-            return;
-        }
+    const dispatch = useDispatch();
+    const { open, message, status, autoHideDuration, anchorOrigin } = useSelector((state: RootState) => state.snackbar);
 
-        setSnackBar({
-            ...snackBar,
-            open: false
-        });
+    const handleClose = () => {
+        dispatch(hideSnackbar());
     };
+    
     return (
         <Snackbar
-            open={snackBar.open} autoHideDuration={snackBar.autoHideDuration} anchorOrigin={snackBar.anchorOrigin} onClose={handleClose}
+            open={open} autoHideDuration={autoHideDuration} anchorOrigin={anchorOrigin} onClose={handleClose}
         >
             <Alert
-                severity={snackBar.status}
+                severity={status}
                 sx={{ width: '100%' }}
             >
-                {snackBar.message}
+                {message}
             </Alert>
         </Snackbar>
     )

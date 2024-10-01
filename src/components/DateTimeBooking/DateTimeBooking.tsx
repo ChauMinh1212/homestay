@@ -3,10 +3,11 @@ import { CalendarMonthOutlined, LocationOnOutlined, Search, SupervisorAccountOut
 import { DateRange } from '@mui/lab';
 import { IconButton, Menu } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import axiosInstance from '~/axios/axiosConfig';
-import SnackBarContext from '~/contexts/SnackBarContext';
 import NewDateRangePicker from '../NewDateRangePicker/NewDateRangPicker';
+import { showSnackbar } from '../SnackBarCustom/SnackBarSlice';
 
 const StyledMenu = styled(Menu)`
   .MuiList-root {
@@ -28,8 +29,8 @@ const DateTimeBooking = ({ setRoomValid, setLoading }) => {
     const [district, setDistrict] = useState<IDistrict | null>(null)
     const [districtValid, setDistrictValid] = useState([])
     const [dateDisplay, setDateDisplay] = useState<DateRange<Dayjs>>([null, null])
-    const { snackBar, setSnackBar } = useContext(SnackBarContext)
     const [time, setTime] = useState([dayjs().set('hour', 14).set('minute', 0), dayjs().set('hour', 12).set('minute', 0)])
+    const dispatch = useDispatch()
 
     const getAllRoom = async () => {
         try {
@@ -76,12 +77,8 @@ const DateTimeBooking = ({ setRoomValid, setLoading }) => {
         e.preventDefault()
 
         if (district == null) {
-            setSnackBar({
-                ...snackBar,
-                open: true,
-                message: 'Vui lòng chọn điểm đến!!!',
-                status: 'error'
-            })
+            dispatch(showSnackbar({message: 'Vui lòng chọn điểm đến!!!', status: 'error'}))
+            return
         }
         setLoading(true)
         const room = await getRoomValid({ district_id: district.id, dateDisplay, countGuest })

@@ -1,5 +1,4 @@
 import styled from "@emotion/styled";
-import { Menu } from "@mui/material";
 import { LocalizationProvider, TimePicker } from "@mui/x-date-pickers";
 import { DateRange } from "@mui/x-date-pickers-pro";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -7,19 +6,10 @@ import dayjs, { Dayjs } from "dayjs";
 import 'dayjs/locale/vi';
 import Cookies from 'js-cookie';
 import { useState } from "react";
+import { COMBO_LIST } from "~/common/contants";
 import Calender from "../Calendar/Calendar";
 import Combo from "../Combo/Combo";
 import './NewDateRangePicker.css';
-import { COMBO_LIST } from "~/common/contants";
-
-const StyledMenu = styled(Menu)`
-  .MuiList-root {
-    padding: 0;
-  }
-  .MuiPaper-root {
-    border-radius: 10px;
-  }
-`;
 
 const StyledTimePicker = styled(TimePicker)`
   .MuiInputBase-root {
@@ -45,8 +35,8 @@ const NewDateRangePicker = ({ setDateDisplay, setTimeDisplay, timeDisplay, dateD
         }
     }
 
-    const handleComboClick = (time, inday) => {
-        if (inday == 1) {
+    const handleComboClick = (com) => {
+        if (com.inday == 1) {
             setDateDisplay(prev => {
                 const newDate = [...prev]
                 newDate[1] = newDate[0]
@@ -69,8 +59,8 @@ const NewDateRangePicker = ({ setDateDisplay, setTimeDisplay, timeDisplay, dateD
                 return newDate
             })
         }
-        setTime([dayjs(time[0], 'H:mm'), dayjs(time[1], 'H:mm')])
-        setTimeDisplay([dayjs(time[0], 'H:mm'), dayjs(time[1], 'H:mm')])
+        setTime([dayjs(com.time[0], 'H:mm'), dayjs(com.time[1], 'H:mm')])
+        setTimeDisplay([dayjs(com.time[0], 'H:mm'), dayjs(com.time[1], 'H:mm')])
     }
 
     return (
@@ -114,7 +104,7 @@ const NewDateRangePicker = ({ setDateDisplay, setTimeDisplay, timeDisplay, dateD
                     </LocalizationProvider>
                 </div>
             </div>
-            <Combo handleComboClickEx={handleComboClick} combo_list={COMBO_LIST}></Combo>
+            <Combo isCanDelete={true} comboEx={null} handleComboClickEx={handleComboClick} combo_list={COMBO_LIST}></Combo>
         </div>
     )
 }

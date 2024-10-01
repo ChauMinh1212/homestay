@@ -2,10 +2,6 @@ import { styled } from '@mui/material/styles'
 import { LocalizationProvider } from "@mui/x-date-pickers"
 import { DateRangeCalendar, LicenseInfo } from "@mui/x-date-pickers-pro"
 import {
-  DateRangeCalendar as MuiDateRangeCalendar,
-  DateRangeCalendarProps
-} from '@mui/x-date-pickers-pro/DateRangeCalendar'
-import {
   DateRangePickerDay as MuiDateRangePickerDay,
   DateRangePickerDayProps
 } from '@mui/x-date-pickers-pro/DateRangePickerDay'

@@ -1,9 +1,10 @@
 import { Close } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, IconButton, Modal } from "@mui/material";
-import { useContext, useState } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import axiosInstance from "~/axios/axiosConfig";
-import SnackBarContext from "~/contexts/SnackBarContext";
+import { showSnackbar } from "../SnackBarCustom/SnackBarSlice";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -21,7 +22,8 @@ const style = {
 
 const DeleteRoomModal = ({ open, onClose, room, handleDeleteRoom }) => {
     const [loading, setLoading] = useState(false)
-    const { snackBar, setSnackBar } = useContext(SnackBarContext)
+    const dispatch = useDispatch()
+
     const handleClickDeleteRoom = async () => {
         try {
             setLoading(true)
@@ -29,19 +31,10 @@ const DeleteRoomModal = ({ open, onClose, room, handleDeleteRoom }) => {
             setLoading(false)
             handleDeleteRoom()
             onClose()
-            setSnackBar({
-                ...snackBar,
-                open: true,
-                status: 'success',
-                message: 'Xoá phòng thành công'
-            })
+            dispatch(showSnackbar({message: 'Xoá phòng thành công', status: 'success'}))
         } catch (error) {
-            setSnackBar({
-                ...snackBar,
-                open: true,
-                status: 'error',
-                message: error?.message || ''
-            })
+            dispatch(showSnackbar({message: error?.message || '', status: 'error'}))
+
             setLoading(false)
         }
     }

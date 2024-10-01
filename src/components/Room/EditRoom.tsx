@@ -2,14 +2,15 @@ import { Clear, Close, CloudUpload } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Modal, Select, TextField } from "@mui/material";
 import { useFormik } from "formik";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import * as yup from 'yup';
 import axiosInstance from "~/axios/axiosConfig";
-import SnackBarContext from "~/contexts/SnackBarContext";
+import { TYPE_ROOM } from "~/common/contants";
 import { IRoomData } from "~/pages/HomestayPage/HomestayPage";
 import TextEditor from "../Editor/Editor";
+import { showSnackbar } from "../SnackBarCustom/SnackBarSlice";
 import { VisuallyHiddenInput } from "./AddRoom";
-import { TYPE_ROOM } from "~/common/contants";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -52,13 +53,13 @@ const validationSchema = yup.object({
 
 const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
     const [loading, setLoading] = useState(false)
-    const { snackBar, setSnackBar } = useContext(SnackBarContext)
     const [image, setImage] = useState([])
     const [newImage, setNewImage] = useState([])
     const [description, setDescription] = useState(room?.description || '')
     const [district, setDistrict] = useState([])
     const [selectDistrict, setSelectDistrict] = useState(0)
     const [typeRoom, setTypeRoom] = useState(0)
+    const dispatch = useDispatch()
 
     useEffect(() => {
         setSelectDistrict(room?.district.id || 0)
@@ -158,21 +159,11 @@ const EditRoomModal = ({ open, onClose, room, handleUpdateRoom }) => {
                 district: district.find(item => item.id == selectDistrict),
                 type: typeRoom
             })
-            setSnackBar({
-                ...snackBar,
-                message: 'Cập nhật phòng thành công',
-                open: true,
-                status: 'success'
-            })
+            dispatch(showSnackbar({message: 'Cập nhật phòng thành công', status: 'success'}))
             setNewImage([])
         } catch (e) {
-            console.log(e);
-            setSnackBar({
-                ...snackBar,
-                message: e.message,
-                open: true,
-                status: 'error'
-            })
+            dispatch(showSnackbar({message: e.message, status: 'error'}))
+
         }
         setLoading(false)
     }

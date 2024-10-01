@@ -1,4 +1,3 @@
-import { SnackbarProps } from '@mui/material';
 import i18n from 'i18next';
 import Cookies from 'js-cookie';
 import { useState } from 'react';
@@ -7,14 +6,14 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import Footer from './components/Footer/Footer';
 import Header from './components/Header/Header';
+import NotFound from './components/NotFound/NotFound';
 import SnackBarCustom from './components/SnackBarCustom/SnackBarCustom';
 import MenuLoginContext from './contexts/MenuLoginContext';
 import ProfileOpenContext from './contexts/ProfileOpenContext';
-import SnackBarContext from './contexts/SnackBarContext';
+import TimeContext from './contexts/TimeContext';
 import UserContext from './contexts/UserContext';
 import languages from './languages';
 import routes from './routes';
-import NotFound from './components/NotFound/NotFound';
 
 function App() {
   i18n.use(initReactI18next).init({
@@ -28,37 +27,28 @@ function App() {
   });
 
   const [user, setUser] = useState(Cookies.get('user') ? JSON.parse(Cookies.get('user')) : null)
-  const [snackBar, setSnackBar] = useState<SnackbarProps & { status: 'success' | 'error' }>({
-    message: 'success',
-    open: false,
-    autoHideDuration: 4000,
-    anchorOrigin: {
-      vertical: 'top',
-      horizontal: 'center'
-    },
-    status: 'success'
-  })
   const [openMenuLogin, setOpenMenuLogin] = useState(false)
   const [openProfile, setOpenProfile] = useState(false)
+  const [time, setTime] = useState(false)
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      <SnackBarContext.Provider value={{ snackBar, setSnackBar }}>
         <MenuLoginContext.Provider value={{ openMenuLogin, setOpenMenuLogin }}>
           <ProfileOpenContext.Provider value={{ openProfile, setOpenProfile }}>
-            <SnackBarCustom />
-            <Header />
-            <div className="mt-[137px]"></div>
-            <Routes>
-              {routes.map((item, index) => (
-                <Route key={index} path={item.path} element={<item.element />} />
-              )
-              )}
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-            <Footer />
+            <TimeContext.Provider value={{ time, setTime }}>
+              <SnackBarCustom />
+              <Header />
+              <div className="mt-[137px]"></div>
+              <Routes>
+                {routes.map((item, index) => (
+                  <Route key={index} path={item.path} element={<item.element />} />
+                )
+                )}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+              <Footer />
+            </TimeContext.Provider>
           </ProfileOpenContext.Provider>
         </MenuLoginContext.Provider>
-      </SnackBarContext.Provider>
     </UserContext.Provider>
   )
 }

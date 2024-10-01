@@ -3,10 +3,11 @@ import { LoadingButton } from "@mui/lab";
 import { Box, IconButton, Link, Modal, Typography } from "@mui/material";
 import moment from "moment";
 import { useContext, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link as LinkRouter } from "react-router-dom";
 import axiosInstance from "~/axios/axiosConfig";
-import SnackBarContext from "~/contexts/SnackBarContext";
 import UserContext from "~/contexts/UserContext";
+import { showSnackbar } from "../SnackBarCustom/SnackBarSlice";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -24,29 +25,20 @@ const style = {
 const Booking = ({ open, onClose, infoBooking, afterBooking }) => {
     const { user } = useContext(UserContext)
     const [loading, setLoading] = useState(false)
-    const { snackBar, setSnackBar } = useContext(SnackBarContext)
+    const dispatch = useDispatch()
 
     const handleBooking = async () => {
         try {
             setLoading(true)
             await axiosInstance.post('/booking/create', { from: infoBooking.from, to: infoBooking.to, quantity: infoBooking.quantity, id: infoBooking.id })
             setLoading(false)
-            setSnackBar({
-                ...snackBar,
-                status: 'success',
-                open: true,
-                message: 'Bạn đã đặt phòng thành công, chúng tôi sẽ liên hệ bạn sớm nhất'
-            })
+            dispatch(showSnackbar({message: 'Bạn đã đặt phòng thành công, chúng tôi sẽ liên hệ bạn sớm nhất', status: 'success'}))
+
             onClose()
             afterBooking()
         } catch (e) {
             setLoading(false)
-            setSnackBar({
-                ...snackBar,
-                open: true,
-                status: 'error',
-                message: e?.message || ''
-            })
+            dispatch(showSnackbar({message: e?.message || '', status: 'error'}))
         }
     }
 

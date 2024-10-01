@@ -1,17 +1,18 @@
 import { AddCircleOutline, Clear } from "@mui/icons-material"
+import { LoadingButton } from "@mui/lab"
 import { Button, IconButton } from "@mui/material"
 import { useContext, useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import axiosInstance from "~/axios/axiosConfig"
-import UserContext from "~/contexts/UserContext"
 import { VisuallyHiddenInput } from "~/components/Room/AddRoom"
-import { LoadingButton } from "@mui/lab"
-import SnackBarContext from "~/contexts/SnackBarContext"
+import { showSnackbar } from "~/components/SnackBarCustom/SnackBarSlice"
+import UserContext from "~/contexts/UserContext"
 
 const AdminSetting = () => {
     const { user } = useContext(UserContext)
-    const { snackBar, setSnackBar } = useContext(SnackBarContext)
     const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     const [oldBanner, setOldBanner] = useState([])
     const [newBanner, setNewBanner] = useState([])
@@ -75,20 +76,10 @@ const AdminSetting = () => {
             setLoading(true)
             const upload = newBanner.length != 0 ? await axiosInstance.post('upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } }) : { data: [] }
             await axiosInstance.post('banner/create', { banner: [...oldBanner, ...upload.data] })
-            setSnackBar({
-                ...snackBar,
-                status: 'success',
-                message: 'Cập nhật thành công',
-                open: true
-            })
+            dispatch(showSnackbar({message: 'Cập nhật thành công', status: 'success'}))
         } catch (error) {
             console.log(error);
-            setSnackBar({
-                ...snackBar,
-                status: 'error',
-                message: 'Lỗi',
-                open: true
-            })
+            dispatch(showSnackbar({message: 'Lỗi', status: 'error'}))
         }
         setLoading(false)
     }

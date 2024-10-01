@@ -1,11 +1,12 @@
 import { Close } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { Box, IconButton, Modal, TextField } from "@mui/material"
+import { Box, IconButton, Modal, TextField } from "@mui/material";
 import { useFormik } from "formik";
-import { useContext, useState } from "react";
-import * as yup from "yup"
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import * as yup from "yup";
 import axiosInstance from "~/axios/axiosConfig";
-import SnackBarContext from "~/contexts/SnackBarContext";
+import { showSnackbar } from "../SnackBarCustom/SnackBarSlice";
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -37,7 +38,7 @@ const validationSchema = yup.object({
 
 const ModalUpdateUser = ({ open, handleClose, userInfo, handleUpdateUser }) => {
     const [loading, setLoading] = useState(false)
-    const { snackBar, setSnackBar } = useContext(SnackBarContext)
+    const dispatch = useDispatch()
 
     const formik = useFormik<{ id: Number, username: string, phone: string, email: string, point: number }>({
         initialValues: {
@@ -58,20 +59,10 @@ const ModalUpdateUser = ({ open, handleClose, userInfo, handleUpdateUser }) => {
         setLoading(true)
         try {
             await axiosInstance.post('user/update', values)
-            setSnackBar({
-                ...snackBar,
-                status: 'success',
-                message: 'Cập nhật thành công',
-                open: true
-            })
+            dispatch(showSnackbar({message: 'Cập nhật thành công', status: 'success'}))
             handleUpdateUser(values)
         } catch (e) {
-            setSnackBar({
-                ...snackBar,
-                status: 'error',
-                message: e.message,
-                open: true
-            })
+            dispatch(showSnackbar({message: e.message, status: 'error'}))
         }
         setLoading(false)
     }

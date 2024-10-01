@@ -2,13 +2,14 @@ import { Clear, Close, CloudUpload } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, FormControl, IconButton, InputLabel, MenuItem, Modal, Select, styled, TextField } from "@mui/material";
 import { useFormik } from "formik";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import * as yup from 'yup';
 import axiosInstance from "~/axios/axiosConfig";
-import SnackBarContext from "~/contexts/SnackBarContext";
+import { TYPE_ROOM } from "~/common/contants";
 import { IRoomData } from "~/pages/HomestayPage/HomestayPage";
 import TextEditor from "../Editor/Editor";
-import { TYPE_ROOM } from "~/common/contants";
+import { showSnackbar } from "../SnackBarCustom/SnackBarSlice";
 
 export const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -61,13 +62,13 @@ const validationSchema = yup.object({
 
 const AddRoomModal = ({ open, onClose, handleAddRoom }) => {
     const [loading, setLoading] = useState(false)
-    const { snackBar, setSnackBar } = useContext(SnackBarContext)
     const [image, setImage] = useState([])
 
     const [description, setDescription] = useState('')
     const [district, setDistrict] = useState([])
     const [selectDistrict, setSelectDistrict] = useState(0)
     const [typeRoom, setTypeRoom] = useState(0)
+    const dispatch = useDispatch()
 
     const getDistrictValid = async () => {
         try {
@@ -146,20 +147,11 @@ const AddRoomModal = ({ open, onClose, handleAddRoom }) => {
                 id: res.data.id,
                 img: res.data.img
             })
-            setSnackBar({
-                ...snackBar,
-                message: 'Thêm phòng thành công',
-                open: true,
-                status: 'success'
-            })
+            dispatch(showSnackbar({message: 'Thêm phòng thành công', status: 'success'}))
         } catch (error) {
             setLoading(false)
-            setSnackBar({
-                ...snackBar,
-                message: error.message,
-                open: true,
-                status: 'error'
-            })
+            dispatch(showSnackbar({message: error.message, status: 'error'}))
+
         }
     }
 

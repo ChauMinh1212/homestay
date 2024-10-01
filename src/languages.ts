@@ -9,6 +9,8 @@ const languages = {
       event: 'EVENT',
       shop: 'SHOP',
       contact: 'CONTACT',
+      room: 'ROOM',
+      booking: 'BOOKING',
     },
   },
   vi: {
@@ -19,7 +21,9 @@ const languages = {
       service: 'DỊCH VỤ',
       event: 'CHƯƠNG TRÌNH',
       shop: 'CỬA HÀNG',
-      contact: 'LIÊN HỆ'
+      contact: 'LIÊN HỆ',
+      room: 'ROOM',
+      booking: 'ĐẶT PHÒNG',
     },
   },
 };

@@ -6,14 +6,14 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs"
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo"
 import dayjs from "dayjs"
 import { useContext, useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import axiosInstance from "~/axios/axiosConfig"
-import SnackBarContext from "~/contexts/SnackBarContext"
+import { showSnackbar } from "~/components/SnackBarCustom/SnackBarSlice"
 import UserContext from "~/contexts/UserContext"
 
 const AdminBookingPage = () => {
     const { user } = useContext(UserContext)
-    const { snackBar, setSnackBar } = useContext(SnackBarContext)
     const navigate = useNavigate()
     const [listUser, setListUser] = useState([])
     const [listRoom, setListRoom] = useState([])
@@ -21,6 +21,7 @@ const AdminBookingPage = () => {
     const [userSelect, setUserSelect] = useState(null)
     const [roomSelect, setRoomSelect] = useState(null)
     const [loading, setLoading] = useState(false)
+    const dispatch = useDispatch()
 
     const getAllUser = async () => {
         try {
@@ -42,12 +43,7 @@ const AdminBookingPage = () => {
 
     const handleSubmitBooking = async () => {
         if (!date[0] || !date[1] || !userSelect || !roomSelect) {
-            setSnackBar({
-                ...snackBar,
-                status: 'error',
-                open: true,
-                message: 'Vui lòng điền đầy đủ thông tin'
-            })
+            dispatch(showSnackbar({message: 'Vui lòng điền đầy đủ thông tin', status: 'error'}))
         }
         const body = {
             id: roomSelect.id,
@@ -58,19 +54,10 @@ const AdminBookingPage = () => {
         try {
             setLoading(true)
             await axiosInstance.post('booking/admin-create', body)
-            setSnackBar({
-                ...snackBar,
-                open: true,
-                status: 'success',
-                message: 'Booking thành công'
-            })
+            dispatch(showSnackbar({message: 'Booking thành công', status: 'success'}))
+
         } catch (e) {
-            setSnackBar({
-                ...snackBar,
-                open: true,
-                status: 'error',
-                message: 'Lỗi'
-            })
+            dispatch(showSnackbar({message: 'Lỗi', status: 'error'}))
         }
         setLoading(false)
     }
