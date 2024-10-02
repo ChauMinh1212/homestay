@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:14-alpine'  // Image Docker muốn sử dụng
-        }
-    }
+    agent any
     stages {
         stage('Check Docker') {
             steps {
