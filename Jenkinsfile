@@ -51,7 +51,6 @@ pipeline {
             sh "docker build --platform linux/amd64  -t ${REPO}:${VERSION} ."
             sh "docker push ${REPO}:${VERSION}"
           }
-          echo "Complete!!!!"
         }
       }
     }
@@ -69,11 +68,16 @@ pipeline {
             remote.password = SSH_PASSWORD
 
             // Thực thi lệnh trên server remote
-            sshCommand(remote: remote, command: "cd /home/sirena_fe")
-            sshCommand(remote: remote, command: "export TAG=${VERSION} && docker compose up -d")
+            sshCommand(remote: remote, command: """
+                cd /home/sirena_fe
+                export TAG="${VERSION}" && docker compose up -d
+            """)
           }
+
+          echo "Complete!!!!"
         }
       }
     }
+    
   }
 }
