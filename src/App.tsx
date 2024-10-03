@@ -16,7 +16,7 @@ import languages from './languages';
 import routes from './routes';
 
 function App() {
-  i18n.use(initReactI18next).init({ 
+  i18n.use(initReactI18next).init({  
     resources: languages,
     lng: 'vi', // Ngôn ngữ mặc định
     fallbackLng: 'en', // Ngôn ngữ dự phòng nếu không tìm thấy
