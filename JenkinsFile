@@ -1,10 +1,15 @@
 pipeline {
     agent any
     stages {
-        stage('Check Docker') {
+        stage('Check lastest version') {
             steps {
                 script {
-                    sh 'docker --version || echo "Docker is not installed or accessible"'
+                    # Gọi API của Docker Hub để lấy danh sách tags
+                    tags=$(curl -s "https://hub.docker.com/v2/repositories/chauminh1212/sirena/tags/?page_size=1" | jq -r '.results[].name')
+
+                    # In ra danh sách các tag (5 tag mới nhất)
+                    echo "Các tag mới nhất cho repo $REPO:"
+                    echo "$tags"
                 }
             }
         }
