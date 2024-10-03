@@ -24,7 +24,7 @@ function App() {
       escapeValue: false, // Not needed for React as it escapes by default
     },
 
-  });
+  }); 
 
   const [user, setUser] = useState(Cookies.get('user') ? JSON.parse(Cookies.get('user')) : null)
   const [openMenuLogin, setOpenMenuLogin] = useState(false)
