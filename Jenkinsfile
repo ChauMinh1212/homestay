@@ -15,7 +15,7 @@ pipeline {
         }
       }
     }
-    stage('Check and Increment Tag') { 
+    stage('Check and Increment Tag') {  
       steps {
         script {
           // Lấy tag mới nhất từ Docker Hub
