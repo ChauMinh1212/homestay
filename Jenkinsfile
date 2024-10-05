@@ -3,8 +3,8 @@ pipeline {
   environment {
     VERSION = ""
     REPO = "chauminh1212/sirena"
-    DOCKER_CREDENTIAL = 'c968a377-6c77-4e9c-a18b-f9acfe9dc7de'
-    SERVER_CREDENTIAL = 'c05f5dbc-6ef6-4f66-b8b7-be102529c3ff'
+    DOCKER_CREDENTIAL = 'docker_hub_id'
+    SERVER_CREDENTIAL = 'server-id'
   }
   stages {
     stage('Install jq') {
